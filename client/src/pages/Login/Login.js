@@ -6,7 +6,8 @@ class Login extends Component {
   state = {
     loggedIn:false,
     username: "",
-    password: ""
+    password: "",
+    errors:[]
   };
 
   componentWillMount() {
@@ -27,10 +28,15 @@ class Login extends Component {
     event.preventDefault();
     console.log(this.state);
     API.authenticateUser(this.state).then(res=>{
-      console.log(res);
-      localStorage.setItem('jwt',res.data.token);
-      localStorage.setItem('user',JSON.stringify(res.data.user));
-      this.setState({redirectToDashboard:true})
+      if(res.data.token){
+        console.log(res);
+        localStorage.setItem('jwt',res.data.token);
+        localStorage.setItem('user',JSON.stringify(res.data.user));
+        this.setState({redirectToDashboard:true})
+      }
+      else if(res.data.errors){
+        this.setState({errors:res.data.errors})
+      }
     }).catch(err => console.log(err));
   };
 
@@ -42,6 +48,7 @@ class Login extends Component {
     return (
       <div>
         <div className="container">
+        {this.state.errors.length > 0 ? this.state.errors.map((thing)=>{return(<p>thing</p>)}):""}
         <p className="max-center">Login</p>
         <form>
           <div>

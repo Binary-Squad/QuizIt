@@ -5,6 +5,13 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/database');
 const User = require('../models/user');
 
+function ValidateEmail(email){
+ if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+    return true
+  }
+    return false
+}
+
 // Register
 router.post('/register', (req, res, next) => {
   const errors = [];
@@ -15,29 +22,43 @@ router.post('/register', (req, res, next) => {
     password: req.body.password
   });
 
-  User.getUserByUsername(newUser.username,function(err,userInfo){
-    if(userInfo){
-      errors.push("Username already registered")
-      res.json({errors});
-    }
-    if(!userInfo){
-      User.findOne({email:newUser.email},function(err,emailInfo){
-        if(emailInfo){
-          errors.push("Email already registered")
-          res.json({errors})
-        }
-        if(!emailInfo){
-          User.addUser(newUser, (err, user) => {
-            if(err) {
-              res.json({success: false, msg: 'Failed to register user'});
-            } else {
-              res.json({success: true, msg: 'User registered'});
-            }
-          });
-        }
-      })
-    }
-  })
+  if(!ValidateEmail(newUser.email)){
+    errors.push("You must enter a valid email address (example@quizit.com)")
+  }
+  if(newUser.username.length < 3 || newUser.username.length >20){
+    errors.push("Username must be 3 to 20 characters long")
+  }
+  if(newUser.password.length < 3 || newUser.password.length >20){
+    errors.push("Password must be 3 to 20 characters long")
+  }
+  if (errors.length > 0){
+    res.json({errors})
+  }
+  else{
+    User.getUserByUsername(newUser.username,function(err,userInfo){
+      if(userInfo){
+        errors.push("Username already registered")
+        res.json({errors});
+      }
+      if(!userInfo){
+        User.findOne({email:newUser.email},function(err,emailInfo){
+          if(emailInfo){
+            errors.push("Email already registered")
+            res.json({errors})
+          }
+          if(!emailInfo){
+            User.addUser(newUser, (err, user) => {
+              if(err) {
+                res.json({success: false, msg: 'Failed to register user', err:err});
+              } else {
+                res.json({success: true, msg: 'User registered'});
+              }
+            });
+          }
+        })
+      }
+    })
+  }
 });
 
 // Authenticate
@@ -76,6 +97,9 @@ router.post('/authenticate', (req, res, next) => {
 
 // Profile
 router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
+  if(req.user){
+    console.log(req.user);  
+  }
   res.json({user: req.user});
 });
 

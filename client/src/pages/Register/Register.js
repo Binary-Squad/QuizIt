@@ -9,7 +9,8 @@ class Register extends Component {
     username: "",
     email: "",
     password: "",
-    password2: ""
+    password2: "",
+    errors:[]
   };
 
   handleInputChange = event => {
@@ -23,10 +24,21 @@ class Register extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     console.log(this.state);
-    API.registerUser(this.state).then(res=>{
-      console.log(res);
-      this.setState({redirectToLogin:true});
-    }).catch(err => console.log(err));
+    if(this.state.password != this.state.password2){
+      this.setState({errors:["Passwords do not match"]})
+    }
+    else{
+      API.registerUser(this.state).then(res=>{
+        console.log(res);
+        if(res.data.errors){
+          this.setState({errors:res.data.errors})
+        }
+        else{
+          console.log(res);
+          this.setState({redirectToLogin:true});
+        }
+      }).catch(err => console.log(err));
+    }
   };
 
   render() {
@@ -35,55 +47,53 @@ class Register extends Component {
     }
     return (
       <div>
-
-        <div className="container">
-          <p className="max-center">Register</p>
-          <form>
-            <div>
-            <input 
-              name="name"
-              value={this.state.name}
-              onChange={this.handleInputChange}
-              placeholder="name"
-            />
-            <div>
-            </div>
-            <input 
-              name="username"
-              onChange={this.handleInputChange}
-              value={this.state.username}
-              placeholder="username"
-            />
-            <div>
-            </div>
-            <input 
-              name="email"
-              onChange={this.handleInputChange}
-              value={this.state.email}
-              placeholder="email"
-            />
-            <div>
-            </div>
-            <input 
-              name="password"
-              onChange={this.handleInputChange}
-              value={this.state.password}
-              placeholder="password"
-              type="password"
-            />
-            <div>
-            </div>
-            <input 
-              name="password2"
-              onChange={this.handleInputChange}
-              value={this.state.password2}
-              placeholder="password2"
-              type="password"
-            />
-            </div>
-            <button onClick={this.handleFormSubmit}>Submit</button>
-          </form>
-        </div>
+        {this.state.errors.length > 0 ? this.state.errors.map((item,i)=>{return(<p key={i}>{item}</p>)}):""}
+        <p className="max-center">Register</p>
+        <form>
+          <div>
+          <input 
+            name="name"
+            value={this.state.name}
+            onChange={this.handleInputChange}
+            placeholder="name"
+          />
+          <div>
+          </div>
+          <input 
+            name="username"
+            onChange={this.handleInputChange}
+            value={this.state.username}
+            placeholder="username"
+          />
+          <div>
+          </div>
+          <input 
+            name="email"
+            onChange={this.handleInputChange}
+            value={this.state.email}
+            placeholder="email"
+          />
+          <div>
+          </div>
+          <input 
+            name="password"
+            onChange={this.handleInputChange}
+            value={this.state.password}
+            placeholder="password"
+            type="password"
+          />
+          <div>
+          </div>
+          <input 
+            name="password2"
+            onChange={this.handleInputChange}
+            value={this.state.password2}
+            placeholder="password2"
+            type="password"
+          />
+          </div>
+          <button onClick={this.handleFormSubmit}>Submit</button>
+        </form>
       </div>
     );
   }
