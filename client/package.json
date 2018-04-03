@@ -1,12 +1,21 @@
 {
-  "name": "client",
+  "name": "mern",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001/",
   "dependencies": {
+<<<<<<< HEAD
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-scripts": "1.1.1",
     "socket.io-client": "^2.1.0"
+=======
+    "axios": "^0.16.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router-dom": "^4.1.2",
+    "react-scripts": "1.0.14"
+>>>>>>> d7e70ba25ea4bd245e6049755daccd40338f5024
   },
   "scripts": {
     "start": "react-scripts start",

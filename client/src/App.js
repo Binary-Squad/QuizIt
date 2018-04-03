@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
 import socketIOClient from 'socket.io-client';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Logout from "./pages/Logout";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+// import isLoggedIn from "./utils/isLoggedIn.js";
+import Navbar from "./components/Navbar";
 
 class App extends Component {
   constructor() {
     super()
+  }
 
-    this.state = {
-      endpoint: "localhost:3001"
+  state = {
+    loggedIn:false,
+    username:"",
+    endpoint: "localhost:3001"
+  }
+
+  checkIfLoggedIn(){
+    if(localStorage.user){
+      return true
+    }
+    else{
+      return false
     }
   }
 
@@ -35,9 +52,18 @@ class App extends Component {
     });
 
     return (
-      <div>
-        <p>Making sure this works</p>
-      </div>
+      <Router>
+        <div>
+          <Navbar />
+          <Switch>
+            <Route exact path="/login" render={()=>(this.checkIfLoggedIn()?<Redirect to="/dashboard" />:<Login />)}/>
+            <Route exact path="/logout" render={()=>(<Logout />)}/>
+            <Route exact path="/register" render={()=>(this.checkIfLoggedIn()?<Redirect to="/dashboard" />:<Register />)}/>
+            <Route exact path="/dashboard" render={()=>(this.checkIfLoggedIn()?<Dashboard />:<Redirect to="/login" />)}/>
+            <Route path="/" render={()=>(<Home />)}/>
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
