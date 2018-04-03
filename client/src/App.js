@@ -1,18 +1,42 @@
 import React, { Component } from 'react';
+import socketIOClient from 'socket.io-client';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      endpoint: "localhost:3001"
+    }
+  }
+
+  // method for emitting a socket.io event
+  send = () => {
+    const socket = socketIOClient(this.state.endpoint);
+
+    socket.emit('testSend', 'Client send test');
+  }
+
+
+  // Render method for when state is updated
   render() {
+
+    const socket = socketIOClient(this.state.endpoint);
+
+    socket.on('connection', (msg) => {
+      if (msg == 'a user connected') {
+        console.log("A user connected");
+      }
+      else if (msg == 'a user disconnected') {
+        console.log("A user disconnected");
+      }
+    });
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <p>Making sure this works</p>
       </div>
     );
   }
