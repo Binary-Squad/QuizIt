@@ -31,7 +31,7 @@ class App extends Component {
 
   // method for emitting a socket.io event
   send = () => {
-    const socket = socketIOClient(this.state.endpoint);
+    const socket = socketIOClient();
 
     socket.emit('testSend', 'Client send test');
   }
@@ -39,7 +39,7 @@ class App extends Component {
   // Render method for when state is updated
   render() {
 
-    const socket = socketIOClient(this.state.endpoint);
+    const socket = socketIOClient();
 
     socket.on('connection', (msg) => {
       if (msg === 'a user connected') {
