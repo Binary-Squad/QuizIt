@@ -1,4 +1,7 @@
-const express = require('express');
+const express = require("express");
+const http = require('http');
+const socketIO = require('socket.io');
+
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -6,21 +9,22 @@ const passport = require('passport');
 const mongoose = require('mongoose');
 const config = require('./config/database');
 
-// Connect To Database (NEW) But not working!!!!!!!!!! (because of secret in db.js!!!!!)
-//const db = require('./config/database');
-// Map global promise - get rid of warning
+const PORT = process.env.PORT || 3001;
+const app = express();
+
+// Create server instance
+const server = http.createServer(app);
+
+// Create our socket using the instance of the server
+const io = socketIO(server);
+
+// Set up promises with mongoose
 mongoose.Promise = global.Promise;
-// Connect to mongoose
-//mongoose.connect(db.mongoURI, {
-    //useMongoClient: true
-//})
-//.then(() => console.log('MongoDB Connected...'))
-//.catch(err => console.log(err));
+// Connect to the Mongo DB
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://localhost/quizit"
+);
 
-
-// Connect To Database (OLD CODE)
-mongoose.connect(config.database, { useMongoClient: true});
-// On Connection
 mongoose.connection.on('connected', () => {
   console.log('Connected to Database '+config.database);
 });
@@ -29,12 +33,7 @@ mongoose.connection.on('error', (err) => {
   console.log('Database error '+err);
 });
 
-const app = express();
-
 const users = require('./routes/users');
-
-// Port Number
-const port = process.env.PORT || 3001;
 
 // CORS Middleware
 app.use(cors());
@@ -53,20 +52,22 @@ require('./config/passport')(passport);
 
 app.use('/users', users);
 
-// Index Route
-// app.get('/', (req, res) => {
-//   res.send('invaild endpoint');
-// });
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'public/index.html'));
-// });
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build/index.html'));
+// Server side socket.io event configuration
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.broadcast.emit('connection', 'a user connected')
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+    socket.broadcast.emit('connection', 'a user disconnected')
+  });
 });
 
-// Start Server
-app.listen(port, () => {
-  console.log('Server started on port '+port);
+// Send every request to the React app
+// Define any API routes before this runs
+app.get("*", function(req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
+
+server.listen(PORT, function() {
+  console.log(`🌎 ==> Server now on port ${PORT}!`)
 });

@@ -24,7 +24,7 @@ class Register extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     console.log(this.state);
-    if(this.state.password != this.state.password2){
+    if(this.state.password !== this.state.password2){
       this.setState({errors:["Passwords do not match"]})
     }
     else{

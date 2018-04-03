@@ -1,4 +1,5 @@
-import React, {Component} from "react";
+import React, { Component } from 'react';
+import socketIOClient from 'socket.io-client';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -8,40 +9,16 @@ import Dashboard from "./pages/Dashboard";
 // import isLoggedIn from "./utils/isLoggedIn.js";
 import Navbar from "./components/Navbar";
 
-// const auth = {
-//   isAuthenticated: false,
-//   authenticate:isLoggedIn
-// }
-
-// const PrivateRoute = ({ component: Component, ...rest }) => (
-//   <Route {...rest} render={(props) => (
-//     auth.isAuthenticated === true
-//       ? <Component {...props} />
-//       : <Redirect to={{
-//           pathname: '/login',
-//           state: { from: props.location }
-//         }} />
-//   )} />
-// )
-
-// class Dashboard extends Component {
-//   render(){
-//     return(<div>Dashboard</div>)
-//   }
-// }
-
 class App extends Component {
+  constructor() {
+    super()
+  }
 
   state = {
     loggedIn:false,
-    username:""
+    username:"",
+    endpoint: "localhost:3001"
   }
-
-  // componentDidMount(){
-  //   isLoggedIn(()=>{
-  //     return true;
-  //   })
-  // }
 
   checkIfLoggedIn(){
     if(localStorage.user){
@@ -52,8 +29,29 @@ class App extends Component {
     }
   }
 
-  render(){
-    return(
+  // method for emitting a socket.io event
+  send = () => {
+    const socket = socketIOClient(this.state.endpoint);
+
+    socket.emit('testSend', 'Client send test');
+  }
+
+
+  // Render method for when state is updated
+  render() {
+
+    const socket = socketIOClient(this.state.endpoint);
+
+    socket.on('connection', (msg) => {
+      if (msg === 'a user connected') {
+        console.log("A user connected");
+      }
+      else if (msg === 'a user disconnected') {
+        console.log("A user disconnected");
+      }
+    });
+
+    return (
       <Router>
         <div>
           <Navbar />
@@ -66,7 +64,7 @@ class App extends Component {
           </Switch>
         </div>
       </Router>
-    )
+    );
   }
 }
 
