@@ -9,5 +9,8 @@ export default {
   },
   checkLoggedIn: function(token){
     return axios.get("/users/profile",{headers:{'Authorization':token}})
+  },
+  getProfileInfo: function(token){
+  	return axios.get("/users/profile",{headers:{'Authorization':token}})
   }
 };
