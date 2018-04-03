@@ -17,7 +17,7 @@ class App extends Component {
   state = {
     loggedIn:false,
     username:"",
-    endpoint: "localhost:3001"
+    endpoint: "https://fierce-oasis-31783.herokuapp.com/"
   }
 
   checkIfLoggedIn(){
@@ -35,7 +35,6 @@ class App extends Component {
 
     socket.emit('testSend', 'Client send test');
   }
-
 
   // Render method for when state is updated
   render() {
