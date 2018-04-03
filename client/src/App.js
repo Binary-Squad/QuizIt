@@ -43,10 +43,10 @@ class App extends Component {
     const socket = socketIOClient(this.state.endpoint);
 
     socket.on('connection', (msg) => {
-      if (msg == 'a user connected') {
+      if (msg === 'a user connected') {
         console.log("A user connected");
       }
-      else if (msg == 'a user disconnected') {
+      else if (msg === 'a user disconnected') {
         console.log("A user disconnected");
       }
     });
