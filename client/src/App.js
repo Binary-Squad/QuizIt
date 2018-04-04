@@ -17,7 +17,7 @@ class App extends Component {
   state = {
     loggedIn:false,
     username:"",
-    endpoint: "https://fierce-oasis-31783.herokuapp.com/"
+    endpoint: "localhost:3001"
   }
 
   checkIfLoggedIn(){
