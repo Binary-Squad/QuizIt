@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import socketIOClient from 'socket.io-client';
+import io from 'socket.io-client';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -31,16 +31,15 @@ class App extends Component {
 
   // method for emitting a socket.io event
   send = () => {
-    const socket = socketIOClient(this.state.endpoint);
+    const socket = io.connect(this.state.endpoint);
 
     socket.emit('testSend', 'Client send test');
   }
 
-
   // Render method for when state is updated
   render() {
 
-    const socket = socketIOClient(this.state.endpoint);
+    const socket = io.connect(this.state.endpoint);
 
     socket.on('connection', (msg) => {
       if (msg === 'a user connected') {
