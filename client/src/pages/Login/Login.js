@@ -13,15 +13,13 @@ class Login extends Component {
   };
 
   componentWillMount() {
-    // if(localStorage.user){
-    //   this.setState({loggedIn:true});
-    // }
+
   }
 
-  send = (event, data) => {
-    const socket = io.connect(this.state.endpoint);
-    socket.emit(event, data);
-  }
+  // send = (event, data) => {
+  //   const socket = io.connect(this.state.endpoint);
+  //   socket.emit(event, data);
+  // }
 
   socket = io();
 
@@ -41,8 +39,13 @@ class Login extends Component {
         console.log(res);
         localStorage.setItem('jwt',res.data.token);
         localStorage.setItem('user',JSON.stringify(res.data.user));
-        this.socket.emit('loggedIn',res.data.user);
-        this.setState({redirectToDashboard:true})
+        var socketParams = {
+          user:res.data.user,
+          room:'master'
+        }
+        this.socket.emit('loggedIn',socketParams);
+        // this.socket.emit('room',socketParams);
+        // this.setState({redirectToDashboard:true})
       }
       else if(res.data.errors){
         this.setState({errors:res.data.errors})
@@ -52,6 +55,11 @@ class Login extends Component {
 
 
   render() {
+
+    this.socket.on('message', (msg) => {
+      console.log(msg);
+    });
+
     if(this.state.redirectToDashboard){
       return(<Redirect to="/dashboard" />)
     }
