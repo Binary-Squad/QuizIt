@@ -41,11 +41,11 @@ class App extends Component {
     const socket = io.connect(this.state.endpoint);
 
     socket.on('connection', (msg) => {
-      if (msg === 'a user disconnected') {
-        socket.emit('testSend', 'Client saw another user disconnect');
-        this.send('testSend', 'Test client send by method');
+      if (msg === 'a user connected') {
+        console.log('a user connected');
       }
       else if (msg === 'a user disconnected') {
+        console.log('a user disconnected');
       }
     });
 
