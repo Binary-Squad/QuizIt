@@ -30,10 +30,9 @@ class App extends Component {
   }
 
   // method for emitting a socket.io event
-  send = () => {
+  send = (event, data) => {
     const socket = io.connect(this.state.endpoint);
-
-    socket.emit('testSend', 'Client send test');
+    socket.emit(event, data);
   }
 
   // Render method for when state is updated
@@ -42,11 +41,11 @@ class App extends Component {
     const socket = io.connect(this.state.endpoint);
 
     socket.on('connection', (msg) => {
-      if (msg === 'a user connected') {
-        console.log("A user connected");
+      if (msg === 'a user disconnected') {
+        socket.emit('testSend', 'Client saw another user disconnect');
+        this.send('testSend', 'Test client send by method');
       }
       else if (msg === 'a user disconnected') {
-        console.log("A user disconnected");
       }
     });
 

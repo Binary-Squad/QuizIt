@@ -12,6 +12,9 @@ const config = require('./config/database');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+// Import the game manager
+const gameManager = require('./src/gameManager');
+
 // Create server instance
 const server = http.createServer(app);
 
@@ -53,13 +56,24 @@ require('./config/passport')(passport);
 app.use('/users', users);
 
 // Server side socket.io event configuration
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
+
   console.log('a user connected');
+
   socket.broadcast.emit('connection', 'a user connected')
-  socket.on('disconnect', function(){
+
+  socket.on('disconnect', function() {
     console.log('user disconnected');
     socket.broadcast.emit('connection', 'a user disconnected')
   });
+
+  socket.on('testSend', function(msg) {
+    console.log(msg);
+  });
+
+  // TEST CODE for triggering a new game session
+  gameManager.createSession();
+
 });
 
 // Send every request to the React app
