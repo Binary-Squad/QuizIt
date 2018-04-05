@@ -9,19 +9,18 @@ class GameSession {
         // Variable that we will instantiate each new game into
         this.currentGame = undefined;
         // Variable for storing the session's ID
-        this.id = undefined;
+        this._id = undefined;
         // Variable for storign the session's type. 
         this.type = undefined;
     }
 
     // Method that sets up the session's state
-    create(sessionType) {
+    create() {
         // NEED code to create a new session document in Mongo and return the objectId
         
         // Set the session's id based on the id from MongoDB.
         // CURRENTLY PLACEHOLDER VALUES FOR TESTING
-        this.id = 1010201;
-        this.type = sessionType;
+        // this.id = 1010201;
         this.addUser('User Object To Go Here');
     }
 
@@ -29,6 +28,7 @@ class GameSession {
     addUser(user) {
         // REPLACE the key value with the user object's id.
         this.users.push(user);
+        console.log(this);
     }
 
     // Method for removing a user from the session by userId
@@ -37,15 +37,16 @@ class GameSession {
     }
 
     // Method for saving the session to MongoDB
-    save() {
+    save(cb) {
         const sessionDocument = new Session({
             users: this.users,
             currentGame: this.currentGame,
-            id: this.id,
             type: this.type
         });
-
-        sessionDocument.save().then(() => console.log('Session ' + this.id + ' saved to Mongo'));
+        sessionDocument.save().then((res) => {
+            this._id = res._id;
+            cb(res);
+        });
     }
 }
 

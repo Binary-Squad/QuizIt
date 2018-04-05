@@ -57,6 +57,8 @@ require('./config/passport')(passport);
 
 app.use('/users', users);
 
+gameManager.createSession('master');
+gameManager.createSession();
 // Server side socket.io event configuration
 io.on('connection', function(socket) {
 
@@ -72,6 +74,12 @@ io.on('connection', function(socket) {
   socket.on('testSend', function(msg) {
     console.log(msg);
   });
+
+  socket.on('loggedIn',function(data){
+    console.log(data);
+    gameManager.activeSessions['master'].addUser(data);
+  })
+
 });
 
 // Send every request to the React app
@@ -83,6 +91,3 @@ app.get("*", function(req, res) {
 server.listen(PORT, function() {
   console.log(`🌎 ==> Server now on port ${PORT}!`)
 });
-
-// TEST CODE for triggering a new game session
-gameManager.createSession('master');
