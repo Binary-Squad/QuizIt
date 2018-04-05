@@ -29,6 +29,11 @@ class App extends Component {
     }
   }
 
+  //temporary clear function for testing socket
+  componentWillMount(){
+    localStorage.clear();
+  }
+
   // method for emitting a socket.io event
   send = (event, data) => {
     const socket = io.connect(this.state.endpoint);
