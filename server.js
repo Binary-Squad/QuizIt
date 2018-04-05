@@ -72,16 +72,6 @@ io.on('connection', function(socket) {
   socket.on('testSend', function(msg) {
     console.log(msg);
   });
-
-  // TEST CODE for triggering a new game session
-
-  if (sessionCount == 0) {
-    gameManager.createSession();
-    sessionCount += 1;
-  }
-  else {
-    console.log('MVP Session is already in progress');
-  }
 });
 
 // Send every request to the React app
@@ -93,3 +83,6 @@ app.get("*", function(req, res) {
 server.listen(PORT, function() {
   console.log(`🌎 ==> Server now on port ${PORT}!`)
 });
+
+// TEST CODE for triggering a new game session
+gameManager.createSession('master');
