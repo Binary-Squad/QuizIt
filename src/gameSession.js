@@ -1,4 +1,6 @@
 const Game = require('./game');
+const mongoose = require('mongoose');
+const Session = require('../models/gameSession');
 
 class GameSession {
     constructor() {
@@ -29,6 +31,17 @@ class GameSession {
     // Method for removing a user from the session by userId
     remUser(userId) {
         // NEED TO WRITE THIS
+    }
+
+    // Method for saving the session to MongoDB
+    save() {
+        const sessionDocument = new Session({
+            users: this.users,
+            currentGame: this.currentGame,
+            id: this.id
+        });
+
+        sessionDocument.save().then(() => console.log('Session ' + this.id + ' saved to Mongo'));
     }
 }
 

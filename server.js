@@ -14,6 +14,8 @@ const app = express();
 
 // Import the game manager
 const gameManager = require('./src/gameManager');
+// For forcing 1 session or MVP
+var sessionCount = 0;
 
 // Create server instance
 const server = http.createServer(app);
@@ -72,8 +74,14 @@ io.on('connection', function(socket) {
   });
 
   // TEST CODE for triggering a new game session
-  gameManager.createSession();
 
+  if (sessionCount == 0) {
+    gameManager.createSession();
+    sessionCount += 1;
+  }
+  else {
+    console.log('MVP Session is already in progress');
+  }
 });
 
 // Send every request to the React app
