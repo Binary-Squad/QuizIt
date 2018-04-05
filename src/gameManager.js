@@ -1,4 +1,6 @@
 const GameSession = require('./gameSession');
+const mongoose = require('mongoose');
+const Session = require('../models/gameSession');
 
 const gameManager = {
     activeSessions: {},
@@ -9,28 +11,39 @@ const gameManager = {
         // Instantiate a new session class
         let newSession = new GameSession;
         // Call the new session's create method to setup the session
-        newSession.create(sessionType);
+        newSession.create();
         // Push the new session variable to gameManager's activeSessions key
-        this.addSession(newSession);
+        this.addSession(newSession,sessionType);
     },
 
     // Method for adding the session to the list of activeSessions
-    addSession(newSession) {
+    addSession(newSession,type) {
         // Add the session to the activeSessions list
         // Check if this is a master lobby or regular one
-        if (newSession.type === 'master') {
-            this.activeSessions[newSession.type] = newSession;
+        if (type === 'master') {
+            this.activeSessions['master'] = newSession;
+            newSession.save();
+            // this.logSessions('master');
+            this.logThis()
         }
         else {
-            this.activeSessions[newSession.id] = newSession;
+            // Mongoose function to create a private room
+            newSession.save((res)=>{
+                this.activeSessions[res._id] = newSession;
+                // this.logSessions(res._id);
+                this.logThis();
+            });
         }
-        
         // Save the session to MongoDB
-        newSession.save();
 
-        console.log("New session " + newSession.id + " created and added to activeSessions");
+    },
+    logSessions(sessionName){
+        console.log("New session " + sessionName + " created and added to activeSessions");
         console.log("Current sessions:");
         console.log(this.activeSessions);
+    },
+    logThis(){
+        console.log(this);
     }
 }
 
