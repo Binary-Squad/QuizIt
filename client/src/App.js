@@ -33,7 +33,7 @@ class App extends Component {
   send = () => {
     const socket = io.connect(this.state.endpoint);
 
-    socket.emit('testSend', 'Client send test');
+    socket.emit('testSend', 'Client test send from ' + this.state.username);
   }
 
   // Render method for when state is updated
@@ -44,6 +44,7 @@ class App extends Component {
     socket.on('connection', (msg) => {
       if (msg === 'a user connected') {
         console.log("A user connected");
+        socket.emit('testSend', 'Client send test');
       }
       else if (msg === 'a user disconnected') {
         console.log("A user disconnected");

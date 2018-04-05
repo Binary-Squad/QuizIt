@@ -53,12 +53,15 @@ require('./config/passport')(passport);
 app.use('/users', users);
 
 // Server side socket.io event configuration
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
   console.log('a user connected');
   socket.broadcast.emit('connection', 'a user connected')
-  socket.on('disconnect', function(){
+  socket.on('disconnect', function() {
     console.log('user disconnected');
     socket.broadcast.emit('connection', 'a user disconnected')
+  });
+  socket.on('testSend', function(msg) {
+    console.log(msg);
   });
 });
 
