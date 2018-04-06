@@ -52,7 +52,7 @@ class Login extends Component {
         <p className="max-center">Login</p>
         <form>
           <div>
-            <input 
+            <input
               name="username"
               onChange={this.handleInputChange}
               value={this.state.username}
@@ -60,7 +60,7 @@ class Login extends Component {
             />
           </div>
           <div>
-            <input 
+            <input
               name="password"
               onChange={this.handleInputChange}
               value={this.state.password}

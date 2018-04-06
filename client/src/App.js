@@ -7,7 +7,7 @@ import Logout from "./pages/Logout";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 // import isLoggedIn from "./utils/isLoggedIn.js";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/";
 
 class App extends Component {
   constructor() {

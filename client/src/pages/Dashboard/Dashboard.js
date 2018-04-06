@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import API from "../../utils/API.js";
+import Leaderboard from "../../components/Leaderboard"
 
 class Dashboard extends Component {
 	state = {
@@ -29,6 +30,7 @@ class Dashboard extends Component {
 				<p>Name: {this.state.name}</p>
 				<p>Username: {this.state.username}</p>
 				<p>Email: {this.state.email}</p>
+				<Leaderboard />
 			</div>
 		)
 	}
