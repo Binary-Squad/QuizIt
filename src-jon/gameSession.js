@@ -52,7 +52,7 @@ function GameSession(io) {
     // Creating a new game
     this.createNewGame = ()=>{
         triviaAPI(res=>{
-            let newGame = new NewGame(res.data.results,io);
+            let newGame = new NewGame(res.data.results);
             newGame.create();
             this.currentGame=newGame;
             console.log('--------------------------------------------------');

@@ -1,6 +1,7 @@
 const express = require("express");
 const http = require('http');
 const socketIO = require('socket.io');
+const triviaCall = require('./triviaCall/triviaCall');
 
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -11,6 +12,10 @@ const config = require('./config/database');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
+
+// Trivia Call
+triviaCall((response) => {console.log(response.data.results);});
 
 // Import the game manager
 const gameManager = require('./src/gameManager');
