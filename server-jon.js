@@ -1,7 +1,6 @@
 const express = require("express");
 const http = require('http');
 const socketIO = require('socket.io');
-const triviaCall = require('./triviaCall/triviaCall');
 
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -13,12 +12,8 @@ const config = require('./config/database');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-
-// Trivia Call
-triviaCall((response) => {console.log(response.data.results);});
-
 // Import the game manager
-const gameManager = require('./src/gameManager');
+const GameManager = require('./src-jon/gameManager');
 // For forcing 1 session or MVP
 var sessionCount = 0;
 
@@ -62,8 +57,9 @@ require('./config/passport')(passport);
 
 app.use('/users', users);
 
+gameManager = new GameManager(io);
 gameManager.createSession('master');
-gameManager.createSession();
+// gameManager.createSession();
 // Server side socket.io event configuration
 io.on('connection', function(socket) {
 
@@ -80,10 +76,16 @@ io.on('connection', function(socket) {
     console.log(msg);
   });
 
-  socket.on('loggedIn',function(data){
-    console.log(data);
-    gameManager.activeSessions['master'].addUser(data);
+  socket.on('loggedIn',function(params){
+    gameManager.activeSessions['master'].addUser(params.user);
+    socket.join(params.room);
+    console.log(params.user.username+' has joined room '+params.room);
   })
+
+  socket.on('room', function(params){
+    socket.join(params.room);
+    console.log(params.user.username+' has joined room '+params.room);
+  });
 
 });
 

@@ -29,11 +29,15 @@ class App extends Component {
     }
   }
 
-  // method for emitting a socket.io event
-  send = () => {
-    const socket = io.connect(this.state.endpoint);
+  //temporary clear function for testing socket
+  componentWillMount(){
+    localStorage.clear();
+  }
 
-    socket.emit('testSend', 'Client send test');
+  // method for emitting a socket.io event
+  send = (event, data) => {
+    const socket = io.connect(this.state.endpoint);
+    socket.emit(event, data);
   }
 
   // Render method for when state is updated
@@ -43,10 +47,10 @@ class App extends Component {
 
     socket.on('connection', (msg) => {
       if (msg === 'a user connected') {
-        console.log("A user connected");
+        console.log('a user connected');
       }
       else if (msg === 'a user disconnected') {
-        console.log("A user disconnected");
+        console.log('a user disconnected');
       }
     });
 
