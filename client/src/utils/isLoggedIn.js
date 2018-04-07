@@ -1,7 +1,6 @@
 import API from "./API";
 
 const isLoggedIn = (callback) => {
-	return callback(true)
 	console.log("AuthCheck");
 	if(localStorage.getItem('jwt')){
 		API.checkLoggedIn(localStorage.getItem('jwt'))
