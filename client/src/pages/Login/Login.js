@@ -19,6 +19,26 @@ class Login extends Component {
     this.socket.on('roomState', (msg) => {
       console.log(msg);
       //setState based on incoming message
+      if(this.state.gameState != msg.state){
+        this.setState({gameState:msg.state}, ()=>{
+          console.log("this.state.gameState changed to "+msg.state);
+        })
+      }
+      // if(msg.state === "questionStart" && this.state.gameState != msg.state){
+      //   this.setState({gameState:msg.state}, ()=>{
+      //     console.log("this.state.gameState changed to "+msg.state);
+      //   })
+      // }
+      // if(msg.state === "questionEnd" && this.state.gameState != msg.state){
+      //   this.setState({gameState:msg.state}, ()=>{
+      //     console.log("this.state.gameState changed to "+msg.state);
+      //   })
+      // }
+      // if(msg.state === "roundEnd" && this.state.gameState != msg.state){
+      //   this.setState({gameState:msg.state}, ()=>{
+      //     console.log("this.state.gameState changed to "+msg.state);
+      //   })
+      // }
     });
   }
 

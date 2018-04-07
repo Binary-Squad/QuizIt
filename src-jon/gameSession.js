@@ -71,18 +71,30 @@ function GameSession(io) {
 
     // Game logic for starting the game. Here we will need to go through the questions and send them to the user accordingly via the 'master' room for MVP
     this.initiateGame = (room)=>{
-        // var tempRoom = room;
+        // //Planned release Timer
+        //var tempTime = 10000
+
+        // Testing Timers
+        var tempTime = 5000
+
         setTimeout(()=>{
             this.startGame(room);
-        }, 5000)
+        }, tempTime)
     }
 
     this.startGame = (room)=>{
-        // var tempRoom = room;
+        // //Planned release Timers
+        // var roundTime = 15000;
+        // var startAfter = 10000;
+        // var gameEndTime = 10000;
+        // var intermissionTime = 5000;
+
+        // Testing Timers
         var roundTime = 3000;
         var startAfter = 2000;
         var gameEndTime = 3000;
         var intermissionTime = 1000;
+        
         var currentQuestion = 0;
         var timer = this.currentGame.timer = (this.currentGame.questions.length*roundTime+startAfter+gameEndTime)/1000;
         var startingTime = this.currentGame.startingTime = this.currentGame.questions.length*roundTime+startAfter+gameEndTime;
