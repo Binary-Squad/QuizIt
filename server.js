@@ -18,7 +18,7 @@ const app = express();
 triviaCall((response) => {console.log(response.data.results);});
 
 // Import the game manager
-const gameManager = require('./src/gameManager');
+const GameManager = require('./src/gameManager');
 // For forcing 1 session or MVP
 var sessionCount = 0;
 
@@ -62,8 +62,9 @@ require('./config/passport')(passport);
 
 app.use('/users', users);
 
+gameManager = new GameManager(io);
 gameManager.createSession('master');
-gameManager.createSession();
+// gameManager.createSession();
 // Server side socket.io event configuration
 io.on('connection', function(socket) {
 
@@ -80,11 +81,20 @@ io.on('connection', function(socket) {
     console.log(msg);
   });
 
-  socket.on('loggedIn',function(data){
-    console.log(data);
-    gameManager.activeSessions['master'].addUser(data);
-  })
+  socket.on('loggedIn',function(params){
+    socket.join(params.room);
+    gameManager.users.push(params.user);
+    console.log(gameManager.users);
+    console.log("User just logged in!!!");
+    console.log(params.user.username+' has joined room '+params.room);
+    console.log(params.user);
+  });
 
+  socket.on('room', function(params){
+    socket.join(params.room);    
+    gameManager.activeSessions['master'].addUser(params.user);
+    console.log(params.user.username+' has joined room '+params.room);
+  });
 });
 
 // Send every request to the React app
