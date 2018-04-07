@@ -20,6 +20,10 @@ class Login extends Component {
     this.socket.on('message', (msg) => {
       console.log(msg);
     });
+    this.socket.on('roomState', (msg) => {
+      console.log(msg);
+      //setState based on incoming message
+    });
   }
 
   // send = (event, data) => {
@@ -62,9 +66,9 @@ class Login extends Component {
 
   render() {
 
-    if(this.state.redirectToDashboard){
-      return(<Redirect to="/dashboard" />)
-    }
+    // if(this.state.redirectToDashboard){
+    //   return(<Redirect to="/dashboard" />)
+    // }
     return (
       <div>
         <div className="container">
