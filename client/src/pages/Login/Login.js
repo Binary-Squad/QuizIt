@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import API from "../../utils/API";
 import {Redirect} from "react-router-dom";
 import io from 'socket.io-client';
+import Leaderboard from '../../components/Leaderboard'
+import Question from '../../components/Question'
+import {Modal} from 'react-bootstrap'
+
 
 class Login extends Component {
   state = {
@@ -89,6 +93,8 @@ class Login extends Component {
           <button onClick={this.handleFormSubmit}>Login</button>
         </form>
         </div>
+      <Leaderboard />
+      <Question />
       </div>
     );
   }
