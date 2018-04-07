@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 // Import the game manager
-const GameManager = require('./src-jon/gameManager');
+const GameManager = require('./src/gameManager');
 // For forcing 1 session or MVP
 var sessionCount = 0;
 
@@ -77,16 +77,19 @@ io.on('connection', function(socket) {
   });
 
   socket.on('loggedIn',function(params){
-    gameManager.activeSessions['master'].addUser(params.user);
     socket.join(params.room);
+    gameManager.users.push(params.user);
+    console.log(gameManager.users);
+    console.log("User just logged in!!!");
     console.log(params.user.username+' has joined room '+params.room);
-  })
-
-  socket.on('room', function(params){
-    socket.join(params.room);
-    console.log(params.user.username+' has joined room '+params.room);
+    console.log(params.user);
   });
 
+  socket.on('room', function(params){
+    socket.join(params.room);    
+    gameManager.activeSessions['master'].addUser(params.user);
+    console.log(params.user.username+' has joined room '+params.room);
+  });
 });
 
 // Send every request to the React app

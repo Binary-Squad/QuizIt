@@ -1,7 +1,6 @@
 const Game = require('./game');
 const mongoose = require('mongoose');
 const Session = require('../models/gameSession');
-const NewGame = require('./newGame');
 const axios = require('axios');
 const triviaAPI = require('../utils/triviaAPI');
 
@@ -52,7 +51,7 @@ function GameSession(io) {
     // Creating a new game
     this.createNewGame = ()=>{
         triviaAPI(res=>{
-            let newGame = new NewGame(res.data.results,io);
+            let newGame = new Game(res.data.results,io);
             newGame.create();
             this.currentGame=newGame;
             console.log('--------------------------------------------------');

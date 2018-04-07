@@ -4,6 +4,7 @@ const Session = require('../models/gameSession');
 
 function gameManager(io){
     this.activeSessions = {};
+    this.users = [];
 
     // Method for creating a new session using the gameSession class
     this.createSession = (sessionType)=>{
