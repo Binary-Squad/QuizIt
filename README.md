@@ -10,6 +10,11 @@ To run a react development environment for this branch run the following in the 
 yarn installDeps
 ```
 
+Make sure you have mongod installed and functioning. Open a 2nd terminal window and run the following to start your mongodb server:
+```
+mongod
+```
+
 To start up your server and react-client, run the following command in the root Quizit directory:
 ```
 yarn start-reactDev
@@ -17,14 +22,12 @@ yarn start-reactDev
 
 Once the page loads, follow these steps:
 
-1. Start mongod in a separate terminal
-2. Register if you don't have a username/password registered
-3. Login with your username and password
-4. Open the console and see the magic!
+1. Register if you don't have a username/password registered
+2. Login with your username and password
+3. Open the console and see the magic!
     * FYI the game starts 10 seconds after the server is up and running.
 
 ![console-preview](./readme/quizit-readme-1.png "console-preview")
-
 
 Currently, Home.js is properly setting its own state based on the data being sent from the server every second. The next tasks involve rendering these elements in a universal container for all four main components.
 
