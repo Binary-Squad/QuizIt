@@ -21,8 +21,8 @@ Once the page loads, follow these steps:
 2. Register if you don't have a username/password registered
 3. Login with your username and password
 4. Open the console and see the magic!
-  * FYI the game starts 10 seconds after the server is up and running.
-  
+    * FYI the game starts 10 seconds after the server is up and running.
+
 ![console-preview](./readme/quizit-readme-1.png "console-preview")
 
 
