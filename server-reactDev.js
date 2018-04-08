@@ -18,7 +18,7 @@ const app = express();
 triviaCall((response) => {console.log(response.data.results);});
 
 // Import the game manager
-const GameManager = require('./src-jon/gameManager');
+const GameManager = require('./src-reactDev/gameManager');
 // For forcing 1 session or MVP
 var sessionCount = 0;
 
