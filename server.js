@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 
-// Trivia Call
+// Trivia call to get questions from Open DB
 triviaCall((response) => {console.log(response.data.results);});
 
 // Import the game manager
