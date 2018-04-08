@@ -24,23 +24,24 @@ function GameSession(io) {
     };
 
     // Method that adds a user to the session
-    this.addUser = (user)=>{
+    this.addUser = (user, )=>{
         // REPLACE the key value with the user object's id.
         this.users.push(user);
         // console.log(this);
     };
 
     // Method for removing a user from the session by userId
-    this.remUser = (userId)=>{
+    this.remUser = (userId) => {
         // NEED TO WRITE THIS
     };
 
     // Method for saving the session to MongoDB
-    this.save = (cb)=>{
+    this.save = (cb) => {
         const sessionDocument = new Session({
             users: this.users,
             currentGame: this.currentGame,
-            type: this.type
+            type: this.type,
+            _id: this._id
         });
         sessionDocument.save().then((res) => {
             this._id = res._id;
@@ -49,24 +50,14 @@ function GameSession(io) {
     };
 
     // Creating a new game
-    this.createNewGame = ()=>{
-        triviaAPI(res=>{
-            let newGame = new Game(res.data.results,io);
-            newGame.create();
+    this.createNewGame = () => {
+        triviaAPI(res => {
+            let newGame = new Game(res.data.results, this.users, io);
             this.currentGame=newGame;
+            newGame.initializeGame();
             console.log('--------------------------------------------------');
-            console.log(this.currentGame.timer);
-            this.startGame('master');
-        })
+        });
     };
-
-    // Game logic for starting the game. Here we will need to go through the questions and send them to the user accordingly via the 'master' room for MVP
-    this.startGame = (room)=>{setInterval(()=>{
-        this.currentGame.timer--;
-        console.log('hello from '+room+' timer is '+this.currentGame.timer+'!');
-        io.sockets.to(room).emit('message','hello from master! timer is '+this.currentGame.timer+'!');  
-    }, 1000);
-    }
 }
 
 module.exports = GameSession;
