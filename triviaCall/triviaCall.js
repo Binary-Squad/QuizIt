@@ -1,6 +1,5 @@
 const axios = require('axios');
 const defaultTrivCall = "https://opentdb.com/api.php?amount=2&category=9&type=multiple";
-const reply = [];
 
 function triviaCall(cb){
 axios.get(defaultTrivCall)
@@ -12,15 +11,6 @@ axios.get(defaultTrivCall)
     console.log(error);
   });
 
-}
 
-function grabQuestion(response){
-	console.log(reply);
-	console.log("made it");
-}
 
-triviaCall();
-grabQuestion(response);
-
-// module.exports = grabQuestion;
-// module.exports = triviaCall;
+module.exports = triviaCall;
