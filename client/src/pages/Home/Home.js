@@ -32,7 +32,7 @@ class Home extends Component {
     socket.on('roomState', (msg) => {
 
       console.log(msg);
-      //Sets gameState based on response. Sets timer. Sets questions and correctAnswer.
+      //Sets gameState based on response. Sets timer. Sets questions and correctAnswer when applicable.
       this.setState({timer:msg.timer});
       if(this.state.gameState !== msg.state){
         this.setState({gameState:msg.state,question:msg.question,correctAnswer:msg.question.correct_answer}, ()=>{
