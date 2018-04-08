@@ -13,15 +13,16 @@ import "./Navbar.css";
 // )
 
 // <li className="text-white" ><a href="/dashboard">Dashboard</a></li>
-// <li className="text-white" ><a href="/register">Register</a></li>
+
 // <li className="text-white" ><a href="/login">Login</a></li>
-// <li className="text-white" ><a href="/logout">Logout</a></li>
+
 
 const Navbar = props => (
 	<nav>
 		<ul id="customnavbar">
-			<li className="text-white" ><a href="/">Home</a></li>
-			
+			<li className="text-white" ><a href="/">Game/Login</a></li>
+			<li className="text-white" ><a href="/register">Register</a></li>			
+			<li className="text-white" ><a href="/logout">Logout</a></li>
 		</ul>
 	</nav>
 )

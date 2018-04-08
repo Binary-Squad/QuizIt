@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/Home/";
 import Navbar from "./components/Navbar";
+import Register from "./pages/Register/";
+import Logout from "./pages/Logout/";
 
 class App extends Component {
   state = {
@@ -32,6 +34,8 @@ class App extends Component {
           <Navbar />
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/logout" component={Logout} />
           </Switch>
         </div>
       </Router>

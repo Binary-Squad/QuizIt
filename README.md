@@ -45,4 +45,4 @@ These four components are:
 4. RoundEnd
 	* Display the number of questions you got right along with a leaderboard
 
-Right now, the server will only send 1 full round of questions before being stuck forever sending a negative timer and roundEnd. To counteract this, open server-jon and just press ctrl+s to force nodemon to refresh.
+Right now, the server will only send 1 full round of questions before being stuck forever sending a negative timer and roundEnd. To counteract this, open server-reactDev and just press ctrl+s to force nodemon to refresh.
