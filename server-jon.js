@@ -64,10 +64,9 @@ app.use('/users', users);
 
 gameManager = new GameManager(io);
 gameManager.createSession('master');
-// gameManager.createSession();
+
 // Server side socket.io event configuration
 io.on('connection', function(socket) {
-
   console.log('a user connected');
 
   socket.broadcast.emit('connection', 'a user connected')
@@ -87,13 +86,12 @@ io.on('connection', function(socket) {
     console.log(gameManager.users);
     console.log("User just logged in!!!");
     console.log(params.user.username+' has joined room '+params.room);
-    // console.log(params.user);
   });
 
   // socket.on('room', function(params){
   //   socket.join(params.room);    
-  //   gameManager.activeSessions['master'].addUser(params.user);
-  //   console.log(params.user.username+' has joined room '+params.room);
+  //   // gameManager.activeSessions['master'].addUser(params.user);
+  //   console.log(params.user+' has joined room '+params.room);
   // });
 });
 

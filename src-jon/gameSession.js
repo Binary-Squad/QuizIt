@@ -129,16 +129,6 @@ function GameSession(io) {
             console.log(socketObj);
             io.sockets.to(room).emit('roomState',socketObj);
         }, 1000);
-        // setInterval(()=>{
-        //     this.currentGame.timer--;
-        //     var socketObj = {
-        //         question:{},
-        //         timer:this.currentGame.timer,
-        //         state:"pregame"
-        //     };
-        //     console.log(socketObj);
-        //     io.sockets.to(room).emit(socketObj);
-        // }, 1000);
     }
 }
 
