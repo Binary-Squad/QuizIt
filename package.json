@@ -29,16 +29,12 @@
   },
   "dependencies": {
     "body-parser": "^1.18.2",
-<<<<<<< HEAD
     "cors": "2.8.4",
-=======
->>>>>>> 851619b7d847f9d8be65db245a8877f57434a819
     "express": "^4.16.3",
     "mongoose": "^5.0.12",
     "socket.io": "^2.1.0",
     "axios": "^0.16.2",
     "bcryptjs": "2.4.3",
-    "cors": "2.8.4",
     "jsonwebtoken": "8.1.0",
     "passport": "0.4.0",
     "passport-jwt": "3.0.1"
