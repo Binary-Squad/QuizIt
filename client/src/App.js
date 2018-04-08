@@ -35,25 +35,13 @@ class App extends Component {
   }
 
   // method for emitting a socket.io event
-  send = (event, data) => {
-    const socket = io.connect(this.state.endpoint);
-    socket.emit(event, data);
-  }
+  // send = (event, data) => {
+  //   const socket = io.connect(this.state.endpoint);
+  //   socket.emit(event, data);
+  // }
 
   // Render method for when state is updated
   render() {
-
-    const socket = io.connect(this.state.endpoint);
-
-    socket.on('connection', (msg) => {
-      if (msg === 'a user connected') {
-        console.log('a user connected');
-      }
-      else if (msg === 'a user disconnected') {
-        console.log('a user disconnected');
-      }
-    });
-
     return (
       <Router>
         <div>
