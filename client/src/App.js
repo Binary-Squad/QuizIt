@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
-import io from 'socket.io-client';
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Logout from "./pages/Logout";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-// import isLoggedIn from "./utils/isLoggedIn.js";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Home from "./pages/Home/";
 import Navbar from "./components/Navbar";
+import Register from "./pages/Register/";
+import Logout from "./pages/Logout/";
 
 class App extends Component {
-  constructor() {
-    super()
-  }
-
   state = {
     loggedIn:false,
     username:"",
@@ -34,12 +26,6 @@ class App extends Component {
     localStorage.clear();
   }
 
-  // method for emitting a socket.io event
-  // send = (event, data) => {
-  //   const socket = io.connect(this.state.endpoint);
-  //   socket.emit(event, data);
-  // }
-
   // Render method for when state is updated
   render() {
     return (
@@ -47,11 +33,9 @@ class App extends Component {
         <div>
           <Navbar />
           <Switch>
-            <Route exact path="/login" render={()=>(this.checkIfLoggedIn()?<Redirect to="/dashboard" />:<Login />)}/>
-            <Route exact path="/logout" render={()=>(<Logout />)}/>
-            <Route exact path="/register" render={()=>(this.checkIfLoggedIn()?<Redirect to="/dashboard" />:<Register />)}/>
-            <Route exact path="/dashboard" render={()=>(this.checkIfLoggedIn()?<Dashboard />:<Redirect to="/login" />)}/>
-            <Route path="/" render={()=>(<Home />)}/>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/logout" component={Logout} />
           </Switch>
         </div>
       </Router>
