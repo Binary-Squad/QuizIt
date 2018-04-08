@@ -1,5 +1,8 @@
 const Questions = require('../config/test-data');
 const axios = require('axios');
+const omit = require('../utils/myOmit.js');
+const shuffle = require('../utils/shuffle.js');
+const triviaAPI = require('../utils/triviaAPI');
 
 function Game (questions, users, io){
     // Game Data Variables Go Here
@@ -18,20 +21,31 @@ function Game (questions, users, io){
         // The current question
         currentQuestion: undefined,
         // Current question's number
+        questionToBeSent: undefined,
+
         questionNum: 0,
         // Current Answer 
-        currentAnswer: undefined,
-        // Game state variable for tracking Pre-Game, QuestionActive, Intermission, or GameEnd
+        correctAnswer: undefined,
+        // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
         gameState: undefined,
         // Client Answers for rendering on front-end
-        clientAnswers: {}
+        clientAnswers: {},
+
+        socketObj: {
+            users:[],
+            question:{},
+            correctAnswer:"",
+            gameState:"pregame",
+            timer:10,
+            totalQuestions:0,
+            questionNum:0
+        },
     };
 
     this.initializeGame = () => {
-        // Start pre-game countdown to first question
-        this.gameData.gameState = 'pre-game';
+        // Start pregame countdown to first question
+        this.gameData.gameState = 'pregame';
         this.gameData.currentQuestion = this.gameData.questions[this.gameData.questionNum];
-        this.gameData.currentAnswer = this.gameData.currentQuestion.correct_answer;
         this.gameData.clientAnswers = this.randomizeAnswers();
         this.tickInterval();
     };
@@ -39,7 +53,7 @@ function Game (questions, users, io){
     // Method that transitions to the next game state phase (Question to Intermission, etc.)
     this.gameLoopStep = () => {
         switch(this.gameData.gameState) {
-            case 'pre-game':
+            case 'pregame':
                 this.resetTimer(10);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
@@ -48,11 +62,12 @@ function Game (questions, users, io){
             case 'questionActive':
                 this.resetTimer(5);
                 this.gameData.gameState = 'intermission';
+                this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
                 this.tickInterval();
                 break;
             case 'intermission':
-                if (this.gameData.totalQuestions == this.gameData.questionNum) {
-                    this.resetTimer(5);
+                if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
+                    this.resetTimer(10);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
                     this.tickInterval();
@@ -60,14 +75,21 @@ function Game (questions, users, io){
                 } else {
                     this.resetTimer(10);
                     this.gameData.gameState = 'questionActive';
+                    this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
                     this.tickInterval();
                     break;
                 }
             case 'gameEnd':
                 this.resetTimer(10);
-                this.gameData.gameState = 'pre-game';
-                this.tickInterval();
+                this.gameData.gameState = 'pregame';
+                //Fixed broken end game loop
+                this.gameData.questionNum = 0;
+                triviaAPI(res=>{
+                    this.gameData.questions = res.data.results;
+                    this.gameReset();
+                    this.tickInterval();    
+                })
                 break; 
         }
     }
@@ -76,13 +98,10 @@ function Game (questions, users, io){
         // Function for setting the next current Question goes here.
         this.gameData.questionNum++;
         this.gameData.currentQuestion = questions[this.gameData.questionNum];
-        this.gameData.currentAnswer = this.gameData.currentQuestion.correct_answer;
-        this.gameData.clientAnswers = this.randomizeAnswers();
-        io.sockets.to('room').emit('msg', this.gameData);
-        console.log("New question sent!");
-        console.log(this.gameData.currentQuestion);
-        console.log(this.gameData.currentAnswer);
-        console.log(this.gameData.clientAnswers);
+        this.gameData.questionToBeSent = omit(this.gameData.currentQuestion, "correct_answer");
+        this.gameData.questionToBeSent = omit(this.gameData.questionToBeSent, "incorrect_answers");
+        this.gameData.questionToBeSent.answers = this.randomizeAnswers();
+        // console.log(this.gameData.questionToBeSent);
     }
 
     // Method for slightly modifying server's gameState for client view (Remove excess questions, etc.)
@@ -91,7 +110,7 @@ function Game (questions, users, io){
     //     console.log(clientState);
     //     delete clientState.questions;
 
-    //     if (this.gameData.gameState == 'questionActive' || this.gameData.gameState == 'pre-game') {
+    //     if (this.gameData.gameState == 'questionActive' || this.gameData.gameState == 'pregame') {
     //         delete clientState.currentAnswer;
     //         clientState.currentQuestion = this.createClientQuestion();
     //     }
@@ -108,7 +127,7 @@ function Game (questions, users, io){
         // Concatenate the array of incorrect answers
         answers = answers.concat(this.gameData.currentQuestion.incorrect_answers);
         // Shuffle the array
-        this.shuffle(answers);
+        shuffle(answers);
         // Create object file to return
         let answersObj = {};
         // Map randomized array values to numeric key pairings
@@ -119,22 +138,6 @@ function Game (questions, users, io){
         return answersObj;
     }
 
-    // Use Fisher-Yates Shuffle to randomize an array (to use with question answers)
-    this.shuffle = (array) => {
-        let currentIndex = array.length, temporaryValue, randomIndex;
-
-        while (0 !== currentIndex) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            temporaryValue = array[currentIndex];
-            array[currentIndex] = array[randomIndex];
-            array[randomIndex] = temporaryValue;
-        }
-
-        return array;
-    }
-
     this.tick = undefined;
 
     this.tickInterval = () => {
@@ -142,18 +145,55 @@ function Game (questions, users, io){
         this.tick = setInterval(this.handleTick, 1000); 
     }
 
-    this.handleTick = () => {
+    this.handleTick = () => {        
+        this.gameData.socketObj = {
+            users:this.gameData.users,
+            question:this.gameData.questionToBeSent,
+            correctAnswer:this.gameData.correctAnswer,
+            gameState:this.gameData.gameState,
+            timer:this.gameData.timer,
+            totalQuestions:this.gameData.totalQuestions,
+            questionNum:this.gameData.questionNum+1
+        }
+        this.gameData.timer--;
+        console.log(this.gameData.socketObj);
+        io.sockets.to('master').emit('gameState', this.gameData.socketObj);
+        // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
         if (this.gameData.timer < 0) {
             this.gameLoopStep();
-        } else {
-            console.log("Game tick interval. Game State: " + this.gameData.gameState + " with timer " + this.gameData.timer);
-            this.gameData.timer--;
-            io.sockets.to('room').emit('roomState', this.gameData);
         }
     }
 
     this.resetTimer = (time) => {
         this.gameData.timer = time;
+    }
+
+    this.gameReset = ()=>{
+        this.gameData = {
+            timer: 10,
+            // Questions for the current game. Called for the current API.
+            totalQuestions: questions.length,
+            // The current question
+            currentQuestion: undefined,
+            // Current question's number
+            questionToBeSent: undefined,
+
+            questionNum: 0,
+            // Current Answer 
+            correctAnswer: undefined,
+            // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
+            gameState: "pregame",
+
+            socketObj: {
+                users:[],
+                question:{},
+                correctAnswer:"",
+                gameState:"pregame",
+                timer:10,
+                totalQuestions:0,
+                questionNum:0
+        },
+    };
     }
 
 }

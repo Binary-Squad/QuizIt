@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import socket from '../io';
 
-class QuestionStart extends Component {
+class Intermission extends Component {
 
   state = {
     // endpoint: "localhost:3001",
@@ -10,10 +10,10 @@ class QuestionStart extends Component {
   render() {
     return (
       <div>
-      	QuestionStart
+      	Intermission
       </div>
     );
   }
 }
 
-export default QuestionStart;
+export default Intermission;

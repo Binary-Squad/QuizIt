@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import socket from '../io';
 
-class RoundEnd extends Component {
+class GameEnd extends Component {
 
   state = {
     // endpoint: "localhost:3001",
@@ -10,10 +10,10 @@ class RoundEnd extends Component {
   render() {
     return (
       <div>
-      	RoundEnd
+      	GameEnd
       </div>
     );
   }
 }
 
-export default RoundEnd;
+export default GameEnd;

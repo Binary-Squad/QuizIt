@@ -24,7 +24,7 @@ function GameSession(io) {
     };
 
     // Method that adds a user to the session
-    this.addUser = (user, )=>{
+    this.addUser = (user)=>{
         // REPLACE the key value with the user object's id.
         this.users.push(user);
         // console.log(this);

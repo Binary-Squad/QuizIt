@@ -4,9 +4,9 @@ import React, { Component } from "react";
 import socket from '../../components/io';
 import Login from '../../components/Login';
 import Pregame from '../../components/Pregame';
-import QuestionStart from '../../components/QuestionStart';
-import QuestionEnd from '../../components/QuestionEnd';
-import RoundEnd from '../../components/RoundEnd';
+import QuestionActive from '../../components/QuestionActive';
+import Intermission from '../../components/Intermission';
+import GameEnd from '../../components/GameEnd';
 
 class Home extends Component {
   state = {
@@ -19,29 +19,46 @@ class Home extends Component {
     question: {},
     answer: "",
     correctAnswer: "",
-    timer:0
+    timer:0,
+    users:[]
   };
 
   componentWillMount() {
   }
 
   componentDidMount(){
-    socket.on('message', (msg) => {
-      console.log(msg);
-    });
-    socket.on('roomState', (msg) => {
+    // socket.on('message', (msg) => {
+    //   console.log(msg);
+    // });
+
+    // //Used for yarn start-reactDev
+    // socket.on('roomState-test', (msg) => {
+    //   console.log(msg);
+    //   //Sets gameState based on response. Sets timer. Sets questions and correctAnswer when applicable.
+    //   this.setState({timer:msg.timer});
+    //   if(this.state.gameState !== msg.state){
+    //     this.setState({gameState:msg.state,question:msg.question,correctAnswer:msg.question.correct_answer}, ()=>{
+    //       console.log(this.state.question);
+    //       console.log("this.state.gameState changed to "+this.state.gameState);
+    //       console.log("this.state.correctAnswer changed to "+this.state.correctAnswer);
+    //     })
+    //   }
+    // });
+
+    //Used for yarn start
+    socket.on('gameState', (msg) => {
 
       console.log(msg);
       //Sets gameState based on response. Sets timer. Sets questions and correctAnswer when applicable.
       this.setState({timer:msg.timer});
-      if(this.state.gameState !== msg.state){
-        this.setState({gameState:msg.state,question:msg.question,correctAnswer:msg.question.correct_answer}, ()=>{
+      if(this.state.gameState !== msg.gameState){
+        this.setState({gameState:msg.gameState,question:msg.question,correctAnswer:msg.correctAnswer}, ()=>{
           console.log(this.state.question);
           console.log("this.state.gameState changed to "+this.state.gameState);
           console.log("this.state.correctAnswer changed to "+this.state.correctAnswer);
         })
       }
-    });
+    });    
   }
 
   setHomeState(msg){
@@ -60,9 +77,9 @@ class Home extends Component {
       <div className = "container">
         {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue.bind(this)} setHomeState={this.setHomeState.bind(this)} />:
           this.state.gameState==='pregame'?<Pregame />:
-          this.state.gameState==='questionStart'?<QuestionStart />:
-          this.state.gameState==='questionEnd'?<QuestionEnd />:
-          this.state.gameState==='roundEnd'?<RoundEnd />:""
+          this.state.gameState==='questionActive'?<QuestionActive />:
+          this.state.gameState==='intermission'?<Intermission />:
+          this.state.gameState==='gameEnd'?<GameEnd />:""
           }
       </div>
     );
