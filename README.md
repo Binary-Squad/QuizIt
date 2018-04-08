@@ -10,7 +10,7 @@ To run a react development environment for this branch run the following in the 
 yarn installDeps
 ```
 
-To start up your server and react-client, run the following comman in the root Quizit directory:
+To start up your server and react-client, run the following command in the root Quizit directory:
 ```
 yarn start-reactDev
 ```
@@ -49,7 +49,7 @@ componentDidMount(){
 }
 ```
 
-These four components of gameState are:
+The four components of gameState are:
 
 1. Pregame
 	* Display something, idk. Something about the game. The logo. Kittens.
@@ -60,6 +60,6 @@ These four components of gameState are:
 4. RoundEnd
 	* Display the number of questions you got right along with a leaderboard
 
-Ideally, we want all four of the gameState components to be in a stylized container that does not change between the rounds. Only the components inside this container will change. We also want to use react-bootstrap. After we get the questions rendering, we need to convert register and login into modals.
+Ideally, we want all four of the gameState components to be in the same stylized container, let's call it quizitPlayground, which will always be on the screen regardless of which gameState it is. quizitPlayground does not change between the rounds. Only the components inside quizitPlayground will change. We also want to use react-bootstrap. After we get these four gameState components rendering with their intended functionality, we need to convert register and login into modals.
 
 Right now, the server will only send 1 full round of questions before being stuck forever sending a negative timer and roundEnd. To counteract this, open server-reactDev and just press ctrl+s to force nodemon to refresh.
