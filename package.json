@@ -7,6 +7,7 @@
     "server": "node server.js",
     "client": "node scripts/start-client.js",
     "start": "concurrently \"nodemon server.js\" \"npm run client\"",
+    "start-jon": "concurrently \"nodemon server-jon.js\" \"npm run client\"",
     "build": "node scripts/build.js",
     "seed": "node scripts/seedDB.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -27,12 +28,12 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "axios": "^0.16.2",
-    "bcryptjs": "2.4.3",
     "body-parser": "^1.18.2",
+<<<<<<< HEAD
     "cors": "2.8.4",
+=======
+>>>>>>> 851619b7d847f9d8be65db245a8877f57434a819
     "express": "^4.16.3",
-    "jsonwebtoken": "8.1.0",
     "mongoose": "^5.0.12",
     "socket.io": "^2.1.0",
     "axios": "^0.16.2",
@@ -40,7 +41,6 @@
     "cors": "2.8.4",
     "jsonwebtoken": "8.1.0",
     "passport": "0.4.0",
-    "passport-jwt": "3.0.1",
-    "socket.io": "^2.1.0"
+    "passport-jwt": "3.0.1"
   }
 }
