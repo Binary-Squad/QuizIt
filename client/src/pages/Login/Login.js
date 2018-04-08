@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import API from "../../utils/API";
 import {Redirect} from "react-router-dom";
 import io from 'socket.io-client';
-import Leaderboard from '../../components/Leaderboard'
-import Question from '../../components/Question'
-import {Modal} from 'react-bootstrap'
-
 
 class Login extends Component {
   state = {
@@ -13,11 +9,42 @@ class Login extends Component {
     username: "",
     password: "",
     errors:[],
-    endpoint: "localhost:3001"
+    endpoint: "localhost:3001",
+    gameState: "pregame"
   };
 
   componentWillMount() {
+<<<<<<< HEAD
 
+=======
+    this.socket.on('message', (msg) => {
+      console.log(msg);
+    });
+    this.socket.on('roomState', (msg) => {
+      console.log(msg);
+      //setState based on incoming message
+      if(this.state.gameState != msg.state){
+        this.setState({gameState:msg.state}, ()=>{
+          console.log("this.state.gameState changed to "+msg.state);
+        })
+      }
+      // if(msg.state === "questionStart" && this.state.gameState != msg.state){
+      //   this.setState({gameState:msg.state}, ()=>{
+      //     console.log("this.state.gameState changed to "+msg.state);
+      //   })
+      // }
+      // if(msg.state === "questionEnd" && this.state.gameState != msg.state){
+      //   this.setState({gameState:msg.state}, ()=>{
+      //     console.log("this.state.gameState changed to "+msg.state);
+      //   })
+      // }
+      // if(msg.state === "roundEnd" && this.state.gameState != msg.state){
+      //   this.setState({gameState:msg.state}, ()=>{
+      //     console.log("this.state.gameState changed to "+msg.state);
+      //   })
+      // }
+    });
+>>>>>>> 4c0c4d9c7fa3857132bcb1da63bd59acfbdb8d82
   }
 
   // send = (event, data) => {
@@ -60,6 +87,7 @@ class Login extends Component {
 
   render() {
 
+<<<<<<< HEAD
     this.socket.on('message', (msg) => {
       console.log(msg);
     });
@@ -67,6 +95,11 @@ class Login extends Component {
     if(this.state.redirectToDashboard){
       return(<Redirect to="/dashboard" />)
     }
+=======
+    // if(this.state.redirectToDashboard){
+    //   return(<Redirect to="/dashboard" />)
+    // }
+>>>>>>> 4c0c4d9c7fa3857132bcb1da63bd59acfbdb8d82
     return (
       <div>
         <div className="container">
@@ -74,7 +107,7 @@ class Login extends Component {
         <p className="max-center">Login</p>
         <form>
           <div>
-            <input
+            <input 
               name="username"
               onChange={this.handleInputChange}
               value={this.state.username}
@@ -82,7 +115,7 @@ class Login extends Component {
             />
           </div>
           <div>
-            <input
+            <input 
               name="password"
               onChange={this.handleInputChange}
               value={this.state.password}
@@ -93,8 +126,6 @@ class Login extends Component {
           <button onClick={this.handleFormSubmit}>Login</button>
         </form>
         </div>
-      <Leaderboard />
-      <Question />
       </div>
     );
   }
