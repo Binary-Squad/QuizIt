@@ -27,7 +27,7 @@ function Game (questions, users, settings, io, addGame){
         currentQuestion: undefined,
         // Current question to be sent to client.
         questionToBeSent: undefined,
-
+        // Number of current question
         questionNum: 0,
         // Current Answer 
         correctAnswer: undefined,
@@ -67,7 +67,7 @@ function Game (questions, users, settings, io, addGame){
                 this.tickInterval();
                 break;
             case 'questionActive':
-                this.resetTimer(5);
+                this.resetTimer(10);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
                 this.update();
@@ -75,7 +75,7 @@ function Game (questions, users, settings, io, addGame){
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
-                    this.resetTimer(10);
+                    this.resetTimer(5);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
                     this.update();
@@ -100,7 +100,7 @@ function Game (questions, users, settings, io, addGame){
                 triviaAPI(res=>{
                     this.gameData.questions = res.data.results;
                     this.gameReset();
-                    this.tickInterval();    
+                    this.tickInterval();
                 });
                 this.save();
                 break; 
@@ -151,7 +151,7 @@ function Game (questions, users, settings, io, addGame){
         // console.log(this.gameData.socketObj);
         io.sockets.to('master').emit('gameState', this.gameData.socketObj);
         // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
-        if (this.gameData.timer < 0) {
+        if (this.gameData.timer < 1) {
             this.gameLoopStep();
         }
     }
@@ -166,26 +166,18 @@ function Game (questions, users, settings, io, addGame){
         let difficulty = this.gameData.difficulty;
         let users = this.gameData.users;
 
-
         this.gameData = {
             // Reset id so a new document can be saved.
             _id: undefined,
-            // The settings from the API call
             category: category,
             difficulty: difficulty,
             type: type,
-            // Users who have played in the current game
             users: users,
             timer: 10,
-            // Questions for the current game. Called for the current API.
             totalQuestions: questions.length,
-            // The current question
             currentQuestion: undefined,
-            // Current question's number
             questionToBeSent: undefined,
-
             questionNum: 0,
-            // Current Answer 
             correctAnswer: undefined,
             // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
             gameState: "pregame",
@@ -200,7 +192,6 @@ function Game (questions, users, settings, io, addGame){
                 questionNum:0
             }
         };
-        this.save();
     }
 
     this.save = () => {
@@ -248,7 +239,7 @@ function Game (questions, users, settings, io, addGame){
                 difficulty: gameObj.difficulty,
                 type: gameObj.type
             }).then(() => {
-            console.log("Game document " + this.gameData._id + " has been saved to database.");
+            console.log("Game document " + this.gameData._id + " has been updated.");
         });
     }
 }
