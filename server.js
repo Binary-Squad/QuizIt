@@ -15,7 +15,7 @@ const app = express();
 
 
 // Trivia Call
-triviaCall((response) => {console.log(response.data.results);});
+// triviaCall((response) => {console.log(response.data.results);});
 
 // Import the game manager
 const GameManager = require('./src/gameManager');

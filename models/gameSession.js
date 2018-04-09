@@ -1,6 +1,33 @@
 const mongoose = require('mongoose');
 
-const GameSessionSchema = mongoose.Schema({
+const GameSchema = new mongoose.Schema({
+    id: {
+        type: String
+    },
+    users: {
+        type: Array
+    },
+    questions: {
+        type: Array
+    },
+    scores: {
+        type: Array
+    },
+    numQuestions: {
+        type: Number
+    },
+    category: {
+        type: Number
+    },
+    difficulty: {
+        type: String
+    },
+    type: {
+        type: String
+    }
+});
+
+const GameSessionSchema = new mongoose.Schema({
     users: {
         type: Array
     },
@@ -13,9 +40,7 @@ const GameSessionSchema = mongoose.Schema({
     type: {
         type: String
     },
-    games: {
-        type: Array
-    }
+    games: [GameSchema]
 });
 
 const Session = module.exports = mongoose.model('Session', GameSessionSchema);
