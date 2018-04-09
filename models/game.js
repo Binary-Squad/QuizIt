@@ -7,11 +7,23 @@ const GameSchema = mongoose.Schema({
     users: {
         type: Array
     },
-    currentQuestion: {
+    questions: {
         type: Object
     },
-    userAnswers: {
+    score: {
         type: Object
+    },
+    numQuestions: {
+        type: Number
+    },
+    category: {
+        type: Number
+    },
+    difficulty: {
+        type: String
+    },
+    type: {
+        type: String
     }
 });
 

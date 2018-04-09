@@ -5,11 +5,14 @@ const axios = require('axios');
 const triviaAPI = require('../utils/triviaAPI');
 
 function GameSession(io) {
-    
+    // The current active game's id
+    this.activeGame = undefined;
     // Array that stores the userIds of all users within this game session
     this.users = [];
     // Variable that we will instantiate each new game into
     this.currentGame = undefined;
+    // Store all of the game ids that were played in this session
+    this.games = [];
     // Variable for storing the session's ID
     this._id = undefined;
     // Variable for storign the session's type. 
@@ -17,9 +20,7 @@ function GameSession(io) {
     
 
     // Method that sets up the session's state
-    this.create = ()=>{
-        // NEED code to create a new session document in Mongo and return the objectId
-        this.addUser('User Object To Go Here');
+    this.create = () => {
         this.createNewGame();
     };
 
@@ -27,7 +28,6 @@ function GameSession(io) {
     this.addUser = (user)=>{
         // REPLACE the key value with the user object's id.
         this.users.push(user);
-        // console.log(this);
     };
 
     // Method for removing a user from the session by userId
@@ -41,7 +41,8 @@ function GameSession(io) {
             users: this.users,
             currentGame: this.currentGame,
             type: this.type,
-            _id: this._id
+            _id: this._id,
+            games: this.games
         });
         sessionDocument.save().then((res) => {
             this._id = res._id;
@@ -49,10 +50,23 @@ function GameSession(io) {
         });
     };
 
+    this.addGame = (id) => {
+        this.games.push(id);
+        this.save();
+        console.log("Added game " + id + " to session " + this._id);
+    };
+
     // Creating a new game
     this.createNewGame = () => {
+        let gameSettings = {
+            numQuestions: 10,
+            category: 0,
+            difficulty: 'Any',
+            type: 'Multiple'
+        }
+
         triviaAPI(res => {
-            let newGame = new Game(res.data.results, this.users, io);
+            let newGame = new Game(res.data.results, this.users, gameSettings, io, this.addGame);
             this.currentGame=newGame;
             newGame.initializeGame();
             console.log('--------------------------------------------------');
