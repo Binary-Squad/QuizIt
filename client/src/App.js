@@ -26,19 +26,7 @@ class App extends Component {
     localStorage.clear();
   }
 
-  // Render method for when state is updated
   render() {
-
-    const socket = io.connect(this.state.endpoint);
-
-    socket.on('connection', (msg) => {
-      if (msg === 'a user connected') {
-        console.log('a user connected');
-      }
-      else if (msg === 'a user disconnected') {
-        console.log('a user disconnected');
-      }
-    });
 
     return (
       <Router>
