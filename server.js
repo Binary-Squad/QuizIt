@@ -81,7 +81,7 @@ io.on('connection', function(socket) {
     console.log(msg);
   });
 
-  socket.on('loggedIn',function(params){
+  socket.on('loggedIn', function(params){
     socket.join(params.room);
     gameManager.users.push(params.user);
     console.log(gameManager.users);

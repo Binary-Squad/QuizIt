@@ -11,6 +11,8 @@ function GameSession(io) {
     this.users = [];
     // Variable that we will instantiate each new game into
     this.currentGame = undefined;
+    // Store all of the game ids that were played in this session
+    this.games = [];
     // Variable for storing the session's ID
     this._id = undefined;
     // Variable for storign the session's type. 
@@ -39,12 +41,19 @@ function GameSession(io) {
             users: this.users,
             currentGame: this.currentGame,
             type: this.type,
-            _id: this._id
+            _id: this._id,
+            games: this.games
         });
         sessionDocument.save().then((res) => {
             this._id = res._id;
             cb(res);
         });
+    };
+
+    this.addGame = (id) => {
+        this.games.push(id);
+        this.save();
+        console.log("Added game " + id + " to session " + this._id);
     };
 
     // Creating a new game
@@ -57,7 +66,7 @@ function GameSession(io) {
         }
 
         triviaAPI(res => {
-            let newGame = new Game(res.data.results, this.users, gameSettings, io);
+            let newGame = new Game(res.data.results, this.users, gameSettings, io, this.addGame);
             this.currentGame=newGame;
             newGame.initializeGame();
             console.log('--------------------------------------------------');

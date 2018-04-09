@@ -5,7 +5,7 @@ const shuffle = require('../utils/shuffle.js');
 const triviaAPI = require('../utils/triviaAPI');
 const gameInstance = require('../models/game');
 
-function Game (questions, users, settings, io){
+function Game (questions, users, settings, io, addGame){
     // Game Data Variables Go Here
 
     this.gameData = {
@@ -60,6 +60,7 @@ function Game (questions, users, settings, io){
     this.gameLoopStep = () => {
         switch(this.gameData.gameState) {
             case 'pregame':
+                addGame(this.gameData._id);
                 this.resetTimer(10);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
@@ -69,6 +70,7 @@ function Game (questions, users, settings, io){
                 this.resetTimer(5);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
+                this.update();
                 this.tickInterval();
                 break;
             case 'intermission':
@@ -76,6 +78,7 @@ function Game (questions, users, settings, io){
                     this.resetTimer(10);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
+                    this.update();
                     this.tickInterval();
                     break;
                 } else {
@@ -83,6 +86,7 @@ function Game (questions, users, settings, io){
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
+                    this.update();
                     this.tickInterval();
                     break;
                 }
@@ -97,7 +101,8 @@ function Game (questions, users, settings, io){
                     this.gameData.questions = res.data.results;
                     this.gameReset();
                     this.tickInterval();    
-                })
+                });
+                this.save();
                 break; 
         }
     }
@@ -121,14 +126,8 @@ function Game (questions, users, settings, io){
         answers = answers.concat(this.gameData.currentQuestion.incorrect_answers);
         // Shuffle the array
         shuffle(answers);
-        // Create object file to return
-        let answersObj = {};
-        // Map randomized array values to numeric key pairings
-        for (i = 0; i < answers.length; i++) {
-            answersObj[i] = answers[i];
-        }
-
-        return answersObj;
+    
+        return answers;
     }
 
     this.tick = undefined;
@@ -153,7 +152,6 @@ function Game (questions, users, settings, io){
         io.sockets.to('master').emit('gameState', this.gameData.socketObj);
         // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
         if (this.gameData.timer < 0) {
-            this.update();
             this.gameLoopStep();
         }
     }
@@ -163,9 +161,21 @@ function Game (questions, users, settings, io){
     }
 
     this.gameReset = () => {
+        let category = this.gameData.category;
+        let type = this.gameData.type;
+        let difficulty = this.gameData.difficulty;
+        let users = this.gameData.users;
+
+
         this.gameData = {
             // Reset id so a new document can be saved.
             _id: undefined,
+            // The settings from the API call
+            category: category,
+            difficulty: difficulty,
+            type: type,
+            // Users who have played in the current game
+            users: users,
             timer: 10,
             // Questions for the current game. Called for the current API.
             totalQuestions: questions.length,
@@ -190,6 +200,7 @@ function Game (questions, users, settings, io){
                 questionNum:0
             }
         };
+        this.save();
     }
 
     this.save = () => {
@@ -205,6 +216,7 @@ function Game (questions, users, settings, io){
         });
         gameDocument.save().then((res) => {
             this.gameData._id = res._id;
+            console.log('Game document ' + res._id + ' has been created in the database.');
         });
     }
     // Method for packaging the game data that we want to save to Mongo.

@@ -12,6 +12,9 @@ const GameSessionSchema = mongoose.Schema({
     },
     type: {
         type: String
+    },
+    games: {
+        type: Array
     }
 });
 
