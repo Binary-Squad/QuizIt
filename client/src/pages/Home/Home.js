@@ -77,10 +77,20 @@ class Home extends Component {
       <div className = "container">
         {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue.bind(this)} setHomeState={this.setHomeState.bind(this)} />:
           this.state.gameState==='pregame'?<Pregame />:
-          this.state.gameState==='questionActive'?<QuestionActive />:
-          this.state.gameState==='intermission'?<Intermission />:
-          this.state.gameState==='gameEnd'?<GameEnd />:""
-          }
+          this.state.gameState==='questionActive'? (
+            <QuestionActive
+              question={this.state.question}
+              correctAnswer={this.state.correctAnswer}
+            />
+          ) : this.state.gameState==='intermission'?(
+            <Intermission
+              question={this.state.question}
+              correctAnswer={this.state.correctAnswer} 
+            />
+          ) : this.state.gameState==='gameEnd'?
+            <GameEnd />
+            :null
+        }
       </div>
     );
   }
@@ -88,3 +98,17 @@ class Home extends Component {
 }
 
 export default Home;
+
+// {
+//     uid: mongoDBuser._id, 
+//     answer: string, //True and False are strings as well
+//     num: 4, //0-9 to match question array position
+//     timer: 3, //Time the user selects answer. will be 0 if they switched answers
+//     room: string //Will be 'master' until multiple rooms
+// }
+// //react sending mechanism
+// this.socket.emit('answer',answerObj);
+// //potential server receiving mechanism
+// socket.on('answer', function(answerObj){
+//   gameManager.activeSessions[answerObj.room].currentGame.updateAnswer(answerObj);
+// })

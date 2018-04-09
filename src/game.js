@@ -129,13 +129,7 @@ function Game (questions, users, io){
         // Shuffle the array
         shuffle(answers);
         // Create object file to return
-        let answersObj = {};
-        // Map randomized array values to numeric key pairings
-        for (i = 0; i < answers.length; i++) {
-            answersObj[i] = answers[i];
-        }
-
-        return answersObj;
+        return answers;
     }
 
     this.tick = undefined;
