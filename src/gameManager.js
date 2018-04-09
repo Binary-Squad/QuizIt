@@ -11,8 +11,9 @@ function gameManager(io){
         console.log("Attempting to create a new session");
         // Instantiate a new session class
         let newSession = new GameSession(io);
+
         // Call the new session's create method to setup the session
-        newSession.create();
+        // newSession.create();
         // Push the new session variable to gameManager's activeSessions key
         this.addSession(newSession,sessionType);
     };
@@ -25,6 +26,8 @@ function gameManager(io){
             newSession.save((res) => {
                 this.activeSessions['master'] = newSession;
                 this.logSessions('master');
+                // Call the new session's create method to setup the session
+                this.activeSessions['master'].create();
             });
         }
         else {

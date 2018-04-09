@@ -21,7 +21,7 @@ function GameSession(io) {
 
     // Method that sets up the session's state
     this.create = () => {
-        this.createNewGame();
+        this.save(this.createNewGame);
     };
 
     // Method that adds a user to the session
@@ -40,8 +40,7 @@ function GameSession(io) {
         const sessionDocument = new Session({
             users: this.users,
             currentGame: this.currentGame,
-            type: this.type,
-            _id: this._id,
+            type: 'master',
             games: this.games
         });
         sessionDocument.save().then((res) => {
@@ -65,11 +64,41 @@ function GameSession(io) {
             type: 'Multiple'
         }
 
+        // Does the triviaAPI call
         triviaAPI(res => {
-            let newGame = new Game(res.data.results, this.users, gameSettings, io, this.addGame);
-            this.currentGame=newGame;
-            newGame.initializeGame();
-            console.log('--------------------------------------------------');
+            const newGame = new Game(res.data.results, this.users, gameSettings, io, this.createNewGame);
+            const gameObj = {
+                users:this.users,
+                questions:res.data.results,
+                scores:{},
+                numQuestions: 10,
+                category: 0,
+                difficulty: 'Any',
+                type: 'Multiple'
+            }
+            // Finds current session to push the gameObj into this session.games
+            Session.findOneAndUpdate(
+                {"_id":this._id},
+                {$push:{"games":gameObj}}
+            ).then((res)=>{
+                console.log('found gameSession and added game');
+                console.log(this._id);
+                // Does 2nd mongoose call to find most recent game's _id.
+                // This is highly inefficient
+                // try to get .create method working
+                // .create method is at the bottom of the documentation here:
+                // http://mongoosejs.com/docs/subdocs.html
+                Session.findById(this._id).then(res2=>{
+                    console.log(res2);
+                    console.log("GAME ID IS: "+res2.games[res2.games.length-1]._id);
+                    // Sets newGame._id and .sessionId for newGame to update itself
+                    newGame._id = res2.games[res2.games.length-1]._id;
+                    newGame.sessionId = this._id;
+                    this.currentGame = newGame;
+                    // Initializes game after all this
+                    this.currentGame.initializeGame();
+                })
+            })
         });
     };
 }
