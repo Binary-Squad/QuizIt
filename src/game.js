@@ -126,11 +126,7 @@ function Game (questions, users, settings, io, addGame){
         answers = answers.concat(this.gameData.currentQuestion.incorrect_answers);
         // Shuffle the array
         shuffle(answers);
-<<<<<<< HEAD
-    
-=======
-        // Create object file to return
->>>>>>> 4b11f73bfc83a54d46f84ec7ad6d35dbfb7e77b4
+        
         return answers;
     }
 

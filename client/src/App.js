@@ -26,15 +26,6 @@ class App extends Component {
     localStorage.clear();
   }
 
-<<<<<<< HEAD
-  // method for emitting a socket.io event
-  send = (event, data) => {
-    const socket = io.connect(this.state.endpoint);
-    socket.emit(event, data);
-  }
-
-=======
->>>>>>> 4c0c4d9c7fa3857132bcb1da63bd59acfbdb8d82
   // Render method for when state is updated
   render() {
 
