@@ -5,7 +5,8 @@ const axios = require('axios');
 const triviaAPI = require('../utils/triviaAPI');
 
 function GameSession(io) {
-    
+    // The current active game's id
+    this.activeGame = undefined;
     // Array that stores the userIds of all users within this game session
     this.users = [];
     // Variable that we will instantiate each new game into
@@ -17,9 +18,7 @@ function GameSession(io) {
     
 
     // Method that sets up the session's state
-    this.create = ()=>{
-        // NEED code to create a new session document in Mongo and return the objectId
-        this.addUser('User Object To Go Here');
+    this.create = () => {
         this.createNewGame();
     };
 
@@ -27,7 +26,6 @@ function GameSession(io) {
     this.addUser = (user)=>{
         // REPLACE the key value with the user object's id.
         this.users.push(user);
-        // console.log(this);
     };
 
     // Method for removing a user from the session by userId
@@ -51,8 +49,15 @@ function GameSession(io) {
 
     // Creating a new game
     this.createNewGame = () => {
+        let gameSettings = {
+            numQuestions: 10,
+            category: 0,
+            difficulty: 'Any',
+            type: 'Multiple'
+        }
+
         triviaAPI(res => {
-            let newGame = new Game(res.data.results, this.users, io);
+            let newGame = new Game(res.data.results, this.users, gameSettings, io);
             this.currentGame=newGame;
             newGame.initializeGame();
             console.log('--------------------------------------------------');

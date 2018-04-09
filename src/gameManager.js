@@ -18,18 +18,18 @@ function gameManager(io){
     };
 
     // Method for adding the session to the list of activeSessions
-    this.addSession = (newSession,type)=>{
+    this.addSession = (newSession, type)=>{
         // Add the session to the activeSessions list
         // Check if this is a master lobby or regular one
         if (type === 'master') {
-            newSession.save((res)=>{
+            newSession.save((res) => {
                 this.activeSessions['master'] = newSession;
                 this.logSessions('master');
             });
         }
         else {
             // Mongoose function to create a private room
-            newSession.save((res)=>{
+            newSession.save((res) => {
                 this.activeSessions[res._id] = newSession;
                 this.logSessions(res._id);
             });
