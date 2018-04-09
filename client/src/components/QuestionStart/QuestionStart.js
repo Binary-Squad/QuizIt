@@ -1,19 +1,28 @@
-import React, { Component } from "react";
-// import socket from '../io';
+import React, {Component} from 'react'
+import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
+import {Modal, CustomComponent} from 'react-bootstrap'
+//import './question.css'
 
-class QuestionStart extends Component {
 
-  state = {
-    // endpoint: "localhost:3001",
-  };
+export default class QuestionStart extends Component {
 
   render() {
+
+    const {question} = this.props
+    console.log(question)
+    const answers = question.incorrect_answers
+
     return (
-      <div>
-      	QuestionStart
+      <div className="">
+          <Panel>
+            <Panel.Heading>{question.question}</Panel.Heading>
+            <ListGroup>
+              {answers.map(answer => (
+                <ListGroupItem onClick={this.props.onAnswer}>{answer}</ListGroupItem>
+              ))}
+            </ListGroup>
+          </Panel>
       </div>
-    );
+    )
   }
 }
-
-export default QuestionStart;

@@ -57,13 +57,27 @@ class Home extends Component {
 
   render() {
     return (
-      <div className = "container">
-        {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue.bind(this)} setHomeState={this.setHomeState.bind(this)} />:
-          this.state.gameState==='pregame'?<Pregame />:
-          this.state.gameState==='questionStart'?<QuestionStart />:
-          this.state.gameState==='questionEnd'?<QuestionEnd />:
-          this.state.gameState==='roundEnd'?<RoundEnd />:""
-          }
+      <div className="container">
+        {!this.state.loggedIn ? (
+          <Login
+            loggedInTrue={this.loggedInTrue.bind(this)}
+            setHomeState={this.setHomeState.bind(this)}
+          />
+        ) : this.state.gameState === "pregame" ? (
+          <Pregame />
+        ) : this.state.gameState === "questionStart" ? (
+          <QuestionStart
+            question={this.state.question}
+            correctAnswer={this.state.correctAnswer}
+          />
+        ) : this.state.gameState === "questionEnd" ? (
+          <QuestionEnd
+            question={this.state.question}
+            correctAnswer={this.state.correctAnswer} 
+          />
+        ) : this.state.gameState === "roundEnd" ? (
+          <RoundEnd />
+        ) : null}
       </div>
     );
   }
