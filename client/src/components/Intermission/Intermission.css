@@ -1,5 +1,18 @@
-
 .correct {
+  background-color: pink;
+  color: white;
+}
+
+.correctAnswer {
   background-color: green;
   color: white;
+}
+
+.incorrect {
+	background-color: red;
+	color: white;
+}
+
+.centered {
+	text-align: center;
 }

@@ -91,6 +91,16 @@ io.on('connection', function(socket) {
   socket.on('room', function(params){
     socket.join(params.room);
   });
+<<<<<<< HEAD
+=======
+
+  // Receives answers from react client
+  socket.on('answer', function(answerObj){
+    console.log(answerObj);
+    // Call some function to do stuff in gameManager -> gameSession -> game
+    gameManager.handleAnswer(answerObj)
+  });
+>>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
 });
 
 // Send every request to the React app
