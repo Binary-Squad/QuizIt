@@ -7,6 +7,7 @@ import Pregame from '../../components/Pregame';
 import QuestionActive from '../../components/QuestionActive';
 import Intermission from '../../components/Intermission';
 import GameEnd from '../../components/GameEnd';
+import './Home.css';
 
 class Home extends Component {
   state = {
@@ -17,7 +18,8 @@ class Home extends Component {
     endpoint: "localhost:3001",
     gameState: "pregame",
     question: {},
-    answers: [],
+    currentAnswer:"",
+    // answers: [],
     correctAnswer: "",
     timer:0,
     users:[],
@@ -35,7 +37,6 @@ class Home extends Component {
 
     //Used for yarn start
     socket.on('gameState', (msg) => {
-
       // console.log(msg);
       //Sets gameState based on response. Sets timer. Sets questions and correctAnswer when applicable.
       this.setState({timer:msg.timer});
@@ -65,19 +66,33 @@ class Home extends Component {
   }
 
   setAnswer = (answer,questionNum)=>{
-    var tempAnswer = {
-      answer:answer,
-      questionNum:questionNum
-    }
-    this.setState({answers:this.state.answers.concat([tempAnswer])},()=>{
-      console.log('Home.js state.answers = ');
-      console.log(this.state.answers);
+    this.setState({currentAnswer:answer,questionNum:questionNum},()=>{
+      var answerObj = {
+        uid: JSON.parse(localStorage.user).id, //Allow login to update state.id later
+        answer: this.state.currentAnswer, //True and False are strings as well
+        questionNum: this.state.questionNum, //0-9 to match question array position
+        timer: this.state.timer, //Time the user selects answer. will be 0 if they switched answers
+        room: 'master' //Will be 'master' until multiple rooms
+      }
+      console.log(answerObj);
+      socket.emit('answer',answerObj);
     });
+    
+
+    // Method for setting answers as an array of all answers and sending it all back at game end
+    // var tempAnswer = {
+    //   answer:answer,
+    //   questionNum:questionNum
+    // }
+    // this.setState({answers:this.state.answers.concat([tempAnswer])},()=>{
+    //   console.log('Home.js state.answers = ');
+    //   console.log(this.state.answers);
+    // });
   }
 
   render() {
     return (
-      <div className = "container">
+      <div className = "container poop">
         {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue}/>:
           this.state.gameState==='pregame'?<Pregame />:
           this.state.gameState==='questionActive'? 
@@ -110,7 +125,7 @@ export default Home;
 
 // {
 //     uid: mongoDBuser._id, 
-//     answer: string, //True and False are strings as well
+//     answers: string, //True and False are strings as well
 //     num: 4, //0-9 to match question array position
 //     timer: 3, //Time the user selects answer. will be 0 if they switched answers
 //     room: string //Will be 'master' until multiple rooms

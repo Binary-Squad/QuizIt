@@ -15,14 +15,15 @@ export default class QuestionActive extends Component {
   }
 
   componentWillUnmount(){
-    if(this.state.selectedAnswer){
-      this.props.setAnswer(this.state.selectedAnswer,this.state.questionNum);
-    }
+    // if(this.state.selectedAnswer){
+    //   this.props.setAnswer(this.state.selectedAnswer,this.state.questionNum);
+    // }
   }
 
   handleClick = (answer)=>{
     console.log('Clicked '+answer);
     this.setState({selectedAnswer:answer});
+    this.props.setAnswer(answer,this.state.questionNum);
   }
 
   render() {

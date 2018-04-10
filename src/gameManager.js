@@ -18,6 +18,11 @@ function gameManager(io){
         this.addSession(newSession,sessionType);
     };
 
+    this.addUser = (user,room)=>{
+        // this.users.push(user);
+        this.activeSessions[room].addUser(user);
+        // console.log('pushed to '+room+' user '+user.name);
+    }
     // Method for adding the session to the list of activeSessions
     this.addSession = (newSession, type)=>{
         // Add the session to the activeSessions list
