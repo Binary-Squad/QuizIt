@@ -39,7 +39,7 @@ function Game (questions, users, settings, io, newGame){
         // Client Answers for rendering on front-end
         clientAnswers: {},
         // Scores object for holding all final scores
-        scores: {},
+        scores: [],
         // Socket object for sending to client.
         socketObj: {
             users:[],
@@ -208,7 +208,6 @@ function Game (questions, users, settings, io, newGame){
         const gameObj = {
             users:this.gameData.users,
             questions:this.gameData.questions,
-            users:this.gameData.users,
             // Dummy scores data. Will be set to this.gameData.scoress
             scores:[
                 {
