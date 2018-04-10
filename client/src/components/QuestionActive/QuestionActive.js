@@ -6,10 +6,28 @@ import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
 
 export default class QuestionActive extends Component {
 
+  state={
+    questionNum:this.props.questionNum,
+    totalQuestions:this.props.totalQuestions,
+    timer:this.props.timer,
+    selectedAnswer:"",
+    timeClicked:0
+  }
+
+  componentWillUnmount(){
+    if(this.state.selectedAnswer){
+      this.props.setAnswer(this.state.selectedAnswer,this.state.questionNum);
+    }
+  }
+
+  handleClick = (answer)=>{
+    console.log('Clicked '+answer);
+    this.setState({selectedAnswer:answer});
+  }
+
   render() {
 
     const {question} = this.props
-    console.log(question)
     const answers = question.answers
 
     return (
@@ -18,7 +36,13 @@ export default class QuestionActive extends Component {
             <Panel.Heading>{question.question}</Panel.Heading>
             <ListGroup>
               {answers.map(answer => (
-                <ListGroupItem onClick={this.props.onAnswer}>{answer}</ListGroupItem>
+                <ListGroupItem 
+                  key={answer}
+                  answer={answer}
+                  onClick={()=>{this.handleClick(answer)}}
+                >
+                  {answer}
+                </ListGroupItem>
               ))}
             </ListGroup>
           </Panel>

@@ -9,9 +9,7 @@ export default class Intermission extends Component {
   render() {
 
     const {question} = this.props
-    console.log(question)
     const answers = question.answers
-
 
     return (
       <div className="">
@@ -20,8 +18,8 @@ export default class Intermission extends Component {
             <ListGroup>
               {answers.map(answer => (
                 <ListGroupItem
-                  onClick={this.props.onAnswer}
-                  className={answer == this.props.correctAnswer ? "correct" : ""}
+                  key={answer}
+                  className={answer === this.props.correctAnswer ? "correct" : ""}
                 >
                   {answer}
                 </ListGroupItem>
