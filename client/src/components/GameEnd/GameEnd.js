@@ -22,7 +22,7 @@ class GameEnd extends Component {
         <h1>GameEnd Leaderboard</h1>
       	{this.state.scores?this.state.scores.map(score=>{
           return(
-            <div key={score.uid}>{score.uid} {score.name} {score.score}</div>
+            <div key={score.uid}>{score.name} Score: {score.score}</div>
           )
         }):<div>loading</div>}
       </div>
