@@ -44,6 +44,11 @@ function gameManager(io){
         }
         // Save the session to MongoDB
     };
+
+    this.handleAnswer = (answerObj)=>{
+        this.activeSessions[answerObj.room].handleAnswer(answerObj)
+    }
+
     this.logSessions = (sessionName)=>{
         console.log("New session " + sessionName + " created and added to activeSessions");
         console.log("Current sessions:");

@@ -18,7 +18,7 @@ export default class Leaderboard extends Component {
           {users.map(user => (
             <ListGroupItem>
               <div className='pull-left'>{user.username}</div>
-              <div className='pull-right'>{user.score}</div>
+              <div className='pull-right'>Score: {user.score}</div>
               <div className="clearfix"></div>
             </ListGroupItem>
           ))}
