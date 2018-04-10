@@ -71,13 +71,13 @@ function Game (questions, users, settings, io, newGame){
         switch(this.gameData.gameState) {
             case 'pregame':
                 // addGame(this.gameData._id);
-                this.resetTimer(10);
+                this.resetTimer(5);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
                 this.tickInterval();
                 break;
             case 'questionActive':
-                this.resetTimer(5);
+                this.resetTimer(3);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
                 this.calculateScores();
@@ -86,9 +86,10 @@ function Game (questions, users, settings, io, newGame){
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
-                    this.resetTimer(10);
+                    this.resetTimer(5);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
+                    this.removeIdleScores();
                     // this.update();
                     this.tickInterval();
                     break;
@@ -115,7 +116,7 @@ function Game (questions, users, settings, io, newGame){
     this.tickInterval = () => {
         clearInterval(this.tick);
         // Lowered handleTick for testing purposes
-        this.tick = setInterval(this.handleTick, 1000);
+        this.tick = setInterval(this.handleTick, 250);
     }
     // Acts on the interval tick. Updates client on tick. Calls gameLoopStep() if timer < 0.
     this.handleTick = () => {        
@@ -269,8 +270,6 @@ function Game (questions, users, settings, io, newGame){
 
     this.calculateScores = ()=>{
         console.log('CALCULATING SCORES');
-
-
         console.log(this.gameData.clientAnswers.length);
         console.log(this.gameData.scores.length);
         if(this.gameData.clientAnswers.length > 0){
@@ -300,6 +299,19 @@ function Game (questions, users, settings, io, newGame){
                 }
             })
         }
+    }
+
+    this.removeIdleScores = ()=>{
+        console.log('KEEPING ALL NON-IDLE PLAYERS IN SCORES');
+        const tempScores = []
+        this.gameData.clientAnswers.forEach(clientAnswer=>{
+            this.gameData.scores.forEach(score=>{
+                if(clientAnswer.id === score.id){
+                    tempScores.push(score);
+                }
+            })
+        })
+        this.gameData.scores = tempScores;
     }
 
     this.handleAnswer = (answerObj)=>{
