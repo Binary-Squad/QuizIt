@@ -53,15 +53,11 @@ function Game (questions, users, settings, io, newGame){
 
     };
 
-<<<<<<< HEAD
-    // Game Lifecycle methods go here
-=======
     this.setUsers = (users)=>{
         this.gameData.users = users;
         console.log(this.gameData.users);
     }
 
->>>>>>> 06caeb3951d30f1ded24b56787f0e3172348c83b
     this.initializeGame = () => {
         // Start pregame countdown to first question
         this.gameData.gameState = 'pregame';
