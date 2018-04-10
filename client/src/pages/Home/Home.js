@@ -17,10 +17,12 @@ class Home extends Component {
     endpoint: "localhost:3001",
     gameState: "pregame",
     question: {},
-    answer: "",
+    answers: [],
     correctAnswer: "",
     timer:0,
-    users:[]
+    users:[],
+    questionNum:0,
+    totalQuestions:0
   };
 
   componentWillMount() {
@@ -31,63 +33,70 @@ class Home extends Component {
     //   console.log(msg);
     // });
 
-    // //Used for yarn start-reactDev
-    // socket.on('roomState-test', (msg) => {
-    //   console.log(msg);
-    //   //Sets gameState based on response. Sets timer. Sets questions and correctAnswer when applicable.
-    //   this.setState({timer:msg.timer});
-    //   if(this.state.gameState !== msg.state){
-    //     this.setState({gameState:msg.state,question:msg.question,correctAnswer:msg.question.correct_answer}, ()=>{
-    //       console.log(this.state.question);
-    //       console.log("this.state.gameState changed to "+this.state.gameState);
-    //       console.log("this.state.correctAnswer changed to "+this.state.correctAnswer);
-    //     })
-    //   }
-    // });
-
     //Used for yarn start
     socket.on('gameState', (msg) => {
 
-      console.log(msg);
+      // console.log(msg);
       //Sets gameState based on response. Sets timer. Sets questions and correctAnswer when applicable.
       this.setState({timer:msg.timer});
       if(this.state.gameState !== msg.gameState){
-        this.setState({gameState:msg.gameState,question:msg.question,correctAnswer:msg.correctAnswer}, ()=>{
-          console.log(this.state.question);
-          console.log("this.state.gameState changed to "+this.state.gameState);
-          console.log("this.state.correctAnswer changed to "+this.state.correctAnswer);
+        this.setState({
+          gameState:msg.gameState,
+          question:msg.question,
+          correctAnswer:msg.correctAnswer,
+          questionNum:msg.questionNum,
+          totalQuestions:msg.totalQuestions
         })
       }
     });    
   }
 
-  setHomeState(msg){
-    this.setState({gameState:msg.state},()=>{
-      console.log("this.state.gameState changed to "+msg.state);
-    })
+  componentWillUpdate(nextProps, nextState){
+    if(nextState.gameState === "pregame" && this.state.gameState != "pregame"){
+      this.setState({answers:[],gameState:"pregame"});
+      console.log('cleared answers upon newGame AKA pregame');
+    }
   }
 
-  loggedInTrue(){
-    console.log('loggedIn true!');
-    this.setState({loggedIn:true});
+  loggedInTrue = ()=>{
+    this.setState({loggedIn:true},()=>{
+      console.log('loggedIn true!');
+    });
+  }
+
+  setAnswer = (answer,questionNum)=>{
+    var tempAnswer = {
+      answer:answer,
+      questionNum:questionNum
+    }
+    this.setState({answers:this.state.answers.concat([tempAnswer])},()=>{
+      console.log('Home.js state.answers = ');
+      console.log(this.state.answers);
+    });
   }
 
   render() {
     return (
       <div className = "container">
-        {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue.bind(this)} setHomeState={this.setHomeState.bind(this)} />:
+        {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue}/>:
           this.state.gameState==='pregame'?<Pregame />:
-          this.state.gameState==='questionActive'? (
+          this.state.gameState==='questionActive'? 
             <QuestionActive
               question={this.state.question}
-              correctAnswer={this.state.correctAnswer}
+              questionNum={this.state.questionNum}
+              totalQuestions={this.state.totalQuestions}
+              setAnswer={this.setAnswer}
+              timer={this.state.timer}
             />
-          ) : this.state.gameState==='intermission'?(
+           : this.state.gameState==='intermission'? 
             <Intermission
               question={this.state.question}
               correctAnswer={this.state.correctAnswer} 
+              questionNum={this.state.questionNum}
+              totalQuestions={this.state.totalQuestions}
+              timer={this.state.timer}
             />
-          ) : this.state.gameState==='gameEnd'?
+           : this.state.gameState==='gameEnd'?
             <GameEnd />
             :null
         }
