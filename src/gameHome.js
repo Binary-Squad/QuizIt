@@ -21,7 +21,7 @@ function Game (questions, users, settings, io, newGame){
         // Users who have played in the current game
         users: users,
         // Timer for tracking countdowns for questions or to next question
-        timer: 5,
+        timer: 10,
         // Questions for the current game. Called for the current API.
         questions: questions,
         // Total number of questions
@@ -30,14 +30,14 @@ function Game (questions, users, settings, io, newGame){
         currentQuestion: undefined,
         // Current question to be sent to client.
         questionToBeSent: undefined,
-        // Number of current question
+
         questionNum: 0,
         // Current Answer 
         correctAnswer: undefined,
         // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
         gameState: undefined,
         // Client Answers for rendering on front-end
-        clientAnswers: [],
+        clientAnswers: {},
         // Scores object for holding all final scores
         scores: [],
         // Socket object for sending to client.
@@ -50,20 +50,19 @@ function Game (questions, users, settings, io, newGame){
             totalQuestions:0,
             questionNum:0
         },
+
     };
 
-    // this.setUsers = (users)=>{
-    //     this.gameData.users = users;
-    //     console.log(this.gameData.users);
-    // }
+    this.setUsers = (users)=>{
+        this.gameData.users = users;
+        console.log(this.gameData.users);
+    }
 
-    
     this.initializeGame = () => {
         // Start pregame countdown to first question
         this.gameData.gameState = 'pregame';
         this.gameData.currentQuestion = this.gameData.questions[this.gameData.questionNum];
-        // this.gameData.clientAnswers = this.randomizeAnswers();
-        this.setUserScoreObjs();
+        this.gameData.clientAnswers = this.randomizeAnswers();
         this.tickInterval();
     };
 
@@ -72,33 +71,28 @@ function Game (questions, users, settings, io, newGame){
         switch(this.gameData.gameState) {
             case 'pregame':
                 // addGame(this.gameData._id);
-                this.resetTimer(5);
+                this.resetTimer(10);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
                 this.tickInterval();
                 break;
             case 'questionActive':
-<<<<<<< HEAD
-                this.resetTimer(10);
-=======
-                this.resetTimer(3);
->>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
+                this.resetTimer(5);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
-                this.calculateScores();
                 // this.update();
                 this.tickInterval();
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
-                    this.resetTimer(5);
+                    this.resetTimer(10);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
                     // this.update();
                     this.tickInterval();
                     break;
                 } else {
-                    this.resetTimer(5);
+                    this.resetTimer(10);
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
@@ -107,25 +101,10 @@ function Game (questions, users, settings, io, newGame){
                     break;
                 }
             case 'gameEnd':
-<<<<<<< HEAD
-                // Save currently game document before resetting. 
-                this.resetTimer(10);
-                this.gameData.gameState = 'pregame';
-                // Fixed broken end game loop
-                this.gameData.questionNum = 0;
-                // Call API for new questions.
-                triviaAPI(res=>{
-                    this.gameData.questions = res.data.results;
-                    this.gameReset();
-                    this.tickInterval();
-                });
-                this.save();
-=======
                 // Clear the interval
                 clearInterval(this.tick);
                 // Initializes MongoDB save and passes newGame cb to start new game
                 this.saveGame(newGame);
->>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
                 break; 
         }
     }
@@ -135,7 +114,7 @@ function Game (questions, users, settings, io, newGame){
     this.tickInterval = () => {
         clearInterval(this.tick);
         // Lowered handleTick for testing purposes
-        this.tick = setInterval(this.handleTick, 500);
+        this.tick = setInterval(this.handleTick, 500); 
     }
     // Acts on the interval tick. Updates client on tick. Calls gameLoopStep() if timer < 0.
     this.handleTick = () => {        
@@ -146,8 +125,7 @@ function Game (questions, users, settings, io, newGame){
             gameState:this.gameData.gameState,
             timer:this.gameData.timer,
             totalQuestions:this.gameData.totalQuestions,
-            questionNum:this.gameData.questionNum+1,
-            scores:this.gameData.scores
+            questionNum:this.gameData.questionNum+1
         }
         this.gameData.timer--;
         // console.log(this.gameData.socketObj);
@@ -183,37 +161,7 @@ function Game (questions, users, settings, io, newGame){
         
         return answers;
     }
-<<<<<<< HEAD
-
-    this.tick = undefined;
-
-    this.tickInterval = () => {
-        clearInterval(this.tick);
-        this.tick = setInterval(this.handleTick, 1000); 
-    }
-
-    this.handleTick = () => {        
-        this.gameData.socketObj = {
-            users:this.gameData.users,
-            question:this.gameData.questionToBeSent,
-            correctAnswer:this.gameData.correctAnswer,
-            gameState:this.gameData.gameState,
-            timer:this.gameData.timer,
-            totalQuestions:this.gameData.totalQuestions,
-            questionNum:this.gameData.questionNum+1
-        }
-        this.gameData.timer--;
-        // console.log(this.gameData.socketObj);
-        io.sockets.to('master').emit('gameState', this.gameData.socketObj);
-        // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
-        if (this.gameData.timer < 1) {
-            this.gameLoopStep();
-        }
-    }
-
-=======
     // Resets the game timer
->>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
     this.resetTimer = (time) => {
         this.gameData.timer = time;
     }
@@ -227,15 +175,22 @@ function Game (questions, users, settings, io, newGame){
         this.gameData = {
             // Reset id so a new document can be saved.
             _id: undefined,
+            // The settings from the API call
             category: category,
             difficulty: difficulty,
             type: type,
+            // Users who have played in the current game
             users: users,
             timer: 10,
+            // Questions for the current game. Called for the current API.
             totalQuestions: questions.length,
+            // The current question
             currentQuestion: undefined,
+            // Current question's number
             questionToBeSent: undefined,
+
             questionNum: 0,
+            // Current Answer 
             correctAnswer: undefined,
             // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
             gameState: "pregame",
@@ -258,7 +213,23 @@ function Game (questions, users, settings, io, newGame){
             users:this.gameData.users,
             questions:this.gameData.questions,
             // Dummy scores data. Will be set to this.gameData.scoress
-            scores:this.gameData.scores,
+            scores:[
+                {
+                    name:"poop",
+                    uid:1,
+                    score:100
+                },
+                {
+                    name:"herp",
+                    uid:2,
+                    score:1
+                },
+                {
+                    name:"derp",
+                    uid:3,
+                    score:2
+                }
+            ],
             numQuestions: this.gameData.numQuestions,
             category: this.gameData.category,
             difficulty: this.gameData.difficulty,
@@ -282,136 +253,6 @@ function Game (questions, users, settings, io, newGame){
             }
         })
     }
-
-    this.addUser = (user)=>{
-        this.gameData.users.push[user];
-        console.log(this.gameData.users);
-        const scoreObj = {
-            name:user.name,
-            score:0,
-            id:user.id
-        }
-        this.gameData.scores.push(scoreObj);
-    }
-
-    this.setUserScoreObjs = ()=>{
-        const users = this.gameData.users
-        if(users){
-            const tempScores = [];
-            users.forEach(data=>{
-                const scoreObj = {
-                    name:data.name,
-                    score:0,
-                    id:data.id
-                }
-                tempScores.push(scoreObj);
-            })
-            this.gameData.scores = tempScores;
-        }
-    }
-
-    this.calculateScores = ()=>{
-        console.log('CALCULATING SCORES');
-
-
-        console.log(this.gameData.clientAnswers.length);
-        console.log(this.gameData.scores.length);
-        if(this.gameData.clientAnswers.length > 0){
-            // Doesn't work with 2 people
-            // const clientAnswers = this.gameData.clientAnswers;
-            // const scores = this.gameData.scores;
-            // for(var i = 0; i < clientAnswers.length; i++){
-            //     if(clientAnswers[i].answer === this.gameData.correctAnswer){
-            //         for(var i = 0; i < scores.length; i++){
-            //             if(clientAnswers[i].id === scores[i].id){
-            //                 scores[i].score++;
-            //                 console.log(scores[i].name+' got one right!');
-            //             }
-            //         }
-            //     }
-            // }
-
-            // forEach loops work with 2 people for some reason
-            this.gameData.clientAnswers.forEach(clientAnswer=>{
-                if(clientAnswer.answer === this.gameData.correctAnswer){
-                    this.gameData.scores.forEach(score=>{
-                        if(clientAnswer.id === score.id){
-                            score.score++;
-                            console.log(score.name+' got one right!');
-                        }
-                    })
-                }
-            })
-        }
-    }
-
-<<<<<<< HEAD
-        gameInstance.update({
-            _id: this.gameData._id
-            },
-            {
-                users: gameObj.users,
-                questions: gameObj.questions,
-                score: gameObj.score,
-                numQuestions: gameObj.totalQuestions,
-                category: gameObj.category,
-                difficulty: gameObj.difficulty,
-                type: gameObj.type
-            }).then(() => {
-            console.log("Game document " + this.gameData._id + " has been updated.");
-        });
-=======
-    this.handleAnswer = (answerObj)=>{
-        if(this.gameData.clientAnswers.length>0){
-            for(var i = 0; i<this.gameData.clientAnswers.length; i++){
-                if(this.gameData.clientAnswers[i].id === answerObj.id){
-                    this.gameData.clientAnswers[i] = answerObj;
-                    console.log('CLIENTANSWERS');
-                    console.log(this.gameData.clientAnswers);
-                    break;
-                }
-                else if(i === this.gameData.clientAnswers.length-1){
-                    this.gameData.clientAnswers.push(answerObj);
-                    console.log('CLIENTANSWERS');
-                    console.log(this.gameData.clientAnswers);
-                }
-            }
-        }
-        else{
-            this.gameData.clientAnswers.push(answerObj);
-            console.log('CLIENTANSWERS');
-            console.log(this.gameData.clientAnswers);
-        }
->>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
-    }
-
-    // Socket.io listeners go in here
-    // io.on('connection', (socket) => {
-
-    //     socket.on('answer', (userAnswer) => {
-
-    //         if(this.gameData.clientAnswers.length>0){
-    //             for(var i = 0; i<this.gameData.clientAnswers.length; i++){
-    //                 if(this.gameData.clientAnswers[i].id === userAnswer.id){
-    //                     this.gameData.clientAnswers[i] = userAnswer;
-    //                     console.log('CLIENTANSWERS');
-    //                     console.log(this.gameData.clientAnswers);
-    //                     break;
-    //                 }
-    //                 else if(i === this.gameData.clientAnswers.length-1){
-    //                     this.gameData.clientAnswers.push(userAnswer);
-    //                     console.log('CLIENTANSWERS');
-    //                     console.log(this.gameData.clientAnswers);
-    //                 }
-    //             }
-    //         }
-    //         else{
-    //             this.gameData.clientAnswers.push(userAnswer);
-    //             console.log('CLIENTANSWERS');
-    //             console.log(this.gameData.clientAnswers);
-    //         }
-    //     });
-    // });
 }
 
 module.exports = Game;
