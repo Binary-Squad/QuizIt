@@ -1,4 +1,3 @@
-const Questions = require('../config/test-data');
 const axios = require('axios');
 const omit = require('../utils/myOmit.js');
 const shuffle = require('../utils/shuffle.js');
@@ -72,17 +71,21 @@ function Game (questions, users, settings, io, newGame){
         switch(this.gameData.gameState) {
             case 'pregame':
                 // addGame(this.gameData._id);
-                this.resetTimer(5);
+                this.resetTimer(10);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
                 this.tickInterval();
                 break;
             case 'questionActive':
 <<<<<<< HEAD
+<<<<<<< HEAD
                 this.resetTimer(10);
 =======
                 this.resetTimer(3);
 >>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
+=======
+                this.resetTimer(5);
+>>>>>>> 6732bf12e798ebbd3a9473a8d101ceb8655aace3
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
                 this.calculateScores();
@@ -91,14 +94,14 @@ function Game (questions, users, settings, io, newGame){
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
-                    this.resetTimer(5);
+                    this.resetTimer(10);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
                     // this.update();
                     this.tickInterval();
                     break;
                 } else {
-                    this.resetTimer(5);
+                    this.resetTimer(10);
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
@@ -135,7 +138,7 @@ function Game (questions, users, settings, io, newGame){
     this.tickInterval = () => {
         clearInterval(this.tick);
         // Lowered handleTick for testing purposes
-        this.tick = setInterval(this.handleTick, 500);
+        this.tick = setInterval(this.handleTick, 1000);
     }
     // Acts on the interval tick. Updates client on tick. Calls gameLoopStep() if timer < 0.
     this.handleTick = () => {        
@@ -183,7 +186,6 @@ function Game (questions, users, settings, io, newGame){
         
         return answers;
     }
-<<<<<<< HEAD
 
     this.tick = undefined;
 
@@ -211,9 +213,7 @@ function Game (questions, users, settings, io, newGame){
         }
     }
 
-=======
     // Resets the game timer
->>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
     this.resetTimer = (time) => {
         this.gameData.timer = time;
     }
@@ -345,7 +345,6 @@ function Game (questions, users, settings, io, newGame){
         }
     }
 
-<<<<<<< HEAD
         gameInstance.update({
             _id: this.gameData._id
             },
@@ -360,7 +359,7 @@ function Game (questions, users, settings, io, newGame){
             }).then(() => {
             console.log("Game document " + this.gameData._id + " has been updated.");
         });
-=======
+
     this.handleAnswer = (answerObj)=>{
         if(this.gameData.clientAnswers.length>0){
             for(var i = 0; i<this.gameData.clientAnswers.length; i++){
@@ -382,7 +381,6 @@ function Game (questions, users, settings, io, newGame){
             console.log('CLIENTANSWERS');
             console.log(this.gameData.clientAnswers);
         }
->>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
     }
 
     // Socket.io listeners go in here

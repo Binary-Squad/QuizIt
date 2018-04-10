@@ -13,7 +13,6 @@ const config = require('./config/database');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-
 // Trivia Call
 // triviaCall((response) => {console.log(response.data.results);});
 

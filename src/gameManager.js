@@ -42,7 +42,6 @@ function gameManager(io){
                 this.logSessions(res._id);
             });
         }
-        // Save the session to MongoDB
     };
 
     this.handleAnswer = (answerObj)=>{
