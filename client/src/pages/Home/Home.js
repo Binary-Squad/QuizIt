@@ -7,7 +7,7 @@ import Pregame from '../../components/Pregame';
 import QuestionActive from '../../components/QuestionActive';
 import Intermission from '../../components/Intermission';
 import GameEnd from '../../components/GameEnd';
-import './Home.css';
+// import './Home.css';
 
 class Home extends Component {
   state = {
