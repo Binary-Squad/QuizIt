@@ -25,10 +25,26 @@ function GameSession(io) {
 
     // Method that adds a user to the session
     this.addUser = (user)=>{
-        // REPLACE the key value with the user object's id.
-        this.users.push(user);
+        // this.users.push(user);
         // this.currentGame.setUsers(this.users);
-        this.currentGame.addUser(user)
+        if(this.users.length > 0){
+            var userCounter = 0;
+            this.users.forEach((storedUser,index)=>{
+                if(user.id !== storedUser.id){
+                    userCounter++;
+                }
+                if(userCounter === this.users.length){
+                    this.users.push(user);
+                    this.currentGame.addUser(user)
+                    console.log('pushing '+user.name+' into this.users');
+                }
+            })
+        }
+        else{
+            this.users.push(user);
+            this.currentGame.addUser(user)
+            console.log('pushing '+user.name+' into this.users');
+        }
     };
 
     // Method for removing a user from the session by userId
