@@ -29,7 +29,7 @@ function Game (questions, users, settings, io, newGame){
         currentQuestion: undefined,
         // Current question to be sent to client.
         questionToBeSent: undefined,
-        // Number of current question
+
         questionNum: 0,
         // Current Answer 
         correctAnswer: undefined,
@@ -77,15 +77,7 @@ function Game (questions, users, settings, io, newGame){
                 this.tickInterval();
                 break;
             case 'questionActive':
-<<<<<<< HEAD
-<<<<<<< HEAD
-                this.resetTimer(10);
-=======
-                this.resetTimer(3);
->>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
-=======
                 this.resetTimer(5);
->>>>>>> 6732bf12e798ebbd3a9473a8d101ceb8655aace3
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
                 this.calculateScores();
@@ -110,25 +102,10 @@ function Game (questions, users, settings, io, newGame){
                     break;
                 }
             case 'gameEnd':
-<<<<<<< HEAD
-                // Save currently game document before resetting. 
-                this.resetTimer(10);
-                this.gameData.gameState = 'pregame';
-                // Fixed broken end game loop
-                this.gameData.questionNum = 0;
-                // Call API for new questions.
-                triviaAPI(res=>{
-                    this.gameData.questions = res.data.results;
-                    this.gameReset();
-                    this.tickInterval();
-                });
-                this.save();
-=======
                 // Clear the interval
                 clearInterval(this.tick);
                 // Initializes MongoDB save and passes newGame cb to start new game
                 this.saveGame(newGame);
->>>>>>> 4e837d1caa36a21a2bec55e5d27ad9fa18acd3ab
                 break; 
         }
     }
@@ -186,33 +163,6 @@ function Game (questions, users, settings, io, newGame){
         
         return answers;
     }
-
-    this.tick = undefined;
-
-    this.tickInterval = () => {
-        clearInterval(this.tick);
-        this.tick = setInterval(this.handleTick, 1000); 
-    }
-
-    this.handleTick = () => {        
-        this.gameData.socketObj = {
-            users:this.gameData.users,
-            question:this.gameData.questionToBeSent,
-            correctAnswer:this.gameData.correctAnswer,
-            gameState:this.gameData.gameState,
-            timer:this.gameData.timer,
-            totalQuestions:this.gameData.totalQuestions,
-            questionNum:this.gameData.questionNum+1
-        }
-        this.gameData.timer--;
-        // console.log(this.gameData.socketObj);
-        io.sockets.to('master').emit('gameState', this.gameData.socketObj);
-        // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
-        if (this.gameData.timer < 1) {
-            this.gameLoopStep();
-        }
-    }
-
     // Resets the game timer
     this.resetTimer = (time) => {
         this.gameData.timer = time;
@@ -227,15 +177,22 @@ function Game (questions, users, settings, io, newGame){
         this.gameData = {
             // Reset id so a new document can be saved.
             _id: undefined,
+            // The settings from the API call
             category: category,
             difficulty: difficulty,
             type: type,
+            // Users who have played in the current game
             users: users,
             timer: 10,
+            // Questions for the current game. Called for the current API.
             totalQuestions: questions.length,
+            // The current question
             currentQuestion: undefined,
+            // Current question's number
             questionToBeSent: undefined,
+
             questionNum: 0,
+            // Current Answer 
             correctAnswer: undefined,
             // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
             gameState: "pregame",
@@ -344,21 +301,6 @@ function Game (questions, users, settings, io, newGame){
             })
         }
     }
-
-        gameInstance.update({
-            _id: this.gameData._id
-            },
-            {
-                users: gameObj.users,
-                questions: gameObj.questions,
-                score: gameObj.score,
-                numQuestions: gameObj.totalQuestions,
-                category: gameObj.category,
-                difficulty: gameObj.difficulty,
-                type: gameObj.type
-            }).then(() => {
-            console.log("Game document " + this.gameData._id + " has been updated.");
-        });
 
     this.handleAnswer = (answerObj)=>{
         if(this.gameData.clientAnswers.length>0){
