@@ -215,18 +215,18 @@ function Game (questions, users, settings, io, newGame){
             // Dummy scores data. Will be set to this.gameData.scoress
             scores:[
                 {
-                    userName:"poop",
-                    userId:1,
+                    name:"poop",
+                    uid:1,
                     score:100
                 },
                 {
-                    userName:"herp",
-                    userId:2,
+                    name:"herp",
+                    uid:2,
                     score:1
                 },
                 {
-                    userName:"derp",
-                    userId:3,
+                    name:"derp",
+                    uid:3,
                     score:2
                 }
             ],
