@@ -18,7 +18,6 @@ function GameSession(io) {
     // Variable for storign the session's type. 
     this.type = undefined;
     
-
     // Method that sets up the session's state
     this.create = () => {
         this.save(this.createNewGame);
@@ -28,6 +27,7 @@ function GameSession(io) {
     this.addUser = (user)=>{
         // REPLACE the key value with the user object's id.
         this.users.push(user);
+        this.currentGame.setUsers(this.users);
     };
 
     // Method for removing a user from the session by userId
@@ -90,7 +90,7 @@ function GameSession(io) {
                 // http://mongoosejs.com/docs/subdocs.html
                 Session.findById(this._id).then(res2=>{
                     console.log(res2);
-                    console.log("GAME ID IS: "+res2.games[res2.games.length-1]._id);
+                    // console.log("GAME ID IS: "+res2.games[res2.games.length-1]._id);
                     // Sets newGame._id and .sessionId for newGame to update itself
                     newGame._id = res2.games[res2.games.length-1]._id;
                     newGame.sessionId = this._id;

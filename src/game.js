@@ -53,6 +53,11 @@ function Game (questions, users, settings, io, newGame){
 
     };
 
+    this.setUsers = (users)=>{
+        this.gameData.users = users;
+        console.log(this.gameData.users);
+    }
+
     this.initializeGame = () => {
         // Start pregame countdown to first question
         this.gameData.gameState = 'pregame';
@@ -147,7 +152,7 @@ function Game (questions, users, settings, io, newGame){
         }
         this.gameData.timer--;
         // console.log(this.gameData.socketObj);
-        console.log(this.gameData.gameState+' question# '+this.gameData.questionNum);
+        // console.log(this.gameData.gameState+' question# '+this.gameData.questionNum);
         io.sockets.to('master').emit('gameState', this.gameData.socketObj);
         // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
         if (this.gameData.timer < 0) {
