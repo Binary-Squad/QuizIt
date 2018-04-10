@@ -21,7 +21,7 @@ function Game (questions, users, settings, io, newGame){
         // Users who have played in the current game
         users: users,
         // Timer for tracking countdowns for questions or to next question
-        timer: 5,
+        timer: 10,
         // Questions for the current game. Called for the current API.
         questions: questions,
         // Total number of questions
@@ -66,13 +66,13 @@ function Game (questions, users, settings, io, newGame){
         switch(this.gameData.gameState) {
             case 'pregame':
                 // addGame(this.gameData._id);
-                this.resetTimer(5);
+                this.resetTimer(10);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
                 this.tickInterval();
                 break;
             case 'questionActive':
-                this.resetTimer(3);
+                this.resetTimer(5);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
                 // this.update();
@@ -80,14 +80,14 @@ function Game (questions, users, settings, io, newGame){
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
-                    this.resetTimer(5);
+                    this.resetTimer(10);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
                     // this.update();
                     this.tickInterval();
                     break;
                 } else {
-                    this.resetTimer(5);
+                    this.resetTimer(10);
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
@@ -132,7 +132,7 @@ function Game (questions, users, settings, io, newGame){
     this.tickInterval = () => {
         clearInterval(this.tick);
         // Lowered handleTick for testing purposes
-        this.tick = setInterval(this.handleTick, 250); 
+        this.tick = setInterval(this.handleTick, 500); 
     }
 
     this.handleTick = () => {        
