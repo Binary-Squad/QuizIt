@@ -68,7 +68,7 @@ app.use('/users', users);
 
 gameManager = new GameManager(io);
 gameManager.createSession('master');
-// gameManager.createSession();
+
 // Server side socket.io event configuration
 io.on('connection', function(socket) {
 
@@ -85,19 +85,23 @@ io.on('connection', function(socket) {
     console.log(msg);
   });
 
+  // Logs people in and joins room 'master'
   socket.on('loggedIn', function(params){
     socket.join(params.room);
-    gameManager.users.push(params.user);
-    console.log(gameManager.users);
+    gameManager.addUser(params.user,params.room);
     console.log("User just logged in!!!");
-    console.log(params.user.username+' has joined room '+params.room);
-    console.log(params.user);
   });
 
+  // Joins a socket room
   socket.on('room', function(params){
-    socket.join(params.room);    
-    gameManager.activeSessions['master'].addUser(params.user);
-    console.log(params.user.username+' has joined room '+params.room);
+    socket.join(params.room);
+  });
+
+  // Receives answers from react client
+  socket.on('answer', function(answerObj){
+    console.log(answerObj);
+    // Call some function to do stuff in gameManager -> gameSession -> game
+    // gameManager.parseAnswer(answerObj)
   });
 });
 

@@ -7,8 +7,8 @@ const shuffle = require('../utils/shuffle.js');
 const Session = require('../models/gameSession');
 
 function Game (questions, users, settings, io, newGame){
-    // Game Data Variables Go Here
 
+    // Game Data Variables Go Here
     this.gameData = {
         // id of game
         _id: undefined,
@@ -39,7 +39,7 @@ function Game (questions, users, settings, io, newGame){
         // Client Answers for rendering on front-end
         clientAnswers: {},
         // Scores object for holding all final scores
-        scores: {},
+        scores: [],
         // Socket object for sending to client.
         socketObj: {
             users:[],
@@ -52,6 +52,11 @@ function Game (questions, users, settings, io, newGame){
         },
 
     };
+
+    this.setUsers = (users)=>{
+        this.gameData.users = users;
+        console.log(this.gameData.users);
+    }
 
     this.initializeGame = () => {
         // Start pregame countdown to first question
@@ -103,7 +108,37 @@ function Game (questions, users, settings, io, newGame){
                 break; 
         }
     }
+    // Game tick variable for storing our interval
+    this.tick = undefined;
+    // Clears interval and resets it
+    this.tickInterval = () => {
+        clearInterval(this.tick);
+        // Lowered handleTick for testing purposes
+        this.tick = setInterval(this.handleTick, 500); 
+    }
+    // Acts on the interval tick. Updates client on tick. Calls gameLoopStep() if timer < 0.
+    this.handleTick = () => {        
+        this.gameData.socketObj = {
+            users:this.gameData.users,
+            question:this.gameData.questionToBeSent,
+            correctAnswer:this.gameData.correctAnswer,
+            gameState:this.gameData.gameState,
+            timer:this.gameData.timer,
+            totalQuestions:this.gameData.totalQuestions,
+            questionNum:this.gameData.questionNum+1
+        }
+        this.gameData.timer--;
+        // console.log(this.gameData.socketObj);
+        // console.log(this.gameData.gameState+' question# '+this.gameData.questionNum);
+        io.sockets.to('master').emit('gameState', this.gameData.socketObj);
+        // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
+        if (this.gameData.timer < 0) {
+            this.gameLoopStep();
+        }
+    }
 
+    // General methods go here
+    // Sets up the next question
     this.nextQuestion = () => {
         // Function for setting the next current Question goes here.
         this.gameData.questionNum++;
@@ -126,45 +161,16 @@ function Game (questions, users, settings, io, newGame){
         
         return answers;
     }
-
-    this.tick = undefined;
-
-    this.tickInterval = () => {
-        clearInterval(this.tick);
-        // Lowered handleTick for testing purposes
-        this.tick = setInterval(this.handleTick, 500); 
-    }
-
-    this.handleTick = () => {        
-        this.gameData.socketObj = {
-            users:this.gameData.users,
-            question:this.gameData.questionToBeSent,
-            correctAnswer:this.gameData.correctAnswer,
-            gameState:this.gameData.gameState,
-            timer:this.gameData.timer,
-            totalQuestions:this.gameData.totalQuestions,
-            questionNum:this.gameData.questionNum+1
-        }
-        this.gameData.timer--;
-        // console.log(this.gameData.socketObj);
-        console.log(this.gameData.gameState+' question# '+this.gameData.questionNum);
-        io.sockets.to('master').emit('gameState', this.gameData.socketObj);
-        // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
-        if (this.gameData.timer < 0) {
-            this.gameLoopStep();
-        }
-    }
-
+    // Resets the game timer
     this.resetTimer = (time) => {
         this.gameData.timer = time;
     }
-
+    // Resets the game data ahead of a new game
     this.gameReset = () => {
         let category = this.gameData.category;
         let type = this.gameData.type;
         let difficulty = this.gameData.difficulty;
         let users = this.gameData.users;
-
 
         this.gameData = {
             // Reset id so a new document can be saved.
@@ -200,13 +206,12 @@ function Game (questions, users, settings, io, newGame){
             }
         };
     }
-
+    // Saves the game document to the database and returns the MongoDB Object ID
     this.saveGame = (cb) => {
         // gameObj for cultivating mongoDB games object
         const gameObj = {
             users:this.gameData.users,
             questions:this.gameData.questions,
-            users:this.gameData.users,
             // Dummy scores data. Will be set to this.gameData.scoress
             scores:[
                 {
