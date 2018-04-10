@@ -13,7 +13,6 @@ const config = require('./config/database');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-
 // Trivia Call
 // triviaCall((response) => {console.log(response.data.results);});
 
@@ -91,13 +90,6 @@ io.on('connection', function(socket) {
   // Joins a socket room
   socket.on('room', function(params){
     socket.join(params.room);
-  });
-
-  // Receives answers from react client
-  socket.on('answer', function(answerObj){
-    console.log(answerObj);
-    // Call some function to do stuff in gameManager -> gameSession -> game
-    // gameManager.parseAnswer(answerObj)
   });
 });
 
