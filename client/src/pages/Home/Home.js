@@ -7,6 +7,7 @@ import Pregame from '../../components/Pregame';
 import QuestionActive from '../../components/QuestionActive';
 import Intermission from '../../components/Intermission';
 import GameEnd from '../../components/GameEnd';
+import Timer from '../../components/Timer';
 // import './Home.css';
 
 class Home extends Component {
@@ -24,7 +25,8 @@ class Home extends Component {
     timer:0,
     users:[],
     questionNum:0,
-    totalQuestions:0
+    totalQuestions:0,
+    scores:[]
   };
 
   componentWillMount() {
@@ -46,7 +48,8 @@ class Home extends Component {
           question:msg.question,
           correctAnswer:msg.correctAnswer,
           questionNum:msg.questionNum,
-          totalQuestions:msg.totalQuestions
+          totalQuestions:msg.totalQuestions,
+          scores:msg.scores
         })
       }
     });    
@@ -68,7 +71,8 @@ class Home extends Component {
   setAnswer = (answer,questionNum)=>{
     this.setState({currentAnswer:answer,questionNum:questionNum},()=>{
       var answerObj = {
-        uid: JSON.parse(localStorage.user).id, //Allow login to update state.id later
+        id: JSON.parse(localStorage.user).id, //Allow login to update state.id later
+        name: JSON.parse(localStorage.user).name, //Allow login to update state.name later
         answer: this.state.currentAnswer, //True and False are strings as well
         questionNum: this.state.questionNum, //0-9 to match question array position
         timer: this.state.timer, //Time the user selects answer. will be 0 if they switched answers
@@ -77,8 +81,6 @@ class Home extends Component {
       console.log(answerObj);
       socket.emit('answer',answerObj);
     });
-    
-
     // Method for setting answers as an array of all answers and sending it all back at game end
     // var tempAnswer = {
     //   answer:answer,
@@ -109,12 +111,14 @@ class Home extends Component {
               correctAnswer={this.state.correctAnswer} 
               questionNum={this.state.questionNum}
               totalQuestions={this.state.totalQuestions}
+              currentAnswer={this.state.currentAnswer}
               timer={this.state.timer}
             />
            : this.state.gameState==='gameEnd'?
-            <GameEnd />
+            <GameEnd scores={this.state.scores} />
             :null
         }
+        {this.state.loggedIn?<Timer timer={this.state.timer}/>:""}
       </div>
     );
   }

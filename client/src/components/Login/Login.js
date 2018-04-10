@@ -32,6 +32,7 @@ class Login extends Component {
         //Sets credentials in local storage
         localStorage.setItem('jwt',res.data.token);
         localStorage.setItem('user',JSON.stringify(res.data.user));
+        console.log(res.data.user);
         var socketParams = {
           user:res.data.user,
           room:'master'

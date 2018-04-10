@@ -3,14 +3,28 @@ import React, { Component } from "react";
 
 class GameEnd extends Component {
 
+  componentWillMount(){
+    if(this.props.scores){
+      var tempScores = this.props.scores.sort(function(a, b) {
+        return parseFloat(b.score) - parseFloat(a.score);
+      });
+      this.setState({scores:tempScores});
+    }
+  }
+
   state = {
-    // endpoint: "localhost:3001",
+    scores:[]
   };
 
   render() {
     return (
       <div>
-      	GameEnd
+        <h1>GameEnd Leaderboard</h1>
+      	{this.state.scores?this.state.scores.map(score=>{
+          return(
+            <div key={score.uid}>{score.uid} {score.name} {score.score}</div>
+          )
+        }):<div>loading</div>}
       </div>
     );
   }

@@ -27,7 +27,8 @@ function GameSession(io) {
     this.addUser = (user)=>{
         // REPLACE the key value with the user object's id.
         this.users.push(user);
-        this.currentGame.setUsers(this.users);
+        // this.currentGame.setUsers(this.users);
+        this.currentGame.addUser(user)
     };
 
     // Method for removing a user from the session by userId
@@ -101,6 +102,10 @@ function GameSession(io) {
             })
         });
     };
+
+    this.handleAnswer = (answerObj) =>{
+        this.currentGame.handleAnswer(answerObj);
+    }
 }
 
 module.exports = GameSession;

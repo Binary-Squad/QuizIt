@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
 // import {Modal, CustomComponent} from 'react-bootstrap'
-//import './question.css'
+import './questionActive.css'
 
 
 export default class QuestionActive extends Component {
@@ -11,7 +11,8 @@ export default class QuestionActive extends Component {
     totalQuestions:this.props.totalQuestions,
     timer:this.props.timer,
     selectedAnswer:"",
-    timeClicked:0
+    timeClicked:0,
+    activeIndex: -1,
   }
 
   componentWillUnmount(){
@@ -20,9 +21,11 @@ export default class QuestionActive extends Component {
     // }
   }
 
-  handleClick = (answer)=>{
+  handleClick = (answer,index)=>{
     console.log('Clicked '+answer);
-    this.setState({selectedAnswer:answer});
+    this.setState({selectedAnswer:answer,activeIndex:index},()=>{
+      console.log('active index '+index);
+    });
     this.props.setAnswer(answer,this.state.questionNum);
   }
 
@@ -34,13 +37,15 @@ export default class QuestionActive extends Component {
     return (
       <div className="">
           <Panel>
-            <Panel.Heading>{question.question}</Panel.Heading>
+            <Panel.Heading className="centered">{question.question}</Panel.Heading>
             <ListGroup>
-              {answers.map(answer => (
+              {answers.map((answer,index)=> (
                 <ListGroupItem 
                   key={answer}
                   answer={answer}
-                  onClick={()=>{this.handleClick(answer)}}
+                  index={index}
+                  onClick={()=>{this.handleClick(answer,index)}}
+                  className={index === this.state.activeIndex ? "currentAnswer":null}
                 >
                   {answer}
                 </ListGroupItem>

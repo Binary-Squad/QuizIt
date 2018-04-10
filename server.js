@@ -97,7 +97,7 @@ io.on('connection', function(socket) {
   socket.on('answer', function(answerObj){
     console.log(answerObj);
     // Call some function to do stuff in gameManager -> gameSession -> game
-    // gameManager.parseAnswer(answerObj)
+    gameManager.handleAnswer(answerObj)
   });
 });
 
