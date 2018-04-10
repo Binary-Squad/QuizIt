@@ -1,18 +1,123 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+// import API from "../../utils/API";
+// import {Redirect} from "react-router-dom";
+import socket from '../../components/io';
+import Login from '../../components/Login';
+import Pregame from '../../components/Pregame';
+import QuestionActive from '../../components/QuestionActive';
+import Intermission from '../../components/Intermission';
+import GameEnd from '../../components/GameEnd';
 
 class Home extends Component {
-
   state = {
-    loggedIn:false
+    loggedIn:false,
+    username: "",
+    password: "",
+    errors:[],
+    endpoint: "localhost:3001",
+    gameState: "pregame",
+    question: {},
+    answers: [],
+    correctAnswer: "",
+    timer:0,
+    users:[],
+    questionNum:0,
+    totalQuestions:0
+  };
+
+  componentWillMount() {
   }
 
-  render(){
-    return(
-      <div>
-        Home Page
-      </div>
-    )
+  componentDidMount(){
+    // socket.on('message', (msg) => {
+    //   console.log(msg);
+    // });
+
+    //Used for yarn start
+    socket.on('gameState', (msg) => {
+
+      // console.log(msg);
+      //Sets gameState based on response. Sets timer. Sets questions and correctAnswer when applicable.
+      this.setState({timer:msg.timer});
+      if(this.state.gameState !== msg.gameState){
+        this.setState({
+          gameState:msg.gameState,
+          question:msg.question,
+          correctAnswer:msg.correctAnswer,
+          questionNum:msg.questionNum,
+          totalQuestions:msg.totalQuestions
+        })
+      }
+    });    
   }
-};
+
+  componentWillUpdate(nextProps, nextState){
+    if(nextState.gameState === "pregame" && this.state.gameState != "pregame"){
+      this.setState({answers:[],gameState:"pregame"});
+      console.log('cleared answers upon newGame AKA pregame');
+    }
+  }
+
+  loggedInTrue = ()=>{
+    this.setState({loggedIn:true},()=>{
+      console.log('loggedIn true!');
+    });
+  }
+
+  setAnswer = (answer,questionNum)=>{
+    var tempAnswer = {
+      answer:answer,
+      questionNum:questionNum
+    }
+    this.setState({answers:this.state.answers.concat([tempAnswer])},()=>{
+      console.log('Home.js state.answers = ');
+      console.log(this.state.answers);
+    });
+  }
+
+  render() {
+    return (
+      <div className = "container">
+        {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue}/>:
+          this.state.gameState==='pregame'?<Pregame />:
+          this.state.gameState==='questionActive'? 
+            <QuestionActive
+              question={this.state.question}
+              questionNum={this.state.questionNum}
+              totalQuestions={this.state.totalQuestions}
+              setAnswer={this.setAnswer}
+              timer={this.state.timer}
+            />
+           : this.state.gameState==='intermission'? 
+            <Intermission
+              question={this.state.question}
+              correctAnswer={this.state.correctAnswer} 
+              questionNum={this.state.questionNum}
+              totalQuestions={this.state.totalQuestions}
+              timer={this.state.timer}
+            />
+           : this.state.gameState==='gameEnd'?
+            <GameEnd />
+            :null
+        }
+      </div>
+    );
+  }
+
+}
 
 export default Home;
+
+// {
+//     uid: mongoDBuser._id, 
+//     answer: string, //True and False are strings as well
+//     num: 4, //0-9 to match question array position
+//     timer: 3, //Time the user selects answer. will be 0 if they switched answers
+//     room: string //Will be 'master' until multiple rooms
+// }
+// //react sending mechanism
+// this.socket.emit('answer',answerObj);
+// //potential server receiving mechanism
+// socket.on('answer', function(answerObj){
+//   gameManager.activeSessions[answerObj.room].currentGame.updateAnswer(answerObj);
+// })

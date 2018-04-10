@@ -7,7 +7,6 @@
     "server": "node server.js",
     "client": "node scripts/start-client.js",
     "start": "concurrently \"nodemon server.js\" \"npm run client\"",
-    "start-jon": "concurrently \"nodemon server-jon.js\" \"npm run client\"",
     "build": "node scripts/build.js",
     "seed": "node scripts/seedDB.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -29,12 +28,12 @@
   },
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "2.8.4",
     "express": "^4.16.3",
     "mongoose": "^5.0.12",
     "socket.io": "^2.1.0",
     "axios": "^0.16.2",
     "bcryptjs": "2.4.3",
-    "cors": "2.8.4",
     "jsonwebtoken": "8.1.0",
     "passport": "0.4.0",
     "passport-jwt": "3.0.1"

@@ -14,8 +14,13 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 
+<<<<<<< HEAD
 // Trivia call to get questions from Open DB
 triviaCall((response) => {console.log(response.data.results);});
+=======
+// Trivia Call
+// triviaCall((response) => {console.log(response.data.results);});
+>>>>>>> 2b5a9d7f810449dfb05c9beffd02cfed50a0c757
 
 // Import the game manager
 const GameManager = require('./src/gameManager');
@@ -81,7 +86,7 @@ io.on('connection', function(socket) {
     console.log(msg);
   });
 
-  socket.on('loggedIn',function(params){
+  socket.on('loggedIn', function(params){
     socket.join(params.room);
     gameManager.users.push(params.user);
     console.log(gameManager.users);
