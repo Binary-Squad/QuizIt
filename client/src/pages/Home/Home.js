@@ -12,7 +12,7 @@ import Timer from '../../components/Timer';
 
 class Home extends Component {
   state = {
-    loggedIn:false,
+    loggedIn: false,
     username: "",
     password: "",
     errors:[],
@@ -94,7 +94,7 @@ class Home extends Component {
 
   render() {
     return (
-      <div className = "container poop">
+      <div className = "container poop mainContainer">
         {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue}/>:
           this.state.gameState==='pregame'?<Pregame />:
           this.state.gameState==='questionActive'? 

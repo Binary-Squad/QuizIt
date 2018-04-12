@@ -36,7 +36,7 @@ export default class QuestionActive extends Component {
 
     return (
       <div className="">
-          <Panel>
+          <Panel className="questionList">
             <Panel.Heading className="centered">{question.question}</Panel.Heading>
             <ListGroup>
               {answers.map((answer,index)=> (

@@ -7,8 +7,8 @@ import Logout from "./pages/Logout/";
 
 class App extends Component {
   state = {
-    loggedIn:false,
-    username:"",
+    loggedIn: false,
+    username: "",
     endpoint: "localhost:3001"
   }
 
@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Navbar />
+          <Navbar loggedIn={this.state.loggedIn}/>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/register" component={Register} />

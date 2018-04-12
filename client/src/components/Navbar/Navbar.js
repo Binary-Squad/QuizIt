@@ -1,30 +1,28 @@
 import React from "react";
+import Logout from "../Logout";
 import "./Navbar.css";
 
-// const Navbar = props => (
-// 	<nav>
-// 		<ul className="zero-zero" id="customnavbar">
-// 			{props.loggedIn ? <li className="text-white"><a href="/">Game</a></li> : ""}
-// 			{props.loggedIn ? "" : <li className="text-white" onClick={()=>{props.registerPageLoad()}}><a href="/register">Register</a></li>}
-// 			{props.loggedIn ? "" : <li className="text-white" onClick={()=>{props.loginPageLoad()}}><a href="/login">Login</a></li>}
-// 			{props.loggedIn ? <li className="text-white" onClick={()=>{props.logOut()}}><a href="/logout">Logout</a></li> : ""}
-// 		</ul>
-// 	</nav>
-// )
-
-// <li className="text-white" ><a href="/dashboard">Dashboard</a></li>
-
-// <li className="text-white" ><a href="/login">Login</a></li>
-
-
 const Navbar = props => (
-	<nav>
-		<ul id="customnavbar">
-			<li className="text-white" ><a href="/">Game/Login</a></li>
-			<li className="text-white" ><a href="/register">Register</a></li>			
-			<li className="text-white" ><a href="/logout">Logout</a></li>
-		</ul>
+	
+	<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+		<a className="navbar-brand" href="/">
+			QuizIt!
+		</a>
+		
+		<button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span className="navbar-toggler-icon"></span>
+		</button>
+
+		<div className="collapse navbar-collapse pull-right" id="navbarSupportedContent">
+			<ul className="navbar-nav mr-auto">
+				<li className="nav-item active text-right">
+					<a className="nav-link" href="/register">Register </a>
+				</li>
+				<Logout loggedIn={props.loggedIn}> </Logout>
+			</ul>
+		</div>
 	</nav>
+
 )
 
 export default Navbar;

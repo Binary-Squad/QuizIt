@@ -87,19 +87,9 @@ class Login extends Component {
 
   render() {
 
-<<<<<<< HEAD
-    this.socket.on('message', (msg) => {
-      console.log(msg);
-    });
-
-    if(this.state.redirectToDashboard){
-      return(<Redirect to="/dashboard" />)
-    }
-=======
     // if(this.state.redirectToDashboard){
     //   return(<Redirect to="/dashboard" />)
     // }
->>>>>>> 4c0c4d9c7fa3857132bcb1da63bd59acfbdb8d82
     return (
       <div>
         <div className="container">
