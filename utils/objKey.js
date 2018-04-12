@@ -9,6 +9,7 @@ var loginObj = {
 // Individual player score object stored in scores array for game.js.
 var scoresObj = {
 	id:"someMongoUserID",
+	name:"user.name",
 	score:5
 }
 
