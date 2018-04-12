@@ -21,3 +21,11 @@ body, html {
 	font-size: 26px;
 	margin-bottom: 20px;
 }
+
+.question-tracker {
+	font-weight: bold;
+}
+
+.tracker {
+	margin-top: 20px;
+}

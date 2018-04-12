@@ -1,7 +1,8 @@
-import React, {Component} from 'react'
-import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
+import React, {Component} from 'react';
+import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
+import QuestionTracker from '../QuestionTracker';
 // import {Modal, CustomComponent} from 'react-bootstrap'
-import './Intermission.css'
+import './Intermission.css';
 
 
 export default class Intermission extends Component {
@@ -33,6 +34,7 @@ export default class Intermission extends Component {
                 </ListGroupItem>
               ))}
             </ListGroup>
+            <QuestionTracker questionNum={this.props.questionNum} totalQuestions={this.props.totalQuestions} category={this.props.category}> </QuestionTracker>
           </Panel>
       </div>
     )

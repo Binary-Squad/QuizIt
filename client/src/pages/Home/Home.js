@@ -116,6 +116,7 @@ class Home extends Component {
               totalQuestions={this.state.totalQuestions}
               currentAnswer={this.state.currentAnswer}
               timer={this.state.timer}
+              category={this.state.category}
             />
           : this.state.gameState==='gameEnd'?
             <GameEnd scores={this.state.scores} />
