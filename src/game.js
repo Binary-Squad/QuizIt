@@ -30,7 +30,7 @@ function Game (questions, users, settings, io, newGame){
         // Current question to be sent to client.
         questionToBeSent: undefined,
 
-        questionNum: 0,
+        questionNum: -1,
         // Current Answer 
         correctAnswer: undefined,
         // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
@@ -72,15 +72,13 @@ function Game (questions, users, settings, io, newGame){
         switch(this.gameData.gameState) {
             case 'pregame':
                 // addGame(this.gameData._id);
-                this.resetTimer(10);
-                // ^^^^^ 10 seconds
+                this.resetTimer(5);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
                 this.tickInterval();
                 break;
             case 'questionActive':
-                this.resetTimer(1);
-                // ^^^^^^^ 1 second
+                this.resetTimer(3);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
                 this.calculateScores();
@@ -89,8 +87,7 @@ function Game (questions, users, settings, io, newGame){
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
-                    this.resetTimer(10);
-                    // ^^^^^^ 10 seconds
+                    this.resetTimer(5);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
                     this.removeIdleScores();
@@ -99,7 +96,6 @@ function Game (questions, users, settings, io, newGame){
                     break;
                 } else {
                     this.resetTimer(10);
-                    // ^^^^^^ 10 seconds
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
@@ -121,7 +117,7 @@ function Game (questions, users, settings, io, newGame){
     this.tickInterval = () => {
         clearInterval(this.tick);
         // Lowered handleTick for testing purposes
-        this.tick = setInterval(this.handleTick, 1000);
+        this.tick = setInterval(this.handleTick, 250);
     }
     // Acts on the interval tick. Updates client on tick. Calls gameLoopStep() if timer < 0.
     this.handleTick = () => {        
@@ -212,8 +208,7 @@ function Game (questions, users, settings, io, newGame){
                 gameState:"pregame",
                 timer:10,
                 totalQuestions:0,
-                questionNum:0,
-                category: ""
+                questionNum:0
             }
         };
     }
@@ -226,7 +221,6 @@ function Game (questions, users, settings, io, newGame){
             // Dummy scores data. Will be set to this.gameData.scoress
             scores:this.gameData.scores,
             numQuestions: this.gameData.numQuestions,
-            category: this.gameData.category,
             difficulty: this.gameData.difficulty,
             type: this.gameData.type
         }

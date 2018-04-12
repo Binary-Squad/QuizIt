@@ -16,9 +16,6 @@ const GameSchema = new mongoose.Schema({
     numQuestions: {
         type: Number
     },
-    category: {
-        type: Number
-    },
     difficulty: {
         type: String
     },
