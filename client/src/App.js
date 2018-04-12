@@ -7,7 +7,8 @@ import Logout from "./pages/Logout/";
 
 class App extends Component {
   state = {
-    loggedIn: false,
+    // loggedIn: false,
+    // user:{},
     username: "",
     endpoint: "localhost:3001"
   }
@@ -20,6 +21,15 @@ class App extends Component {
       return false
     }
   }
+
+  // Broken state passing to Home.js
+  // homeLoggedInTrue = (userInfo)=>{
+  //   this.setState({loggedIn:true,user:userInfo},()=>{
+  //     console.log('loggedIn '+this.state.loggedIn);
+  //     console.log('user '+this.state.user);
+  //   });
+  // }
+  // <Route exact path="/" render={()=>{return(<Home loggedIn={this.state.loggedIn} user={this.state.user} homeLoggedInTrue={this.homeLoggedInTrue} />)}} />
 
   //temporary clear function for testing socket
   componentWillMount(){

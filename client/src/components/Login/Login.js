@@ -30,18 +30,20 @@ class Login extends Component {
       password:this.state.password
     }
     API.authenticateUser(userCreds).then(res=>{
+      console.log(res);
       if(res.data.token){
         //Sets credentials in local storage
         localStorage.setItem('jwt',res.data.token);
-        localStorage.setItem('user',JSON.stringify(res.data.user));
-        console.log(res.data.user);
+        // localStorage.setItem('user',JSON.stringify(res.data.user));
+        res.data.user.id=res.data.user._id;
+        // console.log(res.data.user);
         var socketParams = {
           user:res.data.user,
           room:'master'
         }
         socket.emit('loggedIn',socketParams);
         //Sets Home state of loggedIn to true
-        this.props.loggedInTrue();
+        this.props.loggedInTrue(res.data.user);
       }
       else if(res.data.errors){
         this.setState({errors:res.data.errors})

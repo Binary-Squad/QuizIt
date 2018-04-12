@@ -15,11 +15,12 @@ class Home extends Component {
   state = {
     loading:true,
     loggedIn: false,
-    username: "",
-    password: "",
+    user:{},
+    // username: "",
+    // password: "",
     errors:[],
-    endpoint: "localhost:3001",
-    gameState: "pregame",
+    // endpoint: "localhost:3001",
+    gameState: "loading",
     question: {},
     currentAnswer:"",
     // answers: [],
@@ -36,11 +37,12 @@ class Home extends Component {
     if(localStorage.jwt){
       API.getProfileInfo(localStorage.jwt).then(res=>{
           console.log(res);
+          res.data.user.id = res.data.user._id;
           setTimeout(()=>{
-            this.setState({loggedIn:true,loading:false},()=>{
+            this.setState({loggedIn:true,loading:false,user:res.data.user},()=>{
               console.log('loggedIn is '+this.state.loggedIn);
             });
-          },2000)
+          },1000)
           
           var socketParams = {
             user:res.data.user,
@@ -54,7 +56,7 @@ class Home extends Component {
           this.setState({loggedIn:false,loading:false},()=>{
             console.log('loggedIn is '+this.state.loggedIn);
           });
-        },2000)
+        },1000)
       })
     }
     else{
@@ -62,7 +64,7 @@ class Home extends Component {
         this.setState({loggedIn:false,loading:false},()=>{
           console.log('loggedIn is '+this.state.loggedIn);
         });
-      },2000)
+      },1000)
     }
   }
 
@@ -97,17 +99,18 @@ class Home extends Component {
     }
   }
 
-  loggedInTrue = ()=>{
-    this.setState({loggedIn:true},()=>{
-      console.log('loggedIn true!');
+  loggedInTrue = (userInfo)=>{
+    this.setState({loggedIn:true,user:userInfo},()=>{
+      console.log('loggedIn '+this.state.loggedIn);
+      console.log('user '+this.state.user);
     });
   }
 
   setAnswer = (answer,questionNum)=>{
     this.setState({currentAnswer:answer,questionNum:questionNum},()=>{
       var answerObj = {
-        id: JSON.parse(localStorage.user).id, //Allow login to update state.id later
-        name: JSON.parse(localStorage.user).name, //Allow login to update state.name later
+        id: this.state.user.id, //Allow login to update state.id later
+        name: this.state.user.name, //Allow login to update state.name later
         answer: this.state.currentAnswer, //True and False are strings as well
         questionNum: this.state.questionNum, //0-9 to match question array position
         timer: this.state.timer, //Time the user selects answer. will be 0 if they switched answers

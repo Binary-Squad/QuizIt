@@ -1,20 +1,35 @@
 import React, { Component } from "react";
+import {Redirect} from "react-router-dom";
 
 class Logout extends Component {
 
+  state={
+    redirect:false
+  }
+
   componentWillMount() {
-    localStorage.clear()
+    localStorage.clear();
+    setTimeout(()=>{
+      this.setState({redirect:true})
+    },2000)    
   }
 
   render() {
-    return (
-      <div>
-        <p>Logout</p>
+    if(this.state.redirect){
+      return(
+        <Redirect to="/" />
+      )
+    }
+    else{
+      return (
         <div>
-          You've been logged out.
+          <p>Logout</p>
+          <div>
+            You've been logged out.
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
