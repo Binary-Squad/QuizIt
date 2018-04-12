@@ -81,7 +81,9 @@ function Game (questions, users, settings, io, newGame){
                 this.resetTimer(5);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
-                this.calculateScores();
+                const questionActiveTimeout = setTimeout(()=>{
+                    this.calculateScores();    
+                },200)
                 // this.update();
                 this.tickInterval();
                 break;
