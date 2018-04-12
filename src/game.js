@@ -106,7 +106,7 @@ function Game (questions, users, settings, io, newGame){
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
-                    console.log('Question Number: '+this.gameData.questionNum+1);
+                    console.log('Question Number: '+(parseInt(this.gameData.questionNum)+1));
                     this.tickInterval();
                     break;
                 }

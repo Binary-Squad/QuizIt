@@ -23,7 +23,7 @@ class App extends Component {
 
   //temporary clear function for testing socket
   componentWillMount(){
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   render() {
