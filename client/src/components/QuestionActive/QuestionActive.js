@@ -40,7 +40,7 @@ export default class QuestionActive extends Component {
     return (
       <div className="">
           <Panel className="questionList">
-            <Panel.Heading className="centered question-text">{question.question}</Panel.Heading>
+            <Panel.Heading className="centered question-text"><span>{question.question.replace(/&quot;/g, '\"').replace(/&#039;/g, '\'')}</span></Panel.Heading>
             <ListGroup>
               {answers.map((answer,index)=> (
                 <ListGroupItem 
