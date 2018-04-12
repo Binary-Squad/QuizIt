@@ -80,25 +80,25 @@ function Game (questions, users, settings, io, newGame){
                 this.resetTimer(timerSettings.questionActive);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
+                console.log('Question Number: '+this.gameData.questionNum+1);
                 this.tickInterval();
                 break;
             case 'questionActive':
                 this.resetTimer(timerSettings.intermission);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
+                console.log('Intermission');
                 setTimeout(()=>{
                     this.calculateScores();    
                 },timerSettings.ping)
-                // this.update();
                 this.tickInterval();
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
                     this.resetTimer(timerSettings.gameEnd);
-                    console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
+                    console.log('Game End!');
                     this.removeIdleScores();
-                    // this.update();
                     this.tickInterval();
                     break;
                 } else {
@@ -106,7 +106,7 @@ function Game (questions, users, settings, io, newGame){
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
-                    // this.update();
+                    console.log('Question Number: '+this.gameData.questionNum+1);
                     this.tickInterval();
                     break;
                 }
@@ -279,8 +279,6 @@ function Game (questions, users, settings, io, newGame){
 
     this.calculateScores = ()=>{
         console.log('CALCULATING SCORES');
-        console.log(this.gameData.clientAnswers.length);
-        console.log(this.gameData.scores.length);
         if(this.gameData.clientAnswers.length > 0){
             // Doesn't work with 2 people
             // const clientAnswers = this.gameData.clientAnswers;
