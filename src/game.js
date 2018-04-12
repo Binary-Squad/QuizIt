@@ -1,9 +1,14 @@
 const axios = require('axios');
 const omit = require('../utils/myOmit.js');
 const shuffle = require('../utils/shuffle.js');
-// const triviaAPI = require('../utils/triviaAPI');
-// const gameInstance = require('../models/game');
 const Session = require('../models/gameSession');
+
+// You can adjust your own testing timer settings in utils/timerSettings.js
+// Uncomment this one for production timerSettings. Make sure to comment out testing.
+// const timerSettings = require('../utils/timerSettings.js').production;
+
+// Uncomment this one for testing timerSettings. Make sure to comment out production.
+const timerSettings = require('../utils/timerSettings.js').testing;
 
 function Game (questions, users, settings, io, newGame){
 
@@ -20,7 +25,7 @@ function Game (questions, users, settings, io, newGame){
         // Users who have played in the current game
         users: users,
         // Timer for tracking countdowns for questions or to next question
-        timer: 5,
+        timer: timerSettings.preGame,
         // Questions for the current game. Called for the current API.
         questions: questions,
         // Total number of questions
@@ -72,34 +77,36 @@ function Game (questions, users, settings, io, newGame){
         switch(this.gameData.gameState) {
             case 'pregame':
                 // addGame(this.gameData._id);
-                this.resetTimer(10);
+                this.resetTimer(timerSettings.questionActive);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
+                console.log('Question Number: '+this.gameData.questionNum+1);
                 this.tickInterval();
                 break;
             case 'questionActive':
-                this.resetTimer(5);
+                this.resetTimer(timerSettings.intermission);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
-                this.calculateScores();
-                // this.update();
+                console.log('Intermission');
+                setTimeout(()=>{
+                    this.calculateScores();    
+                },timerSettings.ping)
                 this.tickInterval();
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
-                    this.resetTimer(10);
-                    console.log("Game End!");
+                    this.resetTimer(timerSettings.gameEnd);
                     this.gameData.gameState = 'gameEnd';
+                    console.log('Game End!');
                     this.removeIdleScores();
-                    // this.update();
                     this.tickInterval();
                     break;
                 } else {
-                    this.resetTimer(10);
+                    this.resetTimer(timerSettings.questionActive);
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
-                    // this.update();
+                    console.log('Question Number: '+this.gameData.questionNum+1);
                     this.tickInterval();
                     break;
                 }
@@ -117,7 +124,7 @@ function Game (questions, users, settings, io, newGame){
     this.tickInterval = () => {
         clearInterval(this.tick);
         // Lowered handleTick for testing purposes
-        this.tick = setInterval(this.handleTick, 1000);
+        this.tick = setInterval(this.handleTick, timerSettings.tickInterval);
     }
     // Acts on the interval tick. Updates client on tick. Calls gameLoopStep() if timer < 0.
     this.handleTick = () => {        
@@ -272,8 +279,6 @@ function Game (questions, users, settings, io, newGame){
 
     this.calculateScores = ()=>{
         console.log('CALCULATING SCORES');
-        console.log(this.gameData.clientAnswers.length);
-        console.log(this.gameData.scores.length);
         if(this.gameData.clientAnswers.length > 0){
             // Doesn't work with 2 people
             // const clientAnswers = this.gameData.clientAnswers;
