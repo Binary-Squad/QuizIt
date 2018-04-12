@@ -18,7 +18,7 @@ export default class Intermission extends Component {
     return (
       <div className="">
           <Panel className="questionList">
-            <Panel.Heading className="centered">{question.question}</Panel.Heading>
+            <Panel.Heading className="centered question-text">{question.question}</Panel.Heading>
             <ListGroup>
               {answers.map(answer => (
                 <ListGroupItem
