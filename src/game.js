@@ -1,9 +1,14 @@
 const axios = require('axios');
 const omit = require('../utils/myOmit.js');
 const shuffle = require('../utils/shuffle.js');
-// const triviaAPI = require('../utils/triviaAPI');
-// const gameInstance = require('../models/game');
 const Session = require('../models/gameSession');
+
+// You can adjust your own testing timer settings in utils/timerSettings.js
+// Uncomment this one for production timerSettings. Make sure to comment out testing.
+// const timerSettings = require('../utils/timerSettings.js').production;
+
+// Uncomment this one for testing timerSettings. Make sure to comment out production.
+const timerSettings = require('../utils/timerSettings.js').testing;
 
 function Game (questions, users, settings, io, newGame){
 
@@ -20,7 +25,7 @@ function Game (questions, users, settings, io, newGame){
         // Users who have played in the current game
         users: users,
         // Timer for tracking countdowns for questions or to next question
-        timer: 5,
+        timer: timerSettings.preGame,
         // Questions for the current game. Called for the current API.
         questions: questions,
         // Total number of questions
@@ -72,24 +77,24 @@ function Game (questions, users, settings, io, newGame){
         switch(this.gameData.gameState) {
             case 'pregame':
                 // addGame(this.gameData._id);
-                this.resetTimer(10);
+                this.resetTimer(timerSettings.questionActive);
                 this.gameData.gameState = 'questionActive';
                 this.nextQuestion();
                 this.tickInterval();
                 break;
             case 'questionActive':
-                this.resetTimer(5);
+                this.resetTimer(timerSettings.intermission);
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
-                const questionActiveTimeout = setTimeout(()=>{
+                setTimeout(()=>{
                     this.calculateScores();    
-                },200)
+                },timerSettings.ping)
                 // this.update();
                 this.tickInterval();
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
-                    this.resetTimer(10);
+                    this.resetTimer(timerSettings.gameEnd);
                     console.log("Game End!");
                     this.gameData.gameState = 'gameEnd';
                     this.removeIdleScores();
@@ -97,7 +102,7 @@ function Game (questions, users, settings, io, newGame){
                     this.tickInterval();
                     break;
                 } else {
-                    this.resetTimer(10);
+                    this.resetTimer(timerSettings.questionActive);
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
                     this.nextQuestion();
@@ -119,7 +124,7 @@ function Game (questions, users, settings, io, newGame){
     this.tickInterval = () => {
         clearInterval(this.tick);
         // Lowered handleTick for testing purposes
-        this.tick = setInterval(this.handleTick, 1000);
+        this.tick = setInterval(this.handleTick, timerSettings.tickInterval);
     }
     // Acts on the interval tick. Updates client on tick. Calls gameLoopStep() if timer < 0.
     this.handleTick = () => {        
