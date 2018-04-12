@@ -7,7 +7,12 @@ body, html {
     text-align: right !important;
 }
 
+/* To vertically align since Bootstrap 4 and React aren't playing nice otherwise, so Google solutions aren't working */
 .mainContainer {
 	margin-top: 15%;
 	margin-bottom: 15%;
+}
+
+.login-form {
+	width: 20%;
 }

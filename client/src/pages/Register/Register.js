@@ -46,7 +46,7 @@ class Register extends Component {
       return(<Redirect to="/" />)
     }
     return (
-      <div className = "container poop mainContainer">
+      <div className = "container poop mainContainer text-center">
         {this.state.errors.length > 0 ? this.state.errors.map((item,i)=>{return(<p key={i}>{item}</p>)}):""}
         <p className="max-center">Register</p>
         <form>

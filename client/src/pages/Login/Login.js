@@ -92,7 +92,7 @@ class Login extends Component {
     // }
     return (
       <div>
-        <div className="container">
+        <div className="container login-form">
         {this.state.errors.length > 0 ? this.state.errors.map((thing)=>{return(<p>thing</p>)}):""}
         <p className="max-center">Login</p>
         <form>

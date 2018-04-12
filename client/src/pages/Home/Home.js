@@ -105,7 +105,7 @@ class Home extends Component {
               setAnswer={this.setAnswer}
               timer={this.state.timer}
             />
-           : this.state.gameState==='intermission'? 
+          : this.state.gameState==='intermission'? 
             <Intermission
               question={this.state.question}
               correctAnswer={this.state.correctAnswer} 
@@ -114,7 +114,7 @@ class Home extends Component {
               currentAnswer={this.state.currentAnswer}
               timer={this.state.timer}
             />
-           : this.state.gameState==='gameEnd'?
+          : this.state.gameState==='gameEnd'?
             <GameEnd scores={this.state.scores} />
             :null
         }
