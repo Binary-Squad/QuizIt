@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import API from "../../utils/API";
 // import io from 'socket.io-client';
 import socket from '../io';
@@ -10,6 +11,7 @@ class Login extends Component {
     password: "",
     errors:[],
     endpoint: "localhost:3001",
+    redirect:false
   };
 
   handleInputChange = event => {
@@ -47,37 +49,46 @@ class Login extends Component {
     })
   };
 
+  registerButton = (event) => {
+    this.setState({redirect:true});
+  }
 
   render() {
-    return (
-      <div className="text-center">
-        {this.props.loggedIn}
-        <div className="container">
-        {this.state.errors.length > 0 ? this.state.errors.map((thing)=>{return(<p>thing</p>)}):""}
-        <p className="max-center">Login</p>
-        <form>
-          <div>
-            <input 
-              name="username"
-              onChange={this.handleInputChange}
-              value={this.state.username}
-              placeholder="username"
-            />
+    if(this.state.redirect){
+      return <Redirect to="/register"/>;
+    }
+    else{
+      return (
+        <div className="text-center">
+          {this.props.loggedIn}
+          <div className="container">
+          {this.state.errors.length > 0 ? this.state.errors.map((thing)=>{return(<p>thing</p>)}):""}
+          <p className="max-center">Login</p>
+          <form>
+            <div>
+              <input 
+                name="username"
+                onChange={this.handleInputChange}
+                value={this.state.username}
+                placeholder="username"
+              />
+            </div>
+            <div>
+              <input 
+                name="password"
+                onChange={this.handleInputChange}
+                value={this.state.password}
+                placeholder="password"
+                type="password"
+              />
+            </div>
+            <button className="button-login" onClick={this.handleFormSubmit}>Login</button>
+          </form>
           </div>
-          <div>
-            <input 
-              name="password"
-              onChange={this.handleInputChange}
-              value={this.state.password}
-              placeholder="password"
-              type="password"
-            />
-          </div>
-          <button className="button-login" onClick={this.handleFormSubmit}>Login</button>
-        </form>
+          <button className="register-button" onClick={this.registerButton}>Register</button>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 
