@@ -1,7 +1,9 @@
-import React, {Component} from 'react'
-import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap'
+import React, {Component} from 'react';
+import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
+import QuestionTracker from '../QuestionTracker';
+import Timer from '../Timer';
 // import {Modal, CustomComponent} from 'react-bootstrap'
-import './questionActive.css'
+import './questionActive.css';
 
 
 export default class QuestionActive extends Component {
@@ -10,6 +12,7 @@ export default class QuestionActive extends Component {
     questionNum:this.props.questionNum,
     totalQuestions:this.props.totalQuestions,
     timer:this.props.timer,
+    category: this.props.category,
     selectedAnswer:"",
     timeClicked:0,
     activeIndex: -1,
@@ -37,7 +40,7 @@ export default class QuestionActive extends Component {
     return (
       <div className="">
           <Panel className="questionList">
-            <Panel.Heading className="centered">{question.question}</Panel.Heading>
+            <Panel.Heading className="centered question-text"><span>{question.question.replace(/&quot;/g, '\"').replace(/&#039;/g, '\'')}</span></Panel.Heading>
             <ListGroup>
               {answers.map((answer,index)=> (
                 <ListGroupItem 
@@ -51,6 +54,7 @@ export default class QuestionActive extends Component {
                 </ListGroupItem>
               ))}
             </ListGroup>
+            <QuestionTracker questionNum={this.props.questionNum} totalQuestions={this.props.totalQuestions} category={this.props.category}> </QuestionTracker>
           </Panel>
       </div>
     )

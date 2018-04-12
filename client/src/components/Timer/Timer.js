@@ -4,15 +4,14 @@ import React, {Component} from 'react'
 import './Timer.css'
 
 export default class Timer extends Component {
-
+  
   render() {
 
     return (
-      <div>
-        <h1 className="centered">Timer</h1>
-        <div className="timer">
-            {this.props.timer}
-        </div>
+      <div className="centered">
+        <span className="timer centered">
+            {this.props.timer} seconds remaining!
+        </span>
       </div>
     )
   }

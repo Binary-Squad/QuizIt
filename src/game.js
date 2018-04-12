@@ -47,7 +47,8 @@ function Game (questions, users, settings, io, newGame){
             gameState:"pregame",
             timer:10,
             totalQuestions:0,
-            questionNum:0
+            questionNum:0,
+            category: ""
         },
     };
 
@@ -132,7 +133,8 @@ function Game (questions, users, settings, io, newGame){
             timer:this.gameData.timer,
             totalQuestions:this.gameData.totalQuestions,
             questionNum:this.gameData.questionNum+1,
-            scores:this.gameData.scores
+            scores:this.gameData.scores,
+            category: this.gameData.category
         }
         this.gameData.timer--;
         // console.log(this.gameData.socketObj);
@@ -153,6 +155,7 @@ function Game (questions, users, settings, io, newGame){
         this.gameData.questionToBeSent = omit(this.gameData.currentQuestion, "correct_answer");
         this.gameData.questionToBeSent = omit(this.gameData.questionToBeSent, "incorrect_answers");
         this.gameData.questionToBeSent.answers = this.randomizeAnswers();
+        this.gameData.category = this.gameData.currentQuestion.category;
     }
 
     // Method or randomizing the answers and generating the client-facing question object.
@@ -209,7 +212,8 @@ function Game (questions, users, settings, io, newGame){
                 gameState:"pregame",
                 timer:10,
                 totalQuestions:0,
-                questionNum:0
+                questionNum:0,
+                category: ""
             }
         };
     }

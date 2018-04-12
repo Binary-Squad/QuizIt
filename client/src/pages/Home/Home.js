@@ -26,7 +26,8 @@ class Home extends Component {
     users:[],
     questionNum:0,
     totalQuestions:0,
-    scores:[]
+    scores:[],
+    category: ""
   };
 
   componentWillMount() {
@@ -49,8 +50,9 @@ class Home extends Component {
           correctAnswer:msg.correctAnswer,
           questionNum:msg.questionNum,
           totalQuestions:msg.totalQuestions,
-          scores:msg.scores
-        })
+          scores:msg.scores,
+          category:msg.category
+        });
       }
     });    
   }
@@ -104,8 +106,9 @@ class Home extends Component {
               totalQuestions={this.state.totalQuestions}
               setAnswer={this.setAnswer}
               timer={this.state.timer}
+              category={this.state.category}
             />
-           : this.state.gameState==='intermission'? 
+          : this.state.gameState==='intermission'? 
             <Intermission
               question={this.state.question}
               correctAnswer={this.state.correctAnswer} 
@@ -113,8 +116,9 @@ class Home extends Component {
               totalQuestions={this.state.totalQuestions}
               currentAnswer={this.state.currentAnswer}
               timer={this.state.timer}
+              category={this.state.category}
             />
-           : this.state.gameState==='gameEnd'?
+          : this.state.gameState==='gameEnd'?
             <GameEnd scores={this.state.scores} />
             :null
         }

@@ -50,7 +50,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className="text-center">
         {this.props.loggedIn}
         <div className="container">
         {this.state.errors.length > 0 ? this.state.errors.map((thing)=>{return(<p>thing</p>)}):""}
@@ -73,7 +73,7 @@ class Login extends Component {
               type="password"
             />
           </div>
-          <button onClick={this.handleFormSubmit}>Login</button>
+          <button className="button-login" onClick={this.handleFormSubmit}>Login</button>
         </form>
         </div>
       </div>
