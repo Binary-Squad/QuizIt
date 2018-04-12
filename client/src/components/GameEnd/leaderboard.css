@@ -1,0 +1,22 @@
+.leaderboard-container{
+	margin-bottom: 40px;
+	margin-top: 30px;
+}
+.leaderboard-title {
+	text-align: center;
+	font-size: 30px;
+	font-weight: 700;
+}
+.leaderboard-score {
+	text-align: center;
+	font-size: 30px;
+	font-weight: 700;
+}
+#dancing-alien {
+	width: 39px;
+	height: auto;
+}
+#dancing-eddy {
+	width: 98px;
+	height: auto;
+}
