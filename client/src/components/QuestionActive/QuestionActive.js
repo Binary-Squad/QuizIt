@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
 import QuestionTracker from '../QuestionTracker';
+import Timer from '../Timer';
 // import {Modal, CustomComponent} from 'react-bootstrap'
 import './questionActive.css';
 

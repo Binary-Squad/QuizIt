@@ -24,8 +24,14 @@ body, html {
 
 .question-tracker {
 	font-weight: bold;
+	margin-bottom: 10px;
 }
 
 .tracker {
 	margin-top: 20px;
+}
+
+.timer {
+	margin-top: 20px;
+	font-size: 30px;
 }
