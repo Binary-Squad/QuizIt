@@ -11,6 +11,7 @@ export default class QuestionActive extends Component {
     questionNum:this.props.questionNum,
     totalQuestions:this.props.totalQuestions,
     timer:this.props.timer,
+    category: this.props.category,
     selectedAnswer:"",
     timeClicked:0,
     activeIndex: -1,
@@ -52,7 +53,7 @@ export default class QuestionActive extends Component {
                 </ListGroupItem>
               ))}
             </ListGroup>
-            <QuestionTracker questionNum={this.props.questionNum} totalQuestions={this.props.totalQuestions}> </QuestionTracker>
+            <QuestionTracker questionNum={this.props.questionNum} totalQuestions={this.props.totalQuestions} category={this.props.category}> </QuestionTracker>
           </Panel>
       </div>
     )

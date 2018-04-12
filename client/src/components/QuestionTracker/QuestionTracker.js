@@ -3,6 +3,9 @@ import React from "react";
 const QuestionTracker = props => (
     <div className="row">
         <div className="col-3">
+        <div className="align-left">
+            <span className="question-tracker">Category: {props.category}</span>
+        </div>
         </div>
         <div className="col-6">
         </div>

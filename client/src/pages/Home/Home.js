@@ -26,7 +26,8 @@ class Home extends Component {
     users:[],
     questionNum:0,
     totalQuestions:0,
-    scores:[]
+    scores:[],
+    category: ""
   };
 
   componentWillMount() {
@@ -49,8 +50,9 @@ class Home extends Component {
           correctAnswer:msg.correctAnswer,
           questionNum:msg.questionNum,
           totalQuestions:msg.totalQuestions,
-          scores:msg.scores
-        })
+          scores:msg.scores,
+          category:msg.category
+        });
       }
     });    
   }
@@ -104,6 +106,7 @@ class Home extends Component {
               totalQuestions={this.state.totalQuestions}
               setAnswer={this.setAnswer}
               timer={this.state.timer}
+              category={this.state.category}
             />
           : this.state.gameState==='intermission'? 
             <Intermission
