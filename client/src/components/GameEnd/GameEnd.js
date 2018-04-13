@@ -20,20 +20,22 @@ class GameEnd extends Component {
 
   render() {
     return (
-      <div className="leaderboard-container">
+      <div className="container-fluid">
+      <div className="row">
+      <div className="col-md-12 center">
         <h1 className="leaderboard-title">
-        <img id="dancing-alien" alt="meaningful text ;-)" src={require("./alien.gif")}/>
         <img id="dancing-eddy" alt="meaningful text ;-)" src={require("./tenor.gif")}/>
         Leaderboard
         <img id="dancing-eddy" alt="meaningful text ;-)" src={require("./tenor.gif")}/>
-        <img id="dancing-alien" alt="meaningful text ;-)" src={require("./alien.gif")}/>
         </h1>
-      	<div className="leaderboard-score">{this.state.scores?this.state.scores.map(score=>{return(
+      	<div className="leaderboard-score card-header">{this.state.scores?this.state.scores.map(score=>{return(
           <div key={score.uid}>{score.name}
             <h2>Score</h2>
             <div>{score.score}</div>
           </div>)
         }):<div>loading</div>}</div>
+          </div>
+        </div>
       </div>
     );
   }

@@ -12,11 +12,12 @@
 	font-size: 30px;
 	font-weight: 700;
 }
-#dancing-alien {
-	width: 39px;
-	height: auto;
-}
 #dancing-eddy {
 	width: 98px;
 	height: auto;
+}
+.card-header {
+	float: left;
+	padding-left: 50px;
+	padding-right: 50px;
 }
