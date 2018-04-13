@@ -64,7 +64,7 @@ class Login extends Component {
         <div className="text-center">
           {this.props.loggedIn}
           <div className="container">
-          {this.state.errors.length > 0 ? this.state.errors.map((thing)=>{return(<p>thing</p>)}):""}
+          {this.state.errors.length > 0 ? this.state.errors.map((item,i)=>{return(<p key={i}>{item}</p>)}):""}
           <p className="max-center">Login</p>
           <form>
             <div>
