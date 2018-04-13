@@ -1,3 +1,46 @@
-/*.poop {
-	background-color: red;
-}*/
+.quizitLeft, .quizitRight, .quizitCenter, 
+.quizitPlayground, .quizitPlaygroundTop, .quizitPlaygroundBottom{
+	border: solid black 1px;
+}
+
+.pushDown{
+	height: 50px;
+}
+
+.quizitLeft, .quizitRight, .quizitCenter{
+	height: calc(100vh - 50px);
+}
+
+.quizitLeft{
+
+}
+
+.quizitRight{
+
+}
+
+.quizitCenter{
+
+}
+
+.quizitPlayground{
+	width: 80%;
+	margin: auto;
+	height: 90%;
+}
+
+.vh-center{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform:translateX(-50%) translateY(-50%);
+    -webkit-transform:translateX(-50%) translateY(-50%);
+}
+
+.quizitPlaygroundTop{
+	height: 70%;
+}
+
+.quizitPlaygroundBottom{
+	height: 30%;
+}

@@ -4,7 +4,7 @@ import "./Navbar.css";
 
 const Navbar = props => (
 	
-	<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+	<nav id="customNavbar" className="navbar navbar-expand-lg navbar-dark bg-dark">
 		<a className="navbar-brand" href="/">
 			QuizIt!
 		</a>

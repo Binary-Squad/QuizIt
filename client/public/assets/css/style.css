@@ -35,3 +35,11 @@ body, html {
 	margin-top: 20px;
 	font-size: 30px;
 }
+
+.no-margin {
+	margin: 0px !important;
+}
+
+.no-padding {
+	padding: 0px !important;
+}
