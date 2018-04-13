@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import API from "../../utils/API";
+import API from "../../utils/API";
 // import {Redirect} from "react-router-dom";
 import socket from '../../components/io';
 import Login from '../../components/Login';
@@ -8,16 +8,19 @@ import QuestionActive from '../../components/QuestionActive';
 import Intermission from '../../components/Intermission';
 import GameEnd from '../../components/GameEnd';
 import Timer from '../../components/Timer';
+import Loading from "../../components/Loading";
 // import './Home.css';
 
 class Home extends Component {
   state = {
+    loading:true,
     loggedIn: false,
-    username: "",
-    password: "",
+    user:{},
+    // username: "",
+    // password: "",
     errors:[],
-    endpoint: "localhost:3001",
-    gameState: "pregame",
+    // endpoint: "localhost:3001",
+    gameState: "loading",
     question: {},
     currentAnswer:"",
     // answers: [],
@@ -31,6 +34,38 @@ class Home extends Component {
   };
 
   componentWillMount() {
+    if(localStorage.jwt){
+      API.getProfileInfo(localStorage.jwt).then(res=>{
+          console.log(res);
+          res.data.user.id = res.data.user._id;
+          setTimeout(()=>{
+            this.setState({loggedIn:true,loading:false,user:res.data.user},()=>{
+              console.log('loggedIn is '+this.state.loggedIn);
+            });
+          },1000)
+          
+          var socketParams = {
+            user:res.data.user,
+            room:'master'
+          }
+          socket.emit('loggedIn',socketParams);
+        }
+      ).catch(err=>{
+        console.log(err);
+        setTimeout(()=>{
+          this.setState({loggedIn:false,loading:false},()=>{
+            console.log('loggedIn is '+this.state.loggedIn);
+          });
+        },1000)
+      })
+    }
+    else{
+      setTimeout(()=>{
+        this.setState({loggedIn:false,loading:false},()=>{
+          console.log('loggedIn is '+this.state.loggedIn);
+        });
+      },1000)
+    }
   }
 
   componentDidMount(){
@@ -64,17 +99,18 @@ class Home extends Component {
     }
   }
 
-  loggedInTrue = ()=>{
-    this.setState({loggedIn:true},()=>{
-      console.log('loggedIn true!');
+  loggedInTrue = (userInfo)=>{
+    this.setState({loggedIn:true,user:userInfo},()=>{
+      console.log('loggedIn '+this.state.loggedIn);
+      console.log('user '+this.state.user);
     });
   }
 
   setAnswer = (answer,questionNum)=>{
     this.setState({currentAnswer:answer,questionNum:questionNum},()=>{
       var answerObj = {
-        id: JSON.parse(localStorage.user).id, //Allow login to update state.id later
-        name: JSON.parse(localStorage.user).name, //Allow login to update state.name later
+        id: this.state.user.id, //Allow login to update state.id later
+        name: this.state.user.name, //Allow login to update state.name later
         answer: this.state.currentAnswer, //True and False are strings as well
         questionNum: this.state.questionNum, //0-9 to match question array position
         timer: this.state.timer, //Time the user selects answer. will be 0 if they switched answers
@@ -83,53 +119,107 @@ class Home extends Component {
       console.log(answerObj);
       socket.emit('answer',answerObj);
     });
-    // Method for setting answers as an array of all answers and sending it all back at game end
-    // var tempAnswer = {
-    //   answer:answer,
-    //   questionNum:questionNum
-    // }
-    // this.setState({answers:this.state.answers.concat([tempAnswer])},()=>{
-    //   console.log('Home.js state.answers = ');
-    //   console.log(this.state.answers);
-    // });
   }
+
+  renderStuff = ()=>{
+      if(this.state.loading){
+        return(<Loading />)
+      }
+      else{
+        if(!this.state.loggedIn){
+          return(
+            <Login loggedInTrue={this.loggedInTrue}/>
+          )
+        }
+        else{
+          if(this.state.gameState === 'pregame'){
+            return(
+              <Pregame />
+            )
+          }
+          else if(this.state.gameState === 'questionActive'){
+            return(
+              <QuestionActive
+                question={this.state.question}
+                questionNum={this.state.questionNum}
+                totalQuestions={this.state.totalQuestions}
+                setAnswer={this.setAnswer}
+                timer={this.state.timer}
+                category={this.state.category}
+              />
+            )
+          }
+          else if(this.state.gameState === 'intermission'){
+            return(
+              <Intermission
+                question={this.state.question}
+                correctAnswer={this.state.correctAnswer} 
+                questionNum={this.state.questionNum}
+                totalQuestions={this.state.totalQuestions}
+                currentAnswer={this.state.currentAnswer}
+                timer={this.state.timer}
+                category={this.state.category}
+              />
+            )
+          }
+          else if(this.state.gameState === 'gameEnd'){
+            return(
+              <GameEnd scores={this.state.scores} />
+            )
+          }
+        }
+      }
+  }
+
+  renderTimer = ()=>{
+    if(this.state.loggedIn){
+      return(<Timer timer={this.state.timer}/>)
+    }
+  }
+
+  // {this.state.loggedIn?<Timer timer={this.state.timer}/>:""}
 
   render() {
     return (
       <div className = "container poop mainContainer">
-        {!this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue}/>:
-          this.state.gameState==='pregame'?<Pregame />:
-          this.state.gameState==='questionActive'? 
-            <QuestionActive
-              question={this.state.question}
-              questionNum={this.state.questionNum}
-              totalQuestions={this.state.totalQuestions}
-              setAnswer={this.setAnswer}
-              timer={this.state.timer}
-              category={this.state.category}
-            />
-          : this.state.gameState==='intermission'? 
-            <Intermission
-              question={this.state.question}
-              correctAnswer={this.state.correctAnswer} 
-              questionNum={this.state.questionNum}
-              totalQuestions={this.state.totalQuestions}
-              currentAnswer={this.state.currentAnswer}
-              timer={this.state.timer}
-              category={this.state.category}
-            />
-          : this.state.gameState==='gameEnd'?
-            <GameEnd scores={this.state.scores} />
-            :null
-        }
-        {this.state.loggedIn?<Timer timer={this.state.timer}/>:""}
-      </div>
+        {this.renderStuff()}
+        {this.renderTimer()}
+      </div> 
     );
   }
 
 }
 
 export default Home;
+
+
+ // !this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue}/>:
+ //            this.state.gameState==='pregame'?<Pregame />:
+ //            this.state.gameState==='questionActive'? 
+ //              <QuestionActive
+ //                question={this.state.question}
+ //                questionNum={this.state.questionNum}
+ //                totalQuestions={this.state.totalQuestions}
+ //                setAnswer={this.setAnswer}
+ //                timer={this.state.timer}
+ //                category={this.state.category}
+ //              />
+ //              // <Timer timer={this.state.timer}/>
+ //            : this.state.gameState==='intermission'? 
+ //              <Intermission
+ //                question={this.state.question}
+ //                correctAnswer={this.state.correctAnswer} 
+ //                questionNum={this.state.questionNum}
+ //                totalQuestions={this.state.totalQuestions}
+ //                currentAnswer={this.state.currentAnswer}
+ //                timer={this.state.timer}
+ //                category={this.state.category}
+ //              />
+ //              // <Timer timer={this.state.timer}/>
+ //            : this.state.gameState==='gameEnd'?
+ //              <GameEnd scores={this.state.scores} />
+ //              // <Timer timer={this.state.timer}/>
+ //              :""
 
 // {
 //     uid: mongoDBuser._id, 
