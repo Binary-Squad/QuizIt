@@ -1,19 +1,33 @@
 import React, { Component } from "react";
+import socket from '../io';
 import "./Chatroom.css";
 
-class Chatroom extends Component {
+import ChatMessageArea from "../ChatMessageArea";
+import ChatInput from "../ChatInput";
 
-  componentWillMount(){
+class Chatroom extends Component {
+  constructor(props) {
+    super(props);
+    state: {
+      user: props.user
+    };
   }
 
-  state = {
-    user:this.props.user
-  };
+  componentWillMount() {
+  }
+
+  sendChatMsg = (chatMsgObj) => {
+    this.props.socket.emit('chat', (chatMsgObj));
+  }
 
   render() {
     return (
-      <div>
-        Chatroom
+      <div className="chatContainer">
+        <div className="chatTitle">
+          Chat Room
+        </div>
+        <ChatMessageArea socket={this.props.socket}> </ChatMessageArea>
+        <ChatInput user={this.props.user} sendChatMsg={this.sendChatMsg}> </ChatInput>
       </div>
     );
   }
