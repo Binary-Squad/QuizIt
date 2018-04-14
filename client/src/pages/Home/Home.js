@@ -9,7 +9,9 @@ import Intermission from '../../components/Intermission';
 import GameEnd from '../../components/GameEnd';
 import Timer from '../../components/Timer';
 import Loading from "../../components/Loading";
-// import './Home.css';
+import CurrentQuestions from "../../components/CurrentQuestions";
+import Chatroom from "../../components/Chatroom";
+import './Home.css';
 
 class Home extends Component {
   state = {
@@ -121,6 +123,7 @@ class Home extends Component {
     });
   }
 
+  // Renders game components inside quizitPlayground.
   renderStuff = ()=>{
       if(this.state.loading){
         return(<Loading />)
@@ -171,66 +174,49 @@ class Home extends Component {
       }
   }
 
+  // Renders timer inside quizitPlayground
   renderTimer = ()=>{
     if(this.state.loggedIn){
       return(<Timer timer={this.state.timer}/>)
     }
   }
 
-  // {this.state.loggedIn?<Timer timer={this.state.timer}/>:""}
+  // Renders left div. You can render a specific component and pass props like so.
+  renderLeft = ()=>{
+    if(this.state.loggedIn){
+      return(<CurrentQuestions questions={this.state.questions} />)
+    }
+  }
+
+  // Renders right div. You can render a specific component and pass props like so.
+  renderRight = ()=>{
+    if(this.state.loggedIn){
+      return(<Chatroom user={this.state.user} />)
+    }
+  }
 
   render() {
     return (
-      <div className = "container poop mainContainer">
-        {this.renderStuff()}
-        {this.renderTimer()}
-      </div> 
+      <div className="container-fluid">
+        <div className="row pushDown"></div>
+        <div className="row">
+          <div className="col col-sm-3 col-lg-2 quizitLeft">
+            {this.renderLeft()}
+          </div>
+          <div className="col col-sm-6 col-lg-8 quizitCenter">
+              <div className = "quizitPlayground vh-center">
+                <div className="quizitPlaygroundTop">{this.renderStuff()}</div>
+                <div className="quizitPlaygroundBottom">{this.renderTimer()}</div>
+              </div>
+          </div>
+          <div className="col col-sm-3 col-lg-2 quizitRight">
+            {this.renderRight()}
+          </div>
+        </div>
+      </div>
     );
   }
 
 }
 
 export default Home;
-
-
- // !this.state.loggedIn?<Login loggedInTrue={this.loggedInTrue}/>:
- //            this.state.gameState==='pregame'?<Pregame />:
- //            this.state.gameState==='questionActive'? 
- //              <QuestionActive
- //                question={this.state.question}
- //                questionNum={this.state.questionNum}
- //                totalQuestions={this.state.totalQuestions}
- //                setAnswer={this.setAnswer}
- //                timer={this.state.timer}
- //                category={this.state.category}
- //              />
- //              // <Timer timer={this.state.timer}/>
- //            : this.state.gameState==='intermission'? 
- //              <Intermission
- //                question={this.state.question}
- //                correctAnswer={this.state.correctAnswer} 
- //                questionNum={this.state.questionNum}
- //                totalQuestions={this.state.totalQuestions}
- //                currentAnswer={this.state.currentAnswer}
- //                timer={this.state.timer}
- //                category={this.state.category}
- //              />
- //              // <Timer timer={this.state.timer}/>
- //            : this.state.gameState==='gameEnd'?
- //              <GameEnd scores={this.state.scores} />
- //              // <Timer timer={this.state.timer}/>
- //              :""
-
-// {
-//     uid: mongoDBuser._id, 
-//     answers: string, //True and False are strings as well
-//     num: 4, //0-9 to match question array position
-//     timer: 3, //Time the user selects answer. will be 0 if they switched answers
-//     room: string //Will be 'master' until multiple rooms
-// }
-// //react sending mechanism
-// this.socket.emit('answer',answerObj);
-// //potential server receiving mechanism
-// socket.on('answer', function(answerObj){
-//   gameManager.activeSessions[answerObj.room].currentGame.updateAnswer(answerObj);
-// })

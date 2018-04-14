@@ -3,22 +3,9 @@ nav{
     width:100%;
 }
 
-#customnavbar{
+#customNavbar{
     height:50px;
-    background-color:black;
-    display:table-row;
-}
-
-#customnavbar li {
-    display:table-cell;
-    height: 40px;
-    text-align:center;
-    vertical-align: middle;
-    width: 100px;
-}
-
-#customnavbar li a{
-    color: white;
+    position: fixed;
 }
 
 .text-right {
