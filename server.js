@@ -98,6 +98,11 @@ io.on('connection', function(socket) {
     // Call some function to do stuff in gameManager -> gameSession -> game
     gameManager.handleAnswer(answerObj)
   });
+
+  socket.on('chat', function(chatObj) {
+    console.log(chatObj.user.name + ": " + chatObj.msg);
+    socket.emit('chat', chatObj);
+  });
 });
 
 // Send every request to the React app

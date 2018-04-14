@@ -51,6 +51,7 @@ class Home extends Component {
             room:'master'
           }
           socket.emit('loggedIn',socketParams);
+          socket.emit('chat', {user: {name: this.user.name}, msg: " has joined the game."});
         }
       ).catch(err=>{
         console.log(err);
@@ -191,7 +192,7 @@ class Home extends Component {
   // Renders right div. You can render a specific component and pass props like so.
   renderRight = ()=>{
     if(this.state.loggedIn){
-      return(<Chatroom user={this.state.user} />)
+      return(<Chatroom user={this.state.user} socket={socket}/>)
     }
   }
 
