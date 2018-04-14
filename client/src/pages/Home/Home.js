@@ -199,23 +199,24 @@ class Home extends Component {
     return (
       <div className="container-fluid">
         <div className="row pushDown"></div>
-        <div>
-          <div className="quizitLeft">
+        <div className="row">
+          <div className="col col-sm-3 col-lg-2 quizitLeft">
             {this.renderLeft()}
           </div>
-          <div className="quizitCenter">
+          <div className="col col-sm-6 col-lg-8 quizitCenter">
               <div className = "quizitPlayground vh-center">
                 <div className="quizitPlaygroundTop">{this.renderStuff()}</div>
                 <div className="quizitPlaygroundBottom">{this.renderTimer()}</div>
               </div>
           </div>
-          <div className="quizitRight">
+          <div className="col col-sm-3 col-lg-2 quizitRight">
             {this.renderRight()}
           </div>
         </div>
       </div>
     );
   }
+
 }
 
 export default Home;
