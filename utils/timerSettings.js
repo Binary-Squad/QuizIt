@@ -11,9 +11,9 @@ const timerSettings={
 	},
 	testing:{
 		preGame:5, // sets initial timer for preGame phase
-		intermission:3, // sets timer for intermission phase
-		gameEnd:10, // sets timer for gameEnd phase
-		questionActive:5, // sets timer for questionActive phase
+		intermission:5, // sets timer for intermission phase
+		gameEnd:5, // sets timer for gameEnd phase
+		questionActive:100, // sets timer for questionActive phase
 		tickInterval:500, // sets the timer tick interval
 		ping:1250 // sets ping comparing answers
 	}

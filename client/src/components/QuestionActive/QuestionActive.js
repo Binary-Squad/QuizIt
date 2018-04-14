@@ -40,6 +40,7 @@ export default class QuestionActive extends Component {
     return (
       <div className="">
           <Panel className="questionList">
+            <h3 className="centered">Question Number: {this.state.questionNum}/{this.state.totalQuestions}</h3>
             <Panel.Heading className="centered question-text"><span>{question.question.replace(/&quot;/g, '\"').replace(/&#039;/g, '\'')}</span></Panel.Heading>
             <ListGroup>
               {answers.map((answer,index)=> (
@@ -54,7 +55,7 @@ export default class QuestionActive extends Component {
                 </ListGroupItem>
               ))}
             </ListGroup>
-            <QuestionTracker questionNum={this.props.questionNum} totalQuestions={this.props.totalQuestions} category={this.props.category}> </QuestionTracker>
+            <QuestionTracker difficulty={this.props.question.difficulty} category={this.props.category}></QuestionTracker>
           </Panel>
       </div>
     )

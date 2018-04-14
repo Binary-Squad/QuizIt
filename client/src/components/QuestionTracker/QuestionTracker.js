@@ -11,7 +11,7 @@ const QuestionTracker = props => (
         </div>
         <div className="col-2 pull-right">
             <div className="align-right">
-                <span className="question-tracker">Question: {props.questionNum} / {props.totalQuestions}</span>
+                <span className="question-tracker">Difficulty: {props.difficulty}</span>
             </div>
         </div>
     </div>

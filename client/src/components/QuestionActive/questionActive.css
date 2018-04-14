@@ -2,3 +2,11 @@
 	background-color: #ADD8E6;
 	color: white;
 }
+
+.centered{
+	text-align: center;
+}
+
+.question-text{
+	font-size: 20px;
+}
