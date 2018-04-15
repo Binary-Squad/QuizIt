@@ -7,7 +7,6 @@
 	text-align: center;
 }
 
-
 .questionNum-text{
 	padding: 0px;
 	padding-top: .5vh;
@@ -31,17 +30,36 @@
 }
 
 /*4 answers*/
-.answerHeight{
-	height:9vh;
-	line-height: 3vh;
-	font-size: 2.5vh;
-}
-
 .questionTracker{
 	padding: 0px;
 	margin: 0px;
 	height: 10vh;
 }
 
+
+.correct {
+  background-color: pink;
+  color: white;
+}
+
+.correctAnswer {
+  background-color: green;
+  color: white;
+}
+
+.incorrect {
+	background-color: red;
+	color: white;
+}
+
+.centered {
+	text-align: center;
+}
+
+.answerHeight{
+	height:9vh;
+	line-height: 3vh;
+	font-size: 2.5vh;
+}
 
 /*60vh total*/
