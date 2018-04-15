@@ -3,9 +3,12 @@
 }
 
 .chatTitle {
+    background-color: white;
     height: 5%;
-    border-style: solid;
-    border-width: 2px;
+    padding-top: 3%;
+    border-bottom-style: solid;
+    /* border-top-style: solid; */
+    border-width: 1px;
     width: 100%;
     font-weight: bold;
     text-align: center;

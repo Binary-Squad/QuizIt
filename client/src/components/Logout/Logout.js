@@ -1,12 +1,19 @@
 import React from "react";
-// import "./Logout.css";
+import "./Logout.css";
 
 const Logout = props => {
-    return (
-        <li className="nav-item active text-right">
-            <a className="nav-link" href="/logout">Logout </a>
-        </li>
-    )
+    if (props.loggedIn) {
+        return (
+            <li className="nav-item active float-right">
+                <a className="nav-link float-right" href="/logout">Logout </a>
+            </li>
+        )
+    } else {
+        return (
+            <li className="nav-item active text-right">
+            </li>
+        )
+    }
 }
 
 export default Logout;

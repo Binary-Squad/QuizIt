@@ -56,9 +56,9 @@ export default class QuestionActive extends Component {
     if(this.props.gameState === "questionActive"){
       return (
         <div className="">
-            <div className="centered questionNum-text">Question Number: {this.state.questionNum}/{this.state.totalQuestions}</div>
+            <div className="centered questionNum-text">Question: {this.state.questionNum} / {this.state.totalQuestions}</div>
             <div className="centered question-text" dangerouslySetInnerHTML={createMarkup(question.question)}/>
-            <ListGroup>
+            <ListGroup className="answer-group">
               {answers.map((answer,index)=> (
                 <ListGroupItem 
                   key={answer}
