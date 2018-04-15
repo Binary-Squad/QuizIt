@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Session = require('../models/gameSession');
 const axios = require('axios');
 const triviaAPI = require('../utils/triviaAPI');
+const questionBackup  = require('../models/questionBackup');
 
 function GameSession(io) {
     // The current active game's id
@@ -93,6 +94,13 @@ function GameSession(io) {
                 difficulty: 'Any',
                 type: 'Multiple'
             }
+            questionBackup.count({},(err,count)=>{
+                console.log('Currently at '+count+' backup questions.');
+            })
+            res.data.results.forEach((question,index)=>{
+                questionBackup.findOneOrCreate({question: question.question}, question, (err, result) => {
+                });
+            })
             // Finds current session to push the gameObj into this session.games
             Session.findOneAndUpdate(
                 {"_id":this._id},
@@ -116,6 +124,38 @@ function GameSession(io) {
                     this.currentGame.initializeGame();
                 })
             })
+        },()=>{
+            console.log('getting backup questions');
+            questionBackup.aggregate([{$sample: {size: 10}}]).then(res=>{
+                const newGame = new Game(res, this.users, gameSettings, io, this.createNewGame);
+                const gameObj = {
+                    users:this.users,
+                    questions:res,
+                    scores:{},
+                    numQuestions: 10,
+                    category: 0,
+                    difficulty: 'Any',
+                    type: 'Multiple'
+                }
+                // Finds current session to push the gameObj into this session.games
+                Session.findOneAndUpdate(
+                    {"_id":this._id},
+                    {$push:{"games":gameObj}}
+                ).then((res)=>{
+                    console.log('found gameSession and added game');
+                    console.log(this._id);
+                    // Does 2nd mongoose call to find most recent game's _id.
+                    Session.findById(this._id).then(res2=>{
+                        console.log(res2);
+                        // Sets newGame._id and .sessionId for newGame to update itself
+                        newGame._id = res2.games[res2.games.length-1]._id;
+                        newGame.sessionId = this._id;
+                        this.currentGame = newGame;
+                        // Initializes game after all this
+                        this.currentGame.initializeGame();
+                    })
+                })
+            });
         });
     };
 
