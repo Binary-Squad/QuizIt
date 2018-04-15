@@ -6,13 +6,10 @@ import "./ChatInput.css";
 import ChatButton from "../ChatButton";
 
 class ChatInput extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: this.props.user,
-            msg: ''
-        };
-    }
+    state = {
+        user: this.props.user,
+        msg: ''
+    };
 
     createChatObj = () => {
         const chatMsgObj = {
@@ -20,15 +17,15 @@ class ChatInput extends React.Component {
             msg: this.state.msg
         }
         this.props.sendChatMsg(chatMsgObj);
+        console.log('createChatObj');
         console.log(chatMsgObj);
         this.setState({
             msg: ''
         });
-        return false;
     }
 
     handleTextAreaChange = (event) => {
-        console.log(event.target.value);
+        // console.log(event.target.value);
         this.setState({
             msg: event.target.value
         });

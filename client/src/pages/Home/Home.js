@@ -18,21 +18,17 @@ class Home extends Component {
     loading:true,
     loggedIn: false,
     user:{},
-    // username: "",
-    // password: "",
     errors:[],
-    // endpoint: "localhost:3001",
     gameState: "loading",
     question: {},
     currentAnswer:"",
-    // answers: [],
     correctAnswer: "",
     timer:0,
     users:[],
     questionNum:0,
     totalQuestions:0,
     scores:[],
-    category: ""
+    category: "",
   };
 
   componentWillMount() {
@@ -51,7 +47,6 @@ class Home extends Component {
             room:'master'
           }
           socket.emit('loggedIn',socketParams);
-          socket.emit('chat', {user: {name: this.user.name}, msg: " has joined the game."});
         }
       ).catch(err=>{
         console.log(err);
@@ -92,7 +87,7 @@ class Home extends Component {
           category:msg.category
         });
       }
-    });    
+    });
   }
 
   componentWillUpdate(nextProps, nextState){
