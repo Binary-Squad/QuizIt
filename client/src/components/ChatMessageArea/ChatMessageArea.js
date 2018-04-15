@@ -19,13 +19,12 @@ class ChatMessageArea extends React.Component {
     render() {
         return (
             <div className="chatMessageArea">
-                <ul>
+                <ul className="chatList">
                     {this.props.messages.map((message,index)=><li key={index} className="listItem">{message.user.name + ": " + message.msg}</li>)}
                 </ul>
             </div>
         )
     }
-
 }
 
 export default ChatMessageArea;

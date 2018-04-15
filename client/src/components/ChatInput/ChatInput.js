@@ -12,16 +12,18 @@ class ChatInput extends React.Component {
     };
 
     createChatObj = () => {
-        const chatMsgObj = {
-            user: this.props.user,
-            msg: this.state.msg
+        if(this.state.msg.trim()){
+            const chatMsgObj = {
+                user: this.props.user,
+                msg: this.state.msg
+            }
+            this.props.sendChatMsg(chatMsgObj);
+            console.log('createChatObj');
+            console.log(chatMsgObj);
+            this.setState({
+                msg: ''
+            });
         }
-        this.props.sendChatMsg(chatMsgObj);
-        console.log('createChatObj');
-        console.log(chatMsgObj);
-        this.setState({
-            msg: ''
-        });
     }
 
     handleTextAreaChange = (event) => {
@@ -33,13 +35,9 @@ class ChatInput extends React.Component {
 
     render() {
         return (
-            <div className="chatTextArea">
-                <form>
-                    <div className="form-group">
-                        <textarea className="form-control" id="chat-text" rows="3" value={this.state.msg} onChange={this.handleTextAreaChange}></textarea>
-                        <ChatButton sendChatMsg={this.createChatObj}> </ChatButton>
-                    </div>
-                </form>
+            <div className="chatInput">
+                <textarea className="form-control inputBoxStyle" id="chat-text" rows="3" value={this.state.msg} onChange={this.handleTextAreaChange}></textarea>
+                <ChatButton sendChatMsg={this.createChatObj}> </ChatButton>
             </div>
         )
     }

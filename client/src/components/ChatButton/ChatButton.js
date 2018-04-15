@@ -11,7 +11,7 @@ class ChatButton extends React.Component {
 
     render() {
         return (
-            <button type="button" className="btn btn-primary" onClick={this.props.sendChatMsg}>Submit</button>
+            <button type="button" className="btn btn-primary chatButton" onClick={this.props.sendChatMsg}>Submit</button>
         )
     }
 }

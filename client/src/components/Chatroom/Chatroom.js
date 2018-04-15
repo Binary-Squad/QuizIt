@@ -34,8 +34,12 @@ class Chatroom extends Component {
         <div className="chatTitle">
           Chat Room
         </div>
-        <ChatMessageArea messages={this.state.messages}> </ChatMessageArea>
-        <ChatInput user={this.props.user} sendChatMsg={this.sendChatMsg}> </ChatInput>
+        <div className="chatMessageAreaHeight">
+          <ChatMessageArea messages={this.state.messages}> </ChatMessageArea>
+        </div>
+        <div className="chatInputHeight">
+          <ChatInput user={this.props.user} sendChatMsg={this.sendChatMsg}> </ChatInput>
+        </div>
       </div>
     );
   }
