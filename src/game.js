@@ -56,12 +56,6 @@ function Game (questions, users, settings, io, newGame){
             category: ""
         },
     };
-
-    // this.setUsers = (users)=>{
-    //     this.gameData.users = users;
-    //     console.log(this.gameData.users);
-    // }
-
     
     this.initializeGame = () => {
         // Start pregame countdown to first question

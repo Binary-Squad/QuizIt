@@ -105,8 +105,8 @@ class Home extends Component {
     });
   }
 
-  setAnswer = (answer,questionNum)=>{
-    this.setState({currentAnswer:answer,questionNum:questionNum},()=>{
+  setAnswer = (answer)=>{
+    this.setState({currentAnswer:answer},()=>{
       var answerObj = {
         id: this.state.user.id, //Allow login to update state.id later
         name: this.state.user.name, //Allow login to update state.name later
