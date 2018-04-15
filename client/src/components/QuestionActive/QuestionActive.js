@@ -93,7 +93,7 @@ export default class QuestionActive extends Component {
                 />
               ))}
             </ListGroup>
-            <QuestionTracker questionNum={this.props.questionNum} totalQuestions={this.props.totalQuestions} category={this.props.category}> </QuestionTracker>
+            <QuestionTracker className="questionTracker" difficulty={this.props.question.difficulty} category={this.props.category}></QuestionTracker>
         </div>
       )
     }
