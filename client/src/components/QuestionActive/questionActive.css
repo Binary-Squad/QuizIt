@@ -24,7 +24,7 @@
 	margin-bottom: 1vh;
 	/*height: 10vh;*/
 	line-height: 4vh;
-	font-size: 3.5vh;
+	font-size: 2.5vh;
 	/*width: 80vh;*/
 	/*margin-left: -5vh;*/
 }
@@ -59,7 +59,13 @@
 .answerHeight{
 	height:9vh;
 	line-height: 3vh;
-	font-size: 2.5vh;
+	font-size: 2vh;
+}
+
+.answer-group {
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 2px;
 }
 
 /*60vh total*/

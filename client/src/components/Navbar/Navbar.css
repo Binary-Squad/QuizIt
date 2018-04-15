@@ -1,6 +1,7 @@
 nav{
     display:table;
     width:100%;
+    background-image: url('escheresque_ste.png');
 }
 
 #customNavbar{

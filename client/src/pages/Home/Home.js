@@ -11,6 +11,7 @@ import Timer from '../../components/Timer';
 import Loading from "../../components/Loading";
 import CurrentQuestions from "../../components/CurrentQuestions";
 import Chatroom from "../../components/Chatroom";
+import Navbar from "../../components/Navbar";
 import './Home.css';
 
 class Home extends Component {
@@ -195,23 +196,26 @@ class Home extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
-        <div className="row pushDown"></div>
-        <div className="row">
-          <div className="col col-sm-3 col-lg-2 quizitLeft">
-            {this.renderLeft()}
-          </div>
-          <div className="col col-sm-6 col-lg-8 quizitCenter">
-              <div className = "quizitPlayground vh-center">
-                <div className="quizitPlaygroundTop">{this.renderStuff()}</div>
-                <div className="quizitPlaygroundBottom">{this.renderTimer()}</div>
+      <div>
+        <Navbar loggedIn={this.state.loggedIn}/>
+          <div className="container-fluid">
+            <div className="row pushDown"></div>
+            <div className="row">
+              <div className="col col-sm-3 col-lg-2 quizitLeft">
+                {/* {this.renderLeft()} */}
               </div>
-          </div>
-          <div className="col col-sm-3 col-lg-2 quizitRight">
-            {this.renderRight()}
+              <div className="col col-sm-6 col-lg-8 quizitCenter">
+                  <div className = "quizitPlayground vh-center">
+                    <div className="quizitPlaygroundTop">{this.renderStuff()}</div>
+                    <div className="quizitPlaygroundBottom">{this.renderTimer()}</div>
+                  </div>
+              </div>
+              <div className="col col-sm-3 col-lg-2 quizitRight">
+                {this.renderRight()}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
     );
   }
 
