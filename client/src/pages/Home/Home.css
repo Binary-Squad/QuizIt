@@ -11,22 +11,26 @@
 	height: calc(100vh - 50px);
 }
 
+.quizitLeft,.quizitRight{
+
+}
+
 .quizitLeft{
 
 }
 
 .quizitRight{
-
+	padding: 0px;
+	margin: 0px;
 }
 
 .quizitCenter{
-
 }
 
 .quizitPlayground{
 	margin: auto;
-	height: 80vh;
-	width: 60vh;
+	/*height: 80vh;*/
+	width: 70vh;
 }
 
 .vh-center{
@@ -38,9 +42,9 @@
 }
 
 .quizitPlaygroundTop{
-	height: 70%;
+	/*height: 60vh;*/
 }
 
 .quizitPlaygroundBottom{
-	height: 30%;
+	height: 20vh;
 }

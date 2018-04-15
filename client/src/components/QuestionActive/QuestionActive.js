@@ -5,6 +5,9 @@ import Timer from '../Timer';
 // import {Modal, CustomComponent} from 'react-bootstrap'
 import './questionActive.css';
 
+function createMarkup(string){
+  return {__html: string};
+}
 
 export default class QuestionActive extends Component {
 
@@ -37,26 +40,26 @@ export default class QuestionActive extends Component {
     const {question} = this.props
     const answers = question.answers
 
+    // {question.question.replace(/&quot;/g, '\"').replace(/&#039;/g, '\'')}
+
     return (
       <div className="">
-          <Panel className="questionList">
-            <h3 className="centered">Question Number: {this.state.questionNum}/{this.state.totalQuestions}</h3>
-            <Panel.Heading className="centered question-text"><span>{question.question.replace(/&quot;/g, '\"').replace(/&#039;/g, '\'')}</span></Panel.Heading>
-            <ListGroup>
-              {answers.map((answer,index)=> (
-                <ListGroupItem 
-                  key={answer}
-                  answer={answer}
-                  index={index}
-                  onClick={()=>{this.handleClick(answer,index)}}
-                  className={index === this.state.activeIndex ? "currentAnswer":null}
-                >
-                  {answer}
-                </ListGroupItem>
-              ))}
-            </ListGroup>
-            <QuestionTracker difficulty={this.props.question.difficulty} category={this.props.category}></QuestionTracker>
-          </Panel>
+          <div className="centered questionNum-text">Question Number: {this.state.questionNum}/{this.state.totalQuestions}</div>
+          <div className="centered question-text" dangerouslySetInnerHTML={createMarkup(question.question)}/>
+          <ListGroup>
+            {answers.map((answer,index)=> (
+              <ListGroupItem 
+                key={answer}
+                answer={answer}
+                index={index}
+                onClick={()=>{this.handleClick(answer,index)}}
+                className={index === this.state.activeIndex ? "currentAnswer answerHeight":"answerHeight"}
+                dangerouslySetInnerHTML={createMarkup(answer)}
+              >
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+          <QuestionTracker className="questionTracker" difficulty={this.props.question.difficulty} category={this.props.category}></QuestionTracker>
       </div>
     )
   }

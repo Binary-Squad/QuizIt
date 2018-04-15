@@ -1,19 +1,19 @@
 import React from "react";
+import "./QuestionTracker.css"
+
+function renderDifficulty(string){
+    if(string){
+       return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    else{
+        return;
+    }
+}
 
 const QuestionTracker = props => (
-    <div className="row tracker">
-        <div className="col-4">
-        <div className="align-left">
-            <span className="question-tracker">{props.category}</span>
-        </div>
-        </div>
-        <div className="col-6">
-        </div>
-        <div className="col-2 pull-right">
-            <div className="align-right">
-                <span className="question-tracker">Difficulty: {props.difficulty}</span>
-            </div>
-        </div>
+    <div className="row no-margins">
+        <div className="col-10 questionTrackerBox align-left">{props.category}</div>
+        <div className="col-2 questionTrackerBox align-right">{renderDifficulty(props.difficulty)}</div>
     </div>
 )
 

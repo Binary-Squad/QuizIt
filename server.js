@@ -99,9 +99,9 @@ io.on('connection', function(socket) {
     gameManager.handleAnswer(answerObj)
   });
 
-  socket.on('chat', function(chatObj) {
+  socket.on('chatSend', function(chatObj) {
     console.log(chatObj.user.name + ": " + chatObj.msg);
-    socket.emit('chat', chatObj);
+    socket.broadcast.emit('chatReceive', chatObj);
   });
 });
 

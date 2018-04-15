@@ -6,18 +6,26 @@ import ChatMessageArea from "../ChatMessageArea";
 import ChatInput from "../ChatInput";
 
 class Chatroom extends Component {
-  constructor(props) {
-    super(props);
-    state: {
-      user: props.user
-    };
-  }
+  state = {
+    user: this.props.user,
+    messages:[]
+  };
 
   componentWillMount() {
+    socket.on('chatReceive', (chatMsgObj) => {
+      console.log('chatReceived');
+      console.log(chatMsgObj);
+      this.setState({messages:[...this.state.messages, chatMsgObj]},()=>{
+        console.log(this.state.messages);
+      })
+    });
   }
 
   sendChatMsg = (chatMsgObj) => {
-    this.props.socket.emit('chat', (chatMsgObj));
+    socket.emit('chatSend', (chatMsgObj));
+    this.setState({messages:[...this.state.messages, chatMsgObj]},()=>{
+      console.log(this.state.messages);
+    })
   }
 
   render() {
@@ -26,8 +34,12 @@ class Chatroom extends Component {
         <div className="chatTitle">
           Chat Room
         </div>
-        <ChatMessageArea socket={this.props.socket}> </ChatMessageArea>
-        <ChatInput user={this.props.user} sendChatMsg={this.sendChatMsg}> </ChatInput>
+        <div className="chatMessageAreaHeight">
+          <ChatMessageArea messages={this.state.messages}> </ChatMessageArea>
+        </div>
+        <div className="chatInputHeight">
+          <ChatInput user={this.props.user} sendChatMsg={this.sendChatMsg}> </ChatInput>
+        </div>
       </div>
     );
   }

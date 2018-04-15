@@ -10,3 +10,11 @@
     font-weight: bold;
     text-align: center;
 }
+
+.chatMessageAreaHeight{
+	height: 75%;
+}
+
+.chatInputHeight{
+	height: 20%;
+}
