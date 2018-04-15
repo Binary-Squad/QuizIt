@@ -145,12 +145,13 @@ class Home extends Component {
                 setAnswer={this.setAnswer}
                 timer={this.state.timer}
                 category={this.state.category}
+                gameState={this.state.gameState}
               />
             )
           }
           else if(this.state.gameState === 'intermission'){
             return(
-              <Intermission
+              <QuestionActive
                 question={this.state.question}
                 correctAnswer={this.state.correctAnswer} 
                 questionNum={this.state.questionNum}
@@ -158,6 +159,7 @@ class Home extends Component {
                 currentAnswer={this.state.currentAnswer}
                 timer={this.state.timer}
                 category={this.state.category}
+                gameState={this.state.gameState}
               />
             )
           }
