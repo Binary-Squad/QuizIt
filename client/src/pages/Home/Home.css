@@ -1,6 +1,6 @@
 .quizitLeft, .quizitRight, .quizitCenter, 
 .quizitPlayground, .quizitPlaygroundTop, .quizitPlaygroundBottom{
-	border: solid black 1px;
+	/*border: solid black 1px;*/
 }
 
 .pushDown{
@@ -25,7 +25,7 @@
 
 .quizitPlayground{
 	margin: auto;
-	height: 80vh;
+	/*height: 80vh;*/
 	width: 70vh;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .quizitPlaygroundTop{
-	height: 60vh;
+	/*height: 60vh;*/
 }
 
 .quizitPlaygroundBottom{
