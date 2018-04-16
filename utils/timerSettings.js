@@ -11,11 +11,11 @@ const timerSettings={
 	},
 	testing:{
 		preGame:3, // sets initial timer for preGame phase
-		intermission:15, // sets timer for intermission phase
+		intermission:5, // sets timer for intermission phase
 		gameEnd:3, // sets timer for gameEnd phase
-		questionActive:10, // sets timer for questionActive phase
+		questionActive:5, // sets timer for questionActive phase
 		tickInterval:500, // sets the timer tick interval
-		ping:250 // sets ping comparing answers
+		ping:1250 // sets ping comparing answers
 	}
 }
 // WARNING: PING MUST BE LESS THAN INTERMISSION * SETINTERVAL. Recommended at least 250 milliseconds less.

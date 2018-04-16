@@ -42,6 +42,10 @@ mongoose.connection.on('error', (err) => {
   console.log('Database error '+err);
 });
 
+// Populates backup questions. If there are 2000 backup questions, it does not populate anymore
+const populateBackupQuestions = require('./utils/populateBackupQuestions.js');
+populateBackupQuestions(200);
+
 const users = require('./routes/users');
 
 // CORS Middleware

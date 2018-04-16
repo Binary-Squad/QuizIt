@@ -40,7 +40,7 @@ export default class QuestionActive extends Component {
     this.setState({selectedAnswer:answer,activeIndex:index},()=>{
       console.log('active index '+index);
     });
-    this.props.setAnswer(answer,this.state.questionNum);
+    this.props.setAnswer(answer);
   }
 
   doNothing = ()=>{
@@ -56,9 +56,9 @@ export default class QuestionActive extends Component {
     if(this.props.gameState === "questionActive"){
       return (
         <div className="">
-            <div className="centered questionNum-text">Question: {this.state.questionNum} / {this.state.totalQuestions}</div>
+            <div className="centered questionNum-text">Question Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
             <div className="centered question-text" dangerouslySetInnerHTML={createMarkup(question.question)}/>
-            <ListGroup className="answer-group">
+            <ListGroup>
               {answers.map((answer,index)=> (
                 <ListGroupItem 
                   key={answer}
@@ -77,7 +77,7 @@ export default class QuestionActive extends Component {
     if(this.props.gameState === "intermission"){
       return (
           <div className="">
-            <div className="centered questionNum-text">Question Number: {this.state.questionNum}/{this.state.totalQuestions}</div>
+            <div className="centered questionNum-text">Question Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
             <div className="centered question-text" dangerouslySetInnerHTML={createMarkup(question.question)}/>
             <ListGroup>
               {answers.map(answer => (
