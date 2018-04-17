@@ -16,8 +16,8 @@ const timerSettings={
 		gameEnd:2, // sets timer for gameEnd phase
 		questionActive:2, // sets timer for questionActive phase
 		voteInterval:5,
-		tickInterval:1000, // sets the timer tick interval
-		ping:1000 // sets ping comparing answers
+		tickInterval:500, // sets the timer tick interval
+		ping:750 // sets ping comparing answers
 	}
 }
 // WARNING: PING MUST BE LESS THAN INTERMISSION * SETINTERVAL. Recommended at least 250 milliseconds less.
