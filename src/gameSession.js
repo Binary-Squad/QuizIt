@@ -4,6 +4,7 @@ const Session = require('../models/gameSession');
 const axios = require('axios');
 const triviaAPI = require('../utils/triviaAPI');
 const questionBackup  = require('../models/questionBackup');
+const categoriesObj = require('../utils/categories.js').categoriesObj;
 
 function GameSession(io) {
     // The current active game's id
@@ -78,14 +79,16 @@ function GameSession(io) {
 
     // Creating a new game
     this.createNewGame = (APIParams) => {
+        console.log(categoriesObj[APIParams.category].category);
         let gameSettings = {
             numQuestions: 10,
-            category: 0,
+            category: categoriesObj[APIParams.category].category,
             difficulty: 'Any',
             type: 'Multiple'
         }
         // Does the triviaAPI call
         triviaAPI(APIParams,(res) => {
+
             const newGame = new Game(res.data.results, this.users, gameSettings, io, this.createNewGame);
             const gameObj = {
                 users:this.users,
@@ -109,14 +112,14 @@ function GameSession(io) {
                 {$push:{"games":gameObj}}
             ).then((res)=>{
                 console.log('found gameSession and added game');
-                console.log(this._id);
+                // console.log(this._id);
                 // Does 2nd mongoose call to find most recent game's _id.
                 // This is highly inefficient
                 // try to get .create method working
                 // .create method is at the bottom of the documentation here:
                 // http://mongoosejs.com/docs/subdocs.html
                 Session.findById(this._id).then(res2=>{
-                    console.log(res2);
+                    // console.log(res2);
                     // console.log("GAME ID IS: "+res2.games[res2.games.length-1]._id);
                     // Sets newGame._id and .sessionId for newGame to update itself
                     newGame._id = res2.games[res2.games.length-1]._id;
@@ -128,36 +131,74 @@ function GameSession(io) {
             })
         },()=>{
             console.log('getting backup questions');
-            questionBackup.aggregate([{$sample: {size: 10}}]).then(res=>{
-                const newGame = new Game(res, this.users, gameSettings, io, this.createNewGame);
-                const gameObj = {
-                    users:this.users,
-                    questions:res,
-                    scores:{},
-                    numQuestions: 10,
-                    category: 0,
-                    difficulty: 'Any',
-                    type: 'Multiple'
-                }
-                // Finds current session to push the gameObj into this session.games
-                Session.findOneAndUpdate(
-                    {"_id":this._id},
-                    {$push:{"games":gameObj}}
-                ).then((res)=>{
-                    console.log('found gameSession and added game');
-                    console.log(this._id);
-                    // Does 2nd mongoose call to find most recent game's _id.
-                    Session.findById(this._id).then(res2=>{
-                        console.log(res2);
-                        // Sets newGame._id and .sessionId for newGame to update itself
-                        newGame._id = res2.games[res2.games.length-1]._id;
-                        newGame.sessionId = this._id;
-                        this.currentGame = newGame;
-                        // Initializes game after all this
-                        this.currentGame.initializeGame();
+            if(APIParams.category === 0){
+                questionBackup.aggregate([{$sample: {size: 10}}]).then(res=>{
+                    // console.log(res);
+                    const newGame = new Game(res, this.users, gameSettings, io, this.createNewGame);
+                    const gameObj = {
+                        users:this.users,
+                        questions:res,
+                        scores:{},
+                        numQuestions: 10,
+                        category: 0,
+                        difficulty: 'Any',
+                        type: 'Multiple'
+                    }
+                    // Finds current session to push the gameObj into this session.games
+                    Session.findOneAndUpdate(
+                        {"_id":this._id},
+                        {$push:{"games":gameObj}}
+                    ).then((res)=>{
+                        console.log('found gameSession and added game');
+                        console.log(this._id);
+                        // Does 2nd mongoose call to find most recent game's _id.
+                        Session.findById(this._id).then(res2=>{
+                            console.log(res2);
+                            // Sets newGame._id and .sessionId for newGame to update itself
+                            newGame._id = res2.games[res2.games.length-1]._id;
+                            newGame.sessionId = this._id;
+                            this.currentGame = newGame;
+                            // Initializes game after all this
+                            this.currentGame.initializeGame();
+                        })
                     })
-                })
-            });
+                });
+            }
+            else{
+                const category = categoriesObj[APIParams.category].category;    
+                const regex = new RegExp(category,'i');
+                questionBackup.aggregate([{$match:{category:regex}},{$sample: {size: 10}}]).then(res=>{
+                    // console.log(res);
+                    const newGame = new Game(res, this.users, gameSettings, io, this.createNewGame);
+                    const gameObj = {
+                        users:this.users,
+                        questions:res,
+                        scores:{},
+                        numQuestions: 10,
+                        category: 0,
+                        difficulty: 'Any',
+                        type: 'Multiple'
+                    }
+                    // Finds current session to push the gameObj into this session.games
+                    Session.findOneAndUpdate(
+                        {"_id":this._id},
+                        {$push:{"games":gameObj}}
+                    ).then((res)=>{
+                        console.log('found gameSession and added game');
+                        console.log(this._id);
+                        // Does 2nd mongoose call to find most recent game's _id.
+                        Session.findById(this._id).then(res2=>{
+                            // console.log(res2);
+                            // Sets newGame._id and .sessionId for newGame to update itself
+                            newGame._id = res2.games[res2.games.length-1]._id;
+                            newGame.sessionId = this._id;
+                            this.currentGame = newGame;
+                            // Initializes game after all this
+                            this.currentGame.initializeGame();
+                        })
+                    })
+                });
+            }
         });
     };
 

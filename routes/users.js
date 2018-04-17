@@ -99,9 +99,9 @@ router.post('/authenticate', (req, res, next) => {
 
 // Profile
 router.get('/profile', passport.authenticate('jwt', {session:false}), (req, res, next) => {
-  if(req.user){
-    console.log(req.user);  
-  }
+  // if(req.user){
+  //   console.log(req.user);  
+  // }
   res.json({user: req.user});
 });
 
