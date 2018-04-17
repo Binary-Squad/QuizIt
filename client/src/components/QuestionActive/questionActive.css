@@ -13,7 +13,7 @@
 	margin: 0px;
 	height: 5vh;
 	line-height: 4vh;
-	font-size: 4vh;
+	font-size: 3vh;
 	font-weight: 500;
 }
 
@@ -21,21 +21,13 @@
 	padding: 0px;
 	margin: 0px;
 	margin-top: 1vh;
-	margin-bottom: 1vh;
+	margin-bottom: 2vh;
 	/*height: 10vh;*/
 	line-height: 4vh;
 	font-size: 2.5vh;
 	/*width: 80vh;*/
 	/*margin-left: -5vh;*/
 }
-
-/*4 answers*/
-.questionTracker{
-	padding: 0px;
-	margin: 0px;
-	height: 10vh;
-}
-
 
 .correct {
   background-color: pink;
@@ -65,7 +57,15 @@
 .answer-group {
 	border-style: solid;
 	border-width: 2px;
-	border-radius: 2px;
+	border-radius: 10px;
 }
 
-/*60vh total*/
+.question-title {
+	background-color: white;
+	border-radius: 10px;
+}
+
+.list-group {
+	border-radius: 10px;
+	margin-bottom: 2vh;
+}

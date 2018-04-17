@@ -36,7 +36,7 @@ class ChatInput extends React.Component {
     render() {
         return (
             <div className="chatInput">
-                <textarea className="form-control inputBoxStyle" id="chat-text" rows="3" value={this.state.msg} onChange={this.handleTextAreaChange}></textarea>
+                <input type="text" className="form-control inputBoxStyle" id="chat-text" rows="1" value={this.state.msg} onChange={this.handleTextAreaChange}></input>
                 <ChatButton sendChatMsg={this.createChatObj}> </ChatButton>
             </div>
         )

@@ -1,20 +1,9 @@
-.quizitLeft, .quizitRight, .quizitCenter, 
-.quizitPlayground, .quizitPlaygroundTop, .quizitPlaygroundBottom{
-	/*border: solid black 1px;*/
-}
-
-.quizitLeft{
-	border: solid black 1px;
-}
-
 .pushDown{
 	height: 50px;
 }
 
 .quizitLeft, .quizitRight, .quizitCenter{
 	height: calc(100vh - 50px);
-	border-style: solid;
-	border-width: 1px;
 }
 
 .quizitLeft,.quizitRight{
@@ -33,13 +22,17 @@
 .quizitCenter{
 	padding-right: 10%;
 	padding-left: 10%;
-	background-color: white;
 }
 
 .quizitPlayground{
 	margin: auto;
-	/*height: 80vh;*/
-	width: 70vh;
+	background-color: #EEEEEE;
+	padding-top: 5vh;
+	padding-left: 5vh;
+	padding-right: 5vh;
+	width: 90vh;
+	border-radius: 30px;
+	filter: drop-shadow(-1px 0 2px #222222);
 }
 
 .vh-center{
@@ -56,4 +49,9 @@
 
 .quizitPlaygroundBottom{
 	height: 20vh;
+	margin-top: 2vh;
 }
+
+body, html {
+	background-image: url('extra_clean_paper.png');
+}	

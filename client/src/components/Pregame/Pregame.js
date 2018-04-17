@@ -10,7 +10,6 @@ class Pregame extends Component {
   render() {
     return (
       <div>
-        Pregame
       </div>
     );
   }
