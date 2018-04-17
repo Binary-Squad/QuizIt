@@ -9,7 +9,7 @@ const timerSettings={
 		voting:10,
 		loading:3,
 		tickInterval:1000, // sets the timer tick interval
-		ping:4000 // sets ping comparing answers
+		// ping:4000 // sets ping comparing answers
 	},
 	testing:{
 		preGame:2, // sets initial timer for preGame phase
@@ -19,7 +19,7 @@ const timerSettings={
 		voting:5,
 		loading:3,
 		tickInterval:500, // sets the timer tick interval
-		ping:750 // sets ping comparing answers
+		// ping:750 // sets ping comparing answers
 	}
 }
 // WARNING: PING MUST BE LESS THAN INTERMISSION * SETINTERVAL. Recommended at least 250 milliseconds less.

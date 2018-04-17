@@ -96,13 +96,14 @@ function Game (questions, users, settings, io, newGame){
                 this.gameData.gameState = 'intermission';
                 this.gameData.correctAnswer = this.gameData.currentQuestion.correct_answer;
                 console.log('Intermission');
-                setTimeout(()=>{
-                    this.calculateScores();    
-                },timerSettings.ping)
+                // setTimeout(()=>{
+                //     this.calculateScores();    
+                // },timerSettings.ping)
                 this.tickInterval();
                 break;
             case 'intermission':
                 if (this.gameData.totalQuestions == this.gameData.questionNum+1) {
+                    this.calculateScores(); 
                     this.resetTimer(timerSettings.gameEnd);
                     this.gameData.gameState = 'gameEnd';
                     console.log('Game End!');
@@ -110,6 +111,7 @@ function Game (questions, users, settings, io, newGame){
                     this.tickInterval();
                     break;
                 } else {
+                    this.calculateScores();
                     this.resetTimer(timerSettings.questionActive);
                     this.gameData.gameState = 'questionActive';
                     this.gameData.correctAnswer = undefined;
