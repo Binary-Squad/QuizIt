@@ -21,30 +21,33 @@ function GameSession(io) {
     
     // Method that sets up the session's state
     this.create = () => {
-        this.save(this.createNewGame);
+        const APIParams = {
+            category:0
+        }
+        this.save(this.createNewGame,APIParams);
     };
 
     // Method that adds a user to the session
     this.addUser = (user)=>{
-        // this.users.push(user);
-        // this.currentGame.setUsers(this.users);
-        if(this.users.length > 0){
-            var userCounter = 0;
-            this.users.forEach((storedUser,index)=>{
-                if(user.id !== storedUser.id){
-                    userCounter++;
-                }
-                if(userCounter === this.users.length){
-                    this.users.push(user);
-                    this.currentGame.addUser(user)
-                    console.log('pushing '+user.name+' into this.users');
-                }
-            })
-        }
-        else{
-            this.users.push(user);
-            this.currentGame.addUser(user)
-            console.log('pushing '+user.name+' into this.users');
+        if(this.currentGame){
+            if(this.users.length > 0){
+                var userCounter = 0;
+                this.users.forEach((storedUser,index)=>{
+                    if(user.id !== storedUser.id){
+                        userCounter++;
+                    }
+                    if(userCounter === this.users.length){
+                        this.users.push(user);
+                        this.currentGame.addUser(user)
+                        console.log('pushing '+user.name+' into this.users');
+                    }
+                })
+            }
+            else{
+                this.users.push(user);
+                this.currentGame.addUser(user)
+                console.log('pushing '+user.name+' into this.users');
+            }
         }
     };
 
@@ -54,7 +57,7 @@ function GameSession(io) {
     };
 
     // Method for saving the session to MongoDB
-    this.save = (cb) => {
+    this.save = (cb,APIParams) => {
         const sessionDocument = new Session({
             users: this.users,
             currentGame: this.currentGame,
@@ -63,7 +66,7 @@ function GameSession(io) {
         });
         sessionDocument.save().then((res) => {
             this._id = res._id;
-            cb(res);
+            cb(APIParams);
         });
     };
 
@@ -74,16 +77,15 @@ function GameSession(io) {
     };
 
     // Creating a new game
-    this.createNewGame = () => {
+    this.createNewGame = (APIParams) => {
         let gameSettings = {
             numQuestions: 10,
             category: 0,
             difficulty: 'Any',
             type: 'Multiple'
         }
-
         // Does the triviaAPI call
-        triviaAPI(res => {
+        triviaAPI(APIParams,(res) => {
             const newGame = new Game(res.data.results, this.users, gameSettings, io, this.createNewGame);
             const gameObj = {
                 users:this.users,
@@ -159,8 +161,12 @@ function GameSession(io) {
         });
     };
 
-    this.handleAnswer = (answerObj) =>{
+    this.handleAnswer = (answerObj) => {
         this.currentGame.handleAnswer(answerObj);
+    }
+
+    this.handleVote = (voteObj) => {
+        this.currentGame.handleVote(voteObj);
     }
 }
 

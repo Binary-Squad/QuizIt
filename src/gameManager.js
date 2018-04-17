@@ -45,7 +45,11 @@ function gameManager(io){
     };
 
     this.handleAnswer = (answerObj)=>{
-        this.activeSessions[answerObj.room].handleAnswer(answerObj)
+        this.activeSessions[answerObj.room].handleAnswer(answerObj);
+    }
+
+    this.handleVote = (voteObj)=>{
+        this.activeSessions[voteObj.room].handleVote(voteObj);
     }
 
     this.logSessions = (sessionName)=>{

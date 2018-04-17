@@ -103,6 +103,12 @@ io.on('connection', function(socket) {
     gameManager.handleAnswer(answerObj)
   });
 
+  socket.on('vote', function(voteObj){
+    // console.log(answerObj);
+    // Call some function to do stuff in gameManager -> gameSession -> game
+    gameManager.handleVote(voteObj)
+  });
+
   socket.on('chatSend', function(chatObj) {
     console.log(chatObj.user.name + ": " + chatObj.msg);
     socket.broadcast.emit('chatReceive', chatObj);

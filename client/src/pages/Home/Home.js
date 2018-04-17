@@ -12,6 +12,7 @@ import Loading from "../../components/Loading";
 import CurrentQuestions from "../../components/CurrentQuestions";
 import Chatroom from "../../components/Chatroom";
 import Navbar from "../../components/Navbar";
+import Voting from "../../components/Voting";
 import './Home.css';
 
 class Home extends Component {
@@ -30,6 +31,7 @@ class Home extends Component {
     totalQuestions:0,
     scores:[],
     category: "",
+    votingCategories:[]
   };
 
   componentWillMount() {
@@ -85,7 +87,10 @@ class Home extends Component {
           questionNum:msg.questionNum,
           totalQuestions:msg.totalQuestions,
           scores:msg.scores,
-          category:msg.category
+          category:msg.category,
+          votingCategories:msg.votingCategories
+        },()=>{
+          console.log(this.state.votingCategories);
         });
       }
     });
@@ -167,6 +172,15 @@ class Home extends Component {
           else if(this.state.gameState === 'gameEnd'){
             return(
               <GameEnd scores={this.state.scores} />
+            )
+          }
+          else if(this.state.gameState === 'voting'){
+            console.log(this.state.gameState);
+            return(
+              <Voting 
+                votingCategories={this.state.votingCategories}
+                userId={this.state.user.id}
+              />
             )
           }
         }
