@@ -39,11 +39,15 @@ function Game (questions, users, settings, io, newGame){
         // Current Answer 
         correctAnswer: undefined,
         // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
-        gameState: undefined,
+        gameState: 'pregame',
         // Client Answers for rendering on front-end
         clientAnswers: [],
         // Scores object for holding all final scores
         scores: [],
+
+        votingCategories:[],
+
+        votingCategoriesObj:{},
         // Socket object for sending to client.
         socketObj: {
             users:[],
@@ -53,16 +57,25 @@ function Game (questions, users, settings, io, newGame){
             timer:10,
             totalQuestions:0,
             questionNum:0,
-            category: ""
+            category: "",
+            votingCategories:[]
         },
+        categoryVotes: []
     };
     
     this.initializeGame = () => {
         // Start pregame countdown to first question
-        this.gameData.gameState = 'pregame';
+        // this.gameData.gameState = 'pregame';
         this.gameData.currentQuestion = this.gameData.questions[this.gameData.questionNum];
         // this.gameData.clientAnswers = this.randomizeAnswers();
         this.setUserScoreObjs();
+        this.gameData.votingCategories = shuffle(require('../utils/opentdbAPIStats.js')).slice(0,3);
+        this.gameData.votingCategories.forEach(votingObj=>{
+            this.gameData.votingCategoriesObj[votingObj.categoryNum] = votingObj;
+            this.gameData.votingCategoriesObj[votingObj.categoryNum].votes = 0;
+        })
+        // console.log(this.gameData.votingCategories);
+        // console.log(this.gameData.votingCategoriesObj);
         this.tickInterval();
     };
 
@@ -103,13 +116,20 @@ function Game (questions, users, settings, io, newGame){
                     console.log('Question Number: '+(parseInt(this.gameData.questionNum)+1));
                     this.tickInterval();
                     break;
-                }
+                } 
             case 'gameEnd':
-                // Clear the interval
-                clearInterval(this.tick);
-                // Initializes MongoDB save and passes newGame cb to start new game
-                this.saveGame(newGame);
+                this.tickInterval();
+                this.gameData.gameState = 'voting';
+                console.log('Voting start!');
+                this.resetTimer(timerSettings.voteInterval);
                 break; 
+            case 'voting':
+                clearInterval(this.tick);
+                const APIParams = {
+                    category:this.calculateCategory()
+                }
+                this.saveGame(newGame,APIParams);
+                break;  
         }
     }
     // Game tick variable for storing our interval
@@ -121,7 +141,7 @@ function Game (questions, users, settings, io, newGame){
         this.tick = setInterval(this.handleTick, timerSettings.tickInterval);
     }
     // Acts on the interval tick. Updates client on tick. Calls gameLoopStep() if timer < 0.
-    this.handleTick = () => {        
+    this.handleTick = () => {
         this.gameData.socketObj = {
             users:this.gameData.users,
             question:this.gameData.questionToBeSent,
@@ -131,11 +151,10 @@ function Game (questions, users, settings, io, newGame){
             totalQuestions:this.gameData.totalQuestions,
             questionNum:this.gameData.questionNum+1,
             scores:this.gameData.scores,
-            category: this.gameData.category
+            category: this.gameData.category,
+            votingCategories: this.gameData.votingCategories
         }
         this.gameData.timer--;
-        // console.log(this.gameData.socketObj);
-        // console.log(this.gameData.gameState+' question# '+this.gameData.questionNum);
         io.sockets.to('master').emit('gameState', this.gameData.socketObj);
         // moved this here so it will still tick at 0 and reset at 0 instead of having a 1 second delay
         if (this.gameData.timer < 0) {
@@ -172,49 +191,8 @@ function Game (questions, users, settings, io, newGame){
     this.resetTimer = (time) => {
         this.gameData.timer = time;
     }
-    // Resets the game data ahead of a new game
-    this.gameReset = () => {
-        let category = this.gameData.category;
-        let type = this.gameData.type;
-        let difficulty = this.gameData.difficulty;
-        let users = this.gameData.users;
-
-        this.gameData = {
-            // Reset id so a new document can be saved.
-            _id: undefined,
-            // The settings from the API call
-            category: category,
-            difficulty: difficulty,
-            type: type,
-            // Users who have played in the current game
-            users: users,
-            timer: 10,
-            // Questions for the current game. Called for the current API.
-            totalQuestions: questions.length,
-            // The current question
-            currentQuestion: undefined,
-            // Current question's number
-            questionToBeSent: undefined,
-
-            questionNum: 0,
-            // Current Answer 
-            correctAnswer: undefined,
-            // Game state variable for tracking PreGame, QuestionActive, Intermission, or GameEnd
-            gameState: "pregame",
-
-            socketObj: {
-                users:[],
-                question:{},
-                correctAnswer:"",
-                gameState:"pregame",
-                timer:10,
-                totalQuestions:0,
-                questionNum:0
-            }
-        };
-    }
     // Saves the game document to the database and returns the MongoDB Object ID
-    this.saveGame = (cb) => {
+    this.saveGame = (cb,APIParams) => {
         // gameObj for cultivating mongoDB games object
         const gameObj = {
             users:this.gameData.users,
@@ -236,10 +214,9 @@ function Game (questions, users, settings, io, newGame){
                 "games.$":gameObj
             }
         }).then(res=>{
-            // console.log(res);
             // initializes newGame
             if(cb){
-                cb();
+                cb(APIParams);
             }
         })
     }
@@ -274,21 +251,6 @@ function Game (questions, users, settings, io, newGame){
     this.calculateScores = ()=>{
         console.log('CALCULATING SCORES');
         if(this.gameData.clientAnswers.length > 0){
-            // Doesn't work with 2 people
-            // const clientAnswers = this.gameData.clientAnswers;
-            // const scores = this.gameData.scores;
-            // for(var i = 0; i < clientAnswers.length; i++){
-            //     if(clientAnswers[i].answer === this.gameData.correctAnswer){
-            //         for(var i = 0; i < scores.length; i++){
-            //             if(clientAnswers[i].id === scores[i].id){
-            //                 scores[i].score++;
-            //                 console.log(scores[i].name+' got one right!');
-            //             }
-            //         }
-            //     }
-            // }
-
-            // forEach loops work with 2 people for some reason
             this.gameData.clientAnswers.forEach(clientAnswer=>{
                 if(clientAnswer.answer === this.gameData.correctAnswer){
                     this.gameData.scores.forEach(score=>{
@@ -338,6 +300,55 @@ function Game (questions, users, settings, io, newGame){
         }
     }
 
+    this.handleVote = (voteObj)=>{
+        if(this.gameData.gameState === 'voting'){
+            if(this.gameData.categoryVotes.length>0){
+                for(var i = 0; i<this.gameData.categoryVotes.length; i++){
+                    if(this.gameData.categoryVotes[i].id === voteObj.id){
+                        this.gameData.categoryVotes[i] = voteObj;
+                        // console.log('categoryVotes');
+                        // console.log(this.gameData.categoryVotes);
+                        break;
+                    }
+                    else if(i === this.gameData.categoryVotes.length-1){
+                        this.gameData.categoryVotes.push(voteObj);
+                        // console.log('categoryVotes');
+                        // console.log(this.gameData.categoryVotes);
+                    }
+                }
+            }
+            else{
+                this.gameData.categoryVotes.push(voteObj);
+                // console.log('categoryVotes');
+                // console.log(this.gameData.categoryVotes);
+            }
+        }
+        else{
+            // console.log('Vote Rejected!');
+        }
+    }
+
+    this.calculateCategory = ()=>{
+        console.log('Calculating category');
+        if(this.gameData.categoryVotes.length > 0){
+            this.gameData.categoryVotes.forEach(vote=>{
+                this.gameData.votingCategoriesObj[vote.categoryNum].votes++;
+                // console.log('ATTEMPTING TO ADD VOTE');
+                // console.log(this.gameData.votingCategoriesObj[vote.categoryNum]);
+            })
+            var sortable = [];
+            for (var key in this.gameData.votingCategoriesObj) {
+                sortable.push(this.gameData.votingCategoriesObj[key]);
+            }
+            sortable.sort((a, b) => parseFloat(b.votes) - parseFloat(a.votes));
+            console.log('Returning Category '+sortable[0].categoryNum);
+            return sortable[0].categoryNum;
+        }
+        else{
+            console.log('Returning Category 0');
+            return 0;
+        }
+    };
     // Socket.io listeners go in here
     // io.on('connection', (socket) => {
 

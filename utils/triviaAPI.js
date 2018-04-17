@@ -1,8 +1,16 @@
 const axios = require('axios');
 
-const triviaAPI = (cb,cb2)=>{
-	axios.get('https://opentdb.com/api.php?amount=10&type=multiple')
-								//  ^^^^^^ should be 10 questions
+const triviaAPI = (params,cb,cb2)=>{
+	let url = 'https://opentdb.com/api.php?amount=10&type=multiple';
+	if (params){
+		if(params.category){
+			if(params.category != 0){
+				url += '&category='+params.category;
+				console.log(url);
+			}
+		}
+	}
+	axios.get(url)
 		.then(res=>{
 			if(cb){
 				cb(res);
