@@ -28,7 +28,7 @@ class Voting extends Component {
           <div key={index}>
             <button
               onClick={()=>{this.handleVote(votingInfo.categoryNum,this.props.userId)}}
-              className="btn btn-primary"
+              className="btn btn-primary btn-vote"
             >
               {votingInfo.category}
             </button>

@@ -5,7 +5,7 @@ const Logout = props => {
     if (props.loggedIn) {
         return (
             <li className="nav-item active float-right">
-                <a className="nav-link float-right" href="/logout">Logout </a>
+                <a className="nav-link float-right logout" href="/logout">Logout </a>
             </li>
         )
     } else {

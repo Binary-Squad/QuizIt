@@ -8,7 +8,7 @@ export default class Timer extends Component {
   render() {
 
     return (
-      <div className="centered">
+      <div className="centered timerBox">
         <span className="timer centered">
             {this.props.timer} seconds remaining!
         </span>

@@ -1,5 +1,12 @@
-.timer{
+.timer {
 	text-align: center;
-	margin-top: 10px;
 	font-size: 30px;
+}
+
+.timerBox {
+	background-color: white;
+	border-radius: 10px;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
 }

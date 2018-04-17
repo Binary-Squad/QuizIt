@@ -2,16 +2,23 @@
 	margin-bottom: 40px;
 	margin-top: 30px;
 }
+
 .leaderboard-title {
 	text-align: center;
 	font-size: 30px;
 	font-weight: 700;
 }
+
 .leaderboard-score {
-	text-align: center;
+	text-align: right;
 	font-size: 30px;
 	font-weight: 700;
 }
+
+.leaderboard-name {
+	text-align: left;
+}
+
 #dancing-alien {
 	width: 39px;
 	height: auto;
@@ -19,4 +26,12 @@
 #dancing-eddy {
 	width: 98px;
 	height: auto;
+}
+
+.leaderboardItem {
+	background-color: white;
+	border-radius: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: lightgray;
 }

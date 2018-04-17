@@ -4,10 +4,11 @@
     border-width: 1px;
     border-color: gray;
     padding: 5%;
+    background-color: #EEEEEE;
 }
 
 .inputBoxStyle{
-	height: 75%;
+	height: 25%;
 }
 
 .chatButtonStyle{

@@ -11,7 +11,7 @@ function renderDifficulty(string){
 }
 
 const QuestionTracker = props => (
-    <div className="row no-margins">
+    <div className="row no-margins questionTracker">
         <div className="col-10 questionTrackerBox align-left">{props.category}</div>
         <div className="col-2 questionTrackerBox align-right">{renderDifficulty(props.difficulty)}</div>
     </div>
