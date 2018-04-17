@@ -6,7 +6,8 @@ const timerSettings={
 		intermission:5, // sets timer for intermission phase
 		gameEnd:10, // sets timer for gameEnd phase
 		questionActive:10, // sets timer for questionActive phase
-		voteInterval:10,
+		voting:10,
+		loading:3,
 		tickInterval:1000, // sets the timer tick interval
 		ping:4000 // sets ping comparing answers
 	},
@@ -15,7 +16,8 @@ const timerSettings={
 		intermission:2, // sets timer for intermission phase
 		gameEnd:2, // sets timer for gameEnd phase
 		questionActive:2, // sets timer for questionActive phase
-		voteInterval:5,
+		voting:5,
+		loading:3,
 		tickInterval:500, // sets the timer tick interval
 		ping:750 // sets ping comparing answers
 	}

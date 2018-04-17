@@ -54,12 +54,9 @@ function gameManager(io){
 
     this.logSessions = (sessionName)=>{
         console.log("New session " + sessionName + " created and added to activeSessions");
-        console.log("Current sessions:");
-        console.log(this.activeSessions);
-    };
-    this.logThis = ()=>{
-        console.log(this);
-    };
+        // console.log("Current sessions:");
+        // console.log(this.activeSessions);
+    }
 }
 
 module.exports = gameManager;

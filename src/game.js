@@ -2,13 +2,14 @@ const axios = require('axios');
 const omit = require('../utils/myOmit.js');
 const shuffle = require('../utils/shuffle.js');
 const Session = require('../models/gameSession');
+const categoriesArr = require('../utils/categories.js').categoriesArr;
 
 // You can adjust your own testing timer settings in utils/timerSettings.js
 // Uncomment this one for production timerSettings. Make sure to comment out testing.
-const timerSettings = require('../utils/timerSettings.js').production;
+// const timerSettings = require('../utils/timerSettings.js').production;
 
 // Uncomment this one for testing timerSettings. Make sure to comment out production.
-// const timerSettings = require('../utils/timerSettings.js').testing;
+const timerSettings = require('../utils/timerSettings.js').testing;
 
 function Game (questions, users, settings, io, newGame){
 
@@ -69,7 +70,7 @@ function Game (questions, users, settings, io, newGame){
         this.gameData.currentQuestion = this.gameData.questions[this.gameData.questionNum];
         // this.gameData.clientAnswers = this.randomizeAnswers();
         this.setUserScoreObjs();
-        this.gameData.votingCategories = shuffle(require('../utils/opentdbAPIStats.js')).slice(0,3);
+        this.gameData.votingCategories = shuffle(categoriesArr).slice(0,3);
         this.gameData.votingCategories.forEach(votingObj=>{
             this.gameData.votingCategoriesObj[votingObj.categoryNum] = votingObj;
             this.gameData.votingCategoriesObj[votingObj.categoryNum].votes = 0;
@@ -121,15 +122,21 @@ function Game (questions, users, settings, io, newGame){
                 this.tickInterval();
                 this.gameData.gameState = 'voting';
                 console.log('Voting start!');
-                this.resetTimer(timerSettings.voteInterval);
+                this.resetTimer(timerSettings.voting);
                 break; 
             case 'voting':
+                this.resetTimer(timerSettings.loading);
+                this.gameData.gameState = 'loading'
+                console.log('loading');
+                this.tickInterval();
+                break;
+            case 'loading':
                 clearInterval(this.tick);
                 const APIParams = {
                     category:this.calculateCategory()
                 }
                 this.saveGame(newGame,APIParams);
-                break;  
+                break;
         }
     }
     // Game tick variable for storing our interval
@@ -223,7 +230,7 @@ function Game (questions, users, settings, io, newGame){
 
     this.addUser = (user)=>{
         this.gameData.users.push[user];
-        console.log(this.gameData.users);
+        // console.log(this.gameData.users);
         const scoreObj = {
             name:user.name,
             score:0,
@@ -282,50 +289,38 @@ function Game (questions, users, settings, io, newGame){
             for(var i = 0; i<this.gameData.clientAnswers.length; i++){
                 if(this.gameData.clientAnswers[i].id === answerObj.id){
                     this.gameData.clientAnswers[i] = answerObj;
-                    console.log('CLIENTANSWERS');
-                    console.log(this.gameData.clientAnswers);
                     break;
                 }
                 else if(i === this.gameData.clientAnswers.length-1){
                     this.gameData.clientAnswers.push(answerObj);
-                    console.log('CLIENTANSWERS');
-                    console.log(this.gameData.clientAnswers);
                 }
             }
         }
         else{
             this.gameData.clientAnswers.push(answerObj);
-            console.log('CLIENTANSWERS');
-            console.log(this.gameData.clientAnswers);
+            // console.log('CLIENTANSWERS');
+            // console.log(this.gameData.clientAnswers);
         }
     }
 
     this.handleVote = (voteObj)=>{
-        if(this.gameData.gameState === 'voting'){
             if(this.gameData.categoryVotes.length>0){
                 for(var i = 0; i<this.gameData.categoryVotes.length; i++){
                     if(this.gameData.categoryVotes[i].id === voteObj.id){
                         this.gameData.categoryVotes[i] = voteObj;
-                        // console.log('categoryVotes');
                         // console.log(this.gameData.categoryVotes);
                         break;
                     }
                     else if(i === this.gameData.categoryVotes.length-1){
                         this.gameData.categoryVotes.push(voteObj);
-                        // console.log('categoryVotes');
                         // console.log(this.gameData.categoryVotes);
                     }
                 }
             }
             else{
                 this.gameData.categoryVotes.push(voteObj);
-                // console.log('categoryVotes');
                 // console.log(this.gameData.categoryVotes);
             }
-        }
-        else{
-            // console.log('Vote Rejected!');
-        }
     }
 
     this.calculateCategory = ()=>{
@@ -333,8 +328,6 @@ function Game (questions, users, settings, io, newGame){
         if(this.gameData.categoryVotes.length > 0){
             this.gameData.categoryVotes.forEach(vote=>{
                 this.gameData.votingCategoriesObj[vote.categoryNum].votes++;
-                // console.log('ATTEMPTING TO ADD VOTE');
-                // console.log(this.gameData.votingCategoriesObj[vote.categoryNum]);
             })
             var sortable = [];
             for (var key in this.gameData.votingCategoriesObj) {
@@ -349,33 +342,6 @@ function Game (questions, users, settings, io, newGame){
             return 0;
         }
     };
-    // Socket.io listeners go in here
-    // io.on('connection', (socket) => {
-
-    //     socket.on('answer', (userAnswer) => {
-
-    //         if(this.gameData.clientAnswers.length>0){
-    //             for(var i = 0; i<this.gameData.clientAnswers.length; i++){
-    //                 if(this.gameData.clientAnswers[i].id === userAnswer.id){
-    //                     this.gameData.clientAnswers[i] = userAnswer;
-    //                     console.log('CLIENTANSWERS');
-    //                     console.log(this.gameData.clientAnswers);
-    //                     break;
-    //                 }
-    //                 else if(i === this.gameData.clientAnswers.length-1){
-    //                     this.gameData.clientAnswers.push(userAnswer);
-    //                     console.log('CLIENTANSWERS');
-    //                     console.log(this.gameData.clientAnswers);
-    //                 }
-    //             }
-    //         }
-    //         else{
-    //             this.gameData.clientAnswers.push(userAnswer);
-    //             console.log('CLIENTANSWERS');
-    //             console.log(this.gameData.clientAnswers);
-    //         }
-    //     });
-    // });
 }
 
 module.exports = Game;

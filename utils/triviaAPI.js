@@ -6,7 +6,6 @@ const triviaAPI = (params,cb,cb2)=>{
 		if(params.category){
 			if(params.category != 0){
 				url += '&category='+params.category;
-				console.log(url);
 			}
 		}
 	}

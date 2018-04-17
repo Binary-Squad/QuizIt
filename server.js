@@ -80,15 +80,15 @@ io.on('connection', function(socket) {
     socket.broadcast.emit('connection', 'a user disconnected')
   });
 
-  socket.on('testSend', function(msg) {
-    console.log(msg);
-  });
+  // socket.on('testSend', function(msg) {
+  //   console.log(msg);
+  // });
 
   // Logs people in and joins room 'master'
   socket.on('loggedIn', function(params){
+    // console.log("User just logged in!!!");
     socket.join(params.room);
     gameManager.addUser(params.user,params.room);
-    console.log("User just logged in!!!");
   });
 
   // Joins a socket room
