@@ -202,4 +202,4 @@ var verifiedQuestions = {
     }
 }
 
-module.exports = categoriesArr;
+module.exports = {categoriesArr,categoriesObj};

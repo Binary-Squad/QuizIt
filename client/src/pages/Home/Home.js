@@ -175,12 +175,17 @@ class Home extends Component {
             )
           }
           else if(this.state.gameState === 'voting'){
-            console.log(this.state.gameState);
             return(
               <Voting 
                 votingCategories={this.state.votingCategories}
                 userId={this.state.user.id}
               />
+            )
+          }
+          else if(this.state.gameState === 'loading'){
+            console.log(this.state.gameState);
+            return(
+              <Loading />
             )
           }
         }
@@ -190,7 +195,9 @@ class Home extends Component {
   // Renders timer inside quizitPlayground
   renderTimer = ()=>{
     if(this.state.loggedIn){
-      return(<Timer timer={this.state.timer}/>)
+      if(this.state.gameState!='loading'){
+        return(<Timer timer={this.state.timer}/>)
+      }
     }
   }
 
