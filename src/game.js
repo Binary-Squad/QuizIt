@@ -9,7 +9,7 @@ const categoriesArr = require('../utils/categories.js').categoriesArr;
 // const timerSettings = require('../utils/timerSettings.js').production;
 
 // Uncomment this one for testing timerSettings. Make sure to comment out production.
-const timerSettings = require('../utils/timerSettings.js').testing;
+const timerSettings = require('../utils/timerSettings.js').production;
 
 function Game (questions, users, settings, io, newGame){
 
