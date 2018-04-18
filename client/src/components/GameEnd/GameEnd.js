@@ -30,8 +30,15 @@ class GameEnd extends Component {
         </h1>
       	<div className="leaderboard-score">{this.state.scores?this.state.scores.map(score=>{return(
           <div key={score.uid} className="leaderboardItem">
-            <span className="leaderboard-name">{score.name}</span>
-            <span className="leaderboard-score">Score: {score.score}</span>
+            <div className="row">
+              <div className="col-5">
+                <span className="leaderboard-name">{score.name}</span>
+              </div>
+              <div className="col-4"></div>
+              <div className="col-3">
+                <span className="leaderboard-score">Score: {score.score}</span>
+              </div>
+            </div>
           </div>)
         }):<div>loading</div>}</div>
       </div>

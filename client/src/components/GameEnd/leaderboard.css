@@ -16,7 +16,7 @@
 }
 
 .leaderboard-name {
-	text-align: left;
+	float: left;
 }
 
 #dancing-alien {
