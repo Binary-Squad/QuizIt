@@ -13,10 +13,12 @@
 	text-align: right;
 	font-size: 30px;
 	font-weight: 700;
+	padding-right: 2vh;
 }
 
 .leaderboard-name {
 	float: left;
+	padding-left: 2vh;
 }
 
 #dancing-alien {

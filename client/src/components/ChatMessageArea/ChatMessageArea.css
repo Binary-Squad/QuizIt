@@ -5,6 +5,8 @@
     border-width: 1px;
     border-color: gray;
     word-wrap: normal;
+    overflow-y: scroll;
+    
 }
 
 .chatList{
@@ -14,3 +16,7 @@
 .listItem {
     list-style-type: none;
 }
+
+::-webkit-scrollbar {
+    display: none; 
+ }

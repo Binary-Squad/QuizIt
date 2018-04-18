@@ -33,10 +33,16 @@ class ChatInput extends React.Component {
         });
     }
 
+    _handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.createChatObj();
+        }
+    }
+
     render() {
         return (
             <div className="chatInput">
-                <input type="text" className="form-control inputBoxStyle" id="chat-text" rows="1" value={this.state.msg} onChange={this.handleTextAreaChange}></input>
+                <input type="text" className="form-control inputBoxStyle" id="chat-text" rows="1" value={this.state.msg} onChange={this.handleTextAreaChange} onKeyPress={this._handleKeyPress}></input>
                 <ChatButton sendChatMsg={this.createChatObj}> </ChatButton>
             </div>
         )
