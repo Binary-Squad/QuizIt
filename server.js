@@ -98,13 +98,11 @@ io.on('connection', function(socket) {
 
   // Receives answers from react client
   socket.on('answer', function(answerObj){
-    // console.log(answerObj);
     // Call some function to do stuff in gameManager -> gameSession -> game
     gameManager.handleAnswer(answerObj)
   });
 
   socket.on('vote', function(voteObj){
-    // console.log(answerObj);
     // Call some function to do stuff in gameManager -> gameSession -> game
     gameManager.handleVote(voteObj)
   });

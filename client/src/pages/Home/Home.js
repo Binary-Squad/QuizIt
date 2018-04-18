@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+// import Sound from "react-sound";
 import API from "../../utils/API";
 // import {Redirect} from "react-router-dom";
 import socket from '../../components/io';
@@ -13,6 +14,7 @@ import CurrentQuestions from "../../components/CurrentQuestions";
 import Chatroom from "../../components/Chatroom";
 import Navbar from "../../components/Navbar";
 import Voting from "../../components/Voting";
+import Profile from "../../components/Profile";
 import './Home.css';
 
 class Home extends Component {
@@ -70,10 +72,6 @@ class Home extends Component {
   }
 
   componentDidMount(){
-    // socket.on('message', (msg) => {
-    //   console.log(msg);
-    // });
-
     //Used for yarn start
     socket.on('gameState', (msg) => {
       // console.log(msg);
@@ -101,6 +99,11 @@ class Home extends Component {
       this.setState({answers:[],gameState:"pregame"});
       console.log('cleared answers upon newGame AKA pregame');
     }
+    if(nextState.gameState !== this.state.gameState){
+      API.getProfileInfo(localStorage.jwt).then(res=>{
+        this.setState({user:res.data.user})
+      })
+    }
   }
 
   loggedInTrue = (userInfo)=>{
@@ -113,7 +116,7 @@ class Home extends Component {
   setAnswer = (answer)=>{
     this.setState({currentAnswer:answer},()=>{
       var answerObj = {
-        id: this.state.user.id, //Allow login to update state.id later
+        id: this.state.user._id, //Allow login to update state.id later
         username: this.state.user.username, //Allow login to update state.name later
         answer: this.state.currentAnswer, //True and False are strings as well
         questionNum: this.state.questionNum, //0-9 to match question array position
@@ -205,7 +208,7 @@ class Home extends Component {
   // Renders left div. You can render a specific component and pass props like so.
   renderLeft = ()=>{
     if(this.state.loggedIn){
-      return(<CurrentQuestions questions={this.state.questions} />)
+      return(<Profile user={this.state.user} />)
     }
   }
 
@@ -214,6 +217,18 @@ class Home extends Component {
     if(this.state.loggedIn){
       return(<Chatroom user={this.state.user} socket={socket}/>)
     }
+  }
+
+  handleSongLoading = ()=>{
+    console.log('loading');
+  }
+
+  handleSongPlaying = ()=>{
+    console.log('playing');
+  }
+
+  handleSongFinishedPlaying = ()=>{
+    console.log('finishedPlaying');
   }
 
   render() {
@@ -240,7 +255,15 @@ class Home extends Component {
         </div>
     );
   }
-
 }
 
 export default Home;
+
+// <Sound
+//           url="/assets/sound/BlueSkies.mp3"
+//           playStatus={Sound.status.PLAYING}
+//           // playFromPosition={0 /* in milliseconds */}
+//           onLoading={this.handleSongLoading}
+//           onPlaying={this.handleSongPlaying}
+//           onFinishedPlaying={this.handleSongFinishedPlaying}
+//           />

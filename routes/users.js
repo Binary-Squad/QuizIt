@@ -19,7 +19,11 @@ router.post('/register', (req, res, next) => {
     // name: req.body.name,
     email: req.body.email,
     username: req.body.username,
-    password: req.body.password
+    password: req.body.password,
+    stats: {
+      answered:0,
+      correct:0
+    }
   });
 
   if(!ValidateEmail(newUser.email)){

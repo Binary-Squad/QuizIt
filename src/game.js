@@ -270,11 +270,55 @@ function Game (questions, users, settings, io, newGame){
                             if(clientAnswer.id === score.id){
                                 score.score++;
                                 console.log(score.username+' got one right!');
-                            }
-                            else{
-                                console.log(score.username+' got one wrong...');
+                                User.findOne({_id:clientAnswer.id}).then(res=>{
+                                    if(res.stats){
+                                        console.log(res);
+                                        res.stats.answered++;
+                                        res.stats.correct++;
+                                        res.markModified('stats');
+                                        console.log(res);
+                                        res.save(function(err){
+                                            if (err) throw err;
+                                        });
+                                    }
+                                    else{
+                                        res.stats = {
+                                            answered:1,
+                                            correct:1
+                                        }
+                                        res.markModified('stats');
+                                        res.save(function(err){
+                                            if (err) throw err;
+                                        });
+                                    }
+                                })
+                                clientAnswer.answered = false;
                             }
                         })
+                    }
+                    else{
+                        console.log(clientAnswer.username+' WRONG!');
+                        User.findOne({_id:clientAnswer.id}).then(res=>{
+                            if(res.stats){
+                                console.log(res);
+                                res.stats.answered++;
+                                res.markModified('stats');
+                                res.save(function(err){
+                                    if (err) throw err;
+                                });
+                            }
+                            else{
+                                res.stats = {
+                                    answered:1,
+                                    correct:0
+                                }
+                                res.markModified('stats');
+                                res.save(err=>{
+                                    if (err) throw err;
+                                })
+                            }
+                        })
+                        clientAnswer.answered = false;
                     }
                 }
             })
