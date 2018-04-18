@@ -16,7 +16,7 @@ function ValidateEmail(email){
 router.post('/register', (req, res, next) => {
   const errors = [];
   let newUser = new User ({
-    name: req.body.name,
+    // name: req.body.name,
     email: req.body.email,
     username: req.body.username,
     password: req.body.password
@@ -25,10 +25,10 @@ router.post('/register', (req, res, next) => {
   if(!ValidateEmail(newUser.email)){
     errors.push("You must enter a valid email address (example@quizit.com)")
   }
-  if(newUser.username.length < 3 || newUser.username.length >20){
+  if(newUser.username.length < 5 || newUser.username.length >20){
     errors.push("Username must be 3 to 20 characters long")
   }
-  if(newUser.password.length < 3 || newUser.password.length >20){
+  if(newUser.password.length < 5 || newUser.password.length >20){
     errors.push("Password must be 3 to 20 characters long")
   }
   if (errors.length > 0){
@@ -84,8 +84,8 @@ router.post('/authenticate', (req, res, next) => {
           token: 'JWT '+token,
           user: {
             _id: user._id,
-            id: user.id,
-            name: user.name,
+            id: user._id,
+            // name: user.name,
             username: user.username,
             email: user.email
           }

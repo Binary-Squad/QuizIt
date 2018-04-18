@@ -3,13 +3,14 @@ const omit = require('../utils/myOmit.js');
 const shuffle = require('../utils/shuffle.js');
 const Session = require('../models/gameSession');
 const categoriesArr = require('../utils/categories.js').categoriesArr;
+const User = require('../models/user');
 
 // You can adjust your own testing timer settings in utils/timerSettings.js
 // Uncomment this one for production timerSettings. Make sure to comment out testing.
 // const timerSettings = require('../utils/timerSettings.js').production;
 
 // Uncomment this one for testing timerSettings. Make sure to comment out production.
-const timerSettings = require('../utils/timerSettings.js').production;
+const timerSettings = require('../utils/timerSettings.js').testing;
 
 function Game (questions, users, settings, io, newGame){
 
@@ -234,9 +235,10 @@ function Game (questions, users, settings, io, newGame){
         this.gameData.users.push[user];
         // console.log(this.gameData.users);
         const scoreObj = {
-            name:user.name,
+            username:user.username,
             score:0,
-            id:user.id
+            id:user.id,
+            answered:false
         }
         this.gameData.scores.push(scoreObj);
     }
@@ -247,9 +249,10 @@ function Game (questions, users, settings, io, newGame){
             const tempScores = [];
             users.forEach(data=>{
                 const scoreObj = {
-                    name:data.name,
+                    username:data.username,
                     score:0,
-                    id:data.id
+                    id:data.id,
+                    answered:false
                 }
                 tempScores.push(scoreObj);
             })
@@ -261,13 +264,18 @@ function Game (questions, users, settings, io, newGame){
         console.log('CALCULATING SCORES');
         if(this.gameData.clientAnswers.length > 0){
             this.gameData.clientAnswers.forEach(clientAnswer=>{
-                if(clientAnswer.answer === this.gameData.correctAnswer){
-                    this.gameData.scores.forEach(score=>{
-                        if(clientAnswer.id === score.id){
-                            score.score++;
-                            console.log(score.name+' got one right!');
-                        }
-                    })
+                if(clientAnswer.answered === true){
+                    if(clientAnswer.answer === this.gameData.correctAnswer){
+                        this.gameData.scores.forEach(score=>{
+                            if(clientAnswer.id === score.id){
+                                score.score++;
+                                console.log(score.username+' got one right!');
+                            }
+                            else{
+                                console.log(score.username+' got one wrong...');
+                            }
+                        })
+                    }
                 }
             })
         }

@@ -40,14 +40,14 @@ function GameSession(io) {
                     if(userCounter === this.users.length){
                         this.users.push(user);
                         this.currentGame.addUser(user)
-                        console.log('pushing '+user.name+' into this.users');
+                        console.log('pushing '+user.username+' into this.users');
                     }
                 })
             }
             else{
                 this.users.push(user);
                 this.currentGame.addUser(user)
-                console.log('pushing '+user.name+' into this.users');
+                console.log('pushing '+user.username+' into this.users');
             }
         }
     };
