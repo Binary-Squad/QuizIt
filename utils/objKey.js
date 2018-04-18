@@ -60,5 +60,6 @@ var answerObj = {
 	answer: "user's selected answer",
 	questionNum: 5,
 	timer: 3,
-	room: "master" //Will be "master" until multiple rooms
+	room: "master", //Will be "master" until multiple rooms
+	answered: true
 }

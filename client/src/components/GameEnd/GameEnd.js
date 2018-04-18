@@ -32,7 +32,7 @@ class GameEnd extends Component {
           <div key={score.uid} className="leaderboardItem">
             <div className="row">
               <div className="col-5">
-                <span className="leaderboard-name">{score.name}</span>
+                <span className="leaderboard-name">{score.username}</span>
               </div>
               <div className="col-4"></div>
               <div className="col-3">

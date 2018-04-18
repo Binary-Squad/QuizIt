@@ -114,11 +114,12 @@ class Home extends Component {
     this.setState({currentAnswer:answer},()=>{
       var answerObj = {
         id: this.state.user.id, //Allow login to update state.id later
-        name: this.state.user.name, //Allow login to update state.name later
+        username: this.state.user.username, //Allow login to update state.name later
         answer: this.state.currentAnswer, //True and False are strings as well
         questionNum: this.state.questionNum, //0-9 to match question array position
         timer: this.state.timer, //Time the user selects answer. will be 0 if they switched answers
-        room: 'master' //Will be 'master' until multiple rooms
+        room: 'master', //Will be 'master' until multiple rooms
+        answered: true
       }
       console.log(answerObj);
       socket.emit('answer',answerObj);
@@ -223,7 +224,7 @@ class Home extends Component {
             <div className="row pushDown"></div>
             <div className="row">
               <div className="col col-lg-2 quizitLeft">
-                {/* {this.renderLeft()} */}
+                {this.renderLeft()}
               </div>
               <div className="col col-lg-8 quizitCenter">
                   <div className = "quizitPlayground vh-center">

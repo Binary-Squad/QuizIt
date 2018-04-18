@@ -5,7 +5,7 @@ import {Redirect} from "react-router-dom";
 
 class Register extends Component {
   state = {
-    name: "",
+    // name: "",
     username: "",
     email: "",
     password: "",
@@ -51,14 +51,6 @@ class Register extends Component {
         <p className="max-center">Register</p>
         <form>
           <div>
-          <input 
-            name="name"
-            value={this.state.name}
-            onChange={this.handleInputChange}
-            placeholder="name"
-          />
-          <div>
-          </div>
           <input 
             name="username"
             onChange={this.handleInputChange}
