@@ -20,7 +20,7 @@ class ChatMessageArea extends React.Component {
         return (
             <div className="chatMessageArea">
                 <ul className="chatList">
-                    {this.props.messages.map((message,index)=><li key={index} className="listItem">{message.user.name + ": " + message.msg}</li>)}
+                    {this.props.messages.map((message,index)=><li key={index} className="listItem">{message.user.username + ": " + message.msg}</li>)}
                     <li>
                         <div style={{ float:"left", clear: "both" }}
                         ref={(el) => { this.messagesEnd = el; }}>
