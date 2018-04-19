@@ -6,6 +6,18 @@ var loginObj = {
 	email:"poop@poop.com"
 }
 
+// UserObj
+var user = {
+	name:"Poop",
+	username:"Poop",
+	id:"someMongoUserID",
+	email:"poop@poop.com",
+	stats:{
+		answered:10,
+		correct:5
+	}	
+}
+
 // Individual player score object stored in scores array for game.js.
 var scoresObj = {
 	id:"someMongoUserID",
