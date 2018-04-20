@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { BrowserView, MobileView, isBrowser, isMobile } from "react-device-detect";
+import ReactSwipe from 'react-swipe';
 // import Sound from "react-sound";
 import API from "../../utils/API";
 // import {Redirect} from "react-router-dom";
@@ -15,12 +17,20 @@ import Chatroom from "../../components/Chatroom";
 import Navbar from "../../components/Navbar";
 import Voting from "../../components/Voting";
 import Profile from "../../components/Profile";
+// Mobile components
+import MobileQuestionActive from '../../components/MobileQuestionActive';
+import MobileTimer from "../../components/MobileTimer";
+import MobileChatroom from "../../components/MobileChatroom";
+import MobileNavbar from "../../components/MobileNavbar";
+import MobileLogin from "../../components/MobileLogin";
+import MobileRegister from "../../components/MobileRegister";
 import './Home.css';
 
 class Home extends Component {
   state = {
     loading:true,
     loggedIn: false,
+    currentPage: "login",
     user:{},
     errors:[],
     gameState: "loading",
@@ -63,11 +73,7 @@ class Home extends Component {
       })
     }
     else{
-      setTimeout(()=>{
-        this.setState({loggedIn:false,loading:false},()=>{
-          console.log('loggedIn is '+this.state.loggedIn);
-        });
-      },1000)
+      this.setState({loggedIn:false,loading:false});
     }
   }
 
@@ -137,7 +143,7 @@ class Home extends Component {
       else{
         if(!this.state.loggedIn){
           return(
-            <Login loggedInTrue={this.loggedInTrue}/>
+            <Login loggedInTrue={this.loggedInTrue} />
           )
         }
         else{
@@ -196,11 +202,85 @@ class Home extends Component {
       }
   }
 
+  renderMobileStuff = ()=>{
+      if(this.state.loading){
+        return(<Loading />)
+      }
+      else{
+        if(!this.state.loggedIn){
+          return(
+            <MobileLogin loggedInTrue={this.loggedInTrue} />
+          )
+        }
+        else{
+          if(this.state.gameState === 'pregame'){
+            return(
+              <Pregame />
+            )
+          }
+          else if(this.state.gameState === 'questionActive'){
+            return(
+              <MobileQuestionActive
+                question={this.state.question}
+                questionNum={this.state.questionNum}
+                totalQuestions={this.state.totalQuestions}
+                setAnswer={this.setAnswer}
+                timer={this.state.timer}
+                category={this.state.category}
+                gameState={this.state.gameState}
+              />
+            )
+          }
+          else if(this.state.gameState === 'intermission'){
+            return(
+              <MobileQuestionActive
+                question={this.state.question}
+                correctAnswer={this.state.correctAnswer} 
+                questionNum={this.state.questionNum}
+                totalQuestions={this.state.totalQuestions}
+                currentAnswer={this.state.currentAnswer}
+                timer={this.state.timer}
+                category={this.state.category}
+                gameState={this.state.gameState}
+              />
+            )
+          }
+          else if(this.state.gameState === 'gameEnd'){
+            return(
+              <GameEnd scores={this.state.scores} />
+            )
+          }
+          else if(this.state.gameState === 'voting'){
+            return(
+              <Voting 
+                votingCategories={this.state.votingCategories}
+                userId={this.state.user.id}
+              />
+            )
+          }
+          else if(this.state.gameState === 'loading'){
+            console.log(this.state.gameState);
+            return(
+              <Loading />
+            )
+          }
+        }
+      }
+  }
+
   // Renders timer inside quizitPlayground
   renderTimer = ()=>{
     if(this.state.loggedIn){
       if(this.state.gameState!='loading'){
         return(<Timer timer={this.state.timer}/>)
+      }
+    }
+  }
+
+  renderMobileTimer = ()=>{
+    if(this.state.loggedIn){
+      if(this.state.gameState!='loading'){
+        return(<MobileTimer timer={this.state.timer}/>)
       }
     }
   }
@@ -219,6 +299,12 @@ class Home extends Component {
     }
   }
 
+  renderMobileChat = ()=>{
+    if(this.state.loggedIn){
+      return(<MobileChatroom user={this.state.user} socket={socket}/>)
+    }
+  }
+
   handleSongLoading = ()=>{
     console.log('loading');
   }
@@ -234,8 +320,9 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <Navbar loggedIn={this.state.loggedIn}/>
-          <div className="container-fluid">
+        <BrowserView device={isBrowser}>
+          <Navbar loggedIn={this.state.loggedIn}/>
+          <div className="container-fluid browser-container">
             <div className="row pushDown"></div>
             <div className="row">
               <div className="col col-lg-2 quizitLeft">
@@ -252,7 +339,25 @@ class Home extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </BrowserView>
+        <MobileView device={isMobile}>
+          <MobileNavbar loggedIn={this.state.loggedIn}/>
+          {this.state.loggedIn ?
+            <ReactSwipe className="carousel" swipeOptions={{continuous: false}}>
+              <div className="mobile-container">
+                {this.renderMobileStuff()}
+              </div>
+              <div className="mobile-container">
+                {this.renderMobileChat()}
+              </div>
+            </ReactSwipe>
+            :
+            <div className="mobile-container">
+              {this.renderMobileStuff()}
+            </div>
+          }
+        </MobileView>
+      </div>
     );
   }
 }

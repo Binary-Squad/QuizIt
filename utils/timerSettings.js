@@ -13,9 +13,9 @@ const timerSettings={
 	},
 	testing:{
 		preGame:2, // sets initial timer for preGame phase
-		intermission:2, // sets timer for intermission phase
+		intermission:20, // sets timer for intermission phase
 		gameEnd:2, // sets timer for gameEnd phase
-		questionActive:2, // sets timer for questionActive phase
+		questionActive:20, // sets timer for questionActive phase
 		voting:5,
 		loading:3,
 		tickInterval:500, // sets the timer tick interval

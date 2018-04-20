@@ -1,0 +1,14 @@
+.mobile-swipeGuide{
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+	padding: 0px 5px;
+}
+
+.mobile-swipeGuide-left{
+	float: left;
+}
+
+.mobile-swipeGuide-right{
+	float: right;
+}
