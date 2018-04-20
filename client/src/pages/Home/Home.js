@@ -272,7 +272,7 @@ class Home extends Component {
   renderTimer = ()=>{
     if(this.state.loggedIn){
       if(this.state.gameState!='loading'){
-        return(<Timer timer={this.state.timer}/>)
+        return(<Timer timer={this.state.timer} gameState={this.state.gameState}/>)
       }
     }
   }
