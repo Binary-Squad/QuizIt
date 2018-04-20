@@ -4,13 +4,18 @@ import React, {Component} from 'react'
 import './Timer.css'
 
 export default class Timer extends Component {
+<<<<<<< Updated upstream
 	 constructor(props) {
+=======
+  constructor(props) {
+>>>>>>> Stashed changes
     super(props);
     this.state = {
       message: undefined
     }
   }
 
+<<<<<<< Updated upstream
   	createTimerMessage = () => {
 
   		if (this.props.gameState === 'pregame'){
@@ -36,6 +41,12 @@ export default class Timer extends Component {
 
   	};
 
+=======
+  createTimerMessage = () => {
+    
+  }
+  
+>>>>>>> Stashed changes
   render() {
 
     return (
