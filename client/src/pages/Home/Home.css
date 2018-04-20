@@ -53,5 +53,22 @@
 }
 
 body, html {
-	background-image: url('extra_clean_paper.png');
+	background-color: #AFBBF2;
+	/*background-color: #D3FFF3;*/
+
 }	
+
+.browser-container{
+	background-image: url('extra_clean_paper.png');	
+}
+
+.mobile-container{
+	/*width: 100vw;*/
+	height: 100vh;
+	margin: 0px;
+	padding-top: 60px;
+	/*padding: 1%;*/
+	background-color: #AFBBF2;
+	/*color: #1F2041;*/
+	z-index: 1;
+}
