@@ -22,61 +22,16 @@
     margin-right: 5px;
 }
 
-.q {
-    color: black;
-    background-color: yellow; 
-    border-radius: 6px;
+.logo-span2 {
+    margin-top: 4px;
 }
 
-.u {
-    color: black;
-    background-color: lightseagreen;
-    padding-left: 2px;
-    padding-right: 2px; 
-    border-radius: 6px;
-}
-
-.i {
-    color: black;
-    background-color: orange; 
-    padding-left: 2px;
-    padding-right: 2px;
-    border-radius: 6px;
-}
-
-.z {
-    color: black;
-    background-color: blueviolet; 
-    padding-left: 2px;
-    padding-right: 2px;
-    border-radius: 6px;
-}
-
-.big-i {
-    color: black;
-    background-color: lightcyan;
-    padding-left: 2px;
-    padding-right: 2px;
-    border-radius: 6px;
-}
-
-.t {
-    color: black;
-    background-color: lightgreen;
-    padding-left: 2px;
-    padding-right: 2px;
-    border-radius: 6px;
-}
-
-.exc {
-    color: black;
-    background-color: pink;
-    padding-left: 2px;
-    padding-right: 2px;
-    border-radius: 6px;
-    margin-right: 5px;
+.quizit-logo {
+    height: 38px;
+    margin-right: 8px;
+    margin-bottom: 4px;
 }
 
 .open-trivia-logo {
-    height: 30px;
+    height: 36px;
 }
