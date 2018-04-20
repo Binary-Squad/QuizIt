@@ -1,7 +1,6 @@
 .leaderboard-container{
 	margin-bottom: 40px;
 	margin-top: 30px;
-	overflow-y: scroll;
 }
 
 .leaderboard-title {
@@ -15,6 +14,7 @@
 	font-size: 30px;
 	font-weight: 700;
 	padding-right: 2vh;
+	overflow-y: scroll;
 }
 
 .leaderboard-name {
