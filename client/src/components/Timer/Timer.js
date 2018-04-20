@@ -4,15 +4,45 @@ import React, {Component} from 'react'
 import './Timer.css'
 
 export default class Timer extends Component {
-  
+	 constructor(props) {
+    super(props);
+    this.state = {
+      message: undefined
+    }
+  }
+
+  	createTimerMessage = () => {
+
+  		if (this.props.gameState === 'pregame'){
+  			let message = <div className="timer">Next game in {this.props.timer} seconds</div>;
+  			return message
+  		} else if (this.props.gameState === 'questionActive'){
+  			let message = <div className="timer">{this.props.timer} seconds left</div>;
+  			return message
+  		} else if (this.props.gameState === 'voting'){
+  			let message = <div className="timer">{this.props.timer} seconds to vote</div>;
+  			return message
+  		} else if (this.props.gameState === 'gameEnd'){
+  			let message = undefined;
+  			return message
+  		} else if (this.props.gameState === 'intermission'){
+  			let message = <div className="timer">Next question in {this.props.timer} seconds</div>;
+  			return message
+  		} 
+  		else {
+  			let message = undefined;
+  			return message
+  		}
+
+  	};
+
   render() {
 
     return (
-      <div className="centered timerBox">
-        <span className="timer centered">
-            {this.props.timer} seconds remaining!
-        </span>
-      </div>
+    	
+    	<div className="centered timerBox">
+    	{this.createTimerMessage()}
+    	</div>
     )
   }
 }
