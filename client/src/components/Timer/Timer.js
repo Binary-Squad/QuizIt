@@ -4,7 +4,7 @@ import React, {Component} from 'react'
 import './Timer.css'
 
 export default class Timer extends Component {
-	 constructor(props) {
+  constructor(props) {
     super(props);
     this.state = {
       message: undefined
