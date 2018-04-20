@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import "./Pregame.css";
+import "./MobilePregame.css";
+import MobileTimer from "../MobileTimer";
 // import socket from '../io';
 
-class Pregame extends Component {
+class MobilePregame extends Component {
 
   state = {
     // endpoint: "localhost:3001",
@@ -12,10 +13,11 @@ class Pregame extends Component {
     return (
       <div className="pregame-container">
       	<img src="assets/img/quizit-logo.png" className="pregame-logo" />
-      	<div className="empty-pregame-div" />
+        <h3 className="centered no-margin">Next game starting!</h3>
+        <MobileTimer timer={this.props.timer}/>
       </div>
     );
   }
 }
 
-export default Pregame;
+export default MobilePregame;

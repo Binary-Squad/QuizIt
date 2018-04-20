@@ -33,6 +33,8 @@
 	width: 90vh;
 	border-radius: 30px;
 	filter: drop-shadow(-1px 0 2px #222222);
+	/*Useful for now to keep the box from shrinking too much*/
+	min-height: 70vh;
 }
 
 .vh-center{

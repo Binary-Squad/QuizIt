@@ -5,6 +5,10 @@ import MobileTimer from '../MobileTimer';
 import MobileSwipeGuide from "../MobileSwipeGuide";
 import './MobileQuestionActive.css';
 
+function removeEntertainment(string){
+  return string.replace('Entertainment: ', '');
+}
+
 function createMarkup(string){
   return {__html: string};
 }
@@ -82,7 +86,7 @@ export default class MobileQuestionActive extends Component {
             ))}
           </ListGroup>
           <div className="mobile-box-details">
-            <div className="mobile-box-category">{this.props.category}</div>
+            <div className="mobile-box-category">{removeEntertainment(this.props.category)}</div>
             <div className="mobile-box-difficulty">{renderDifficulty(this.props.question.difficulty)}</div>
           </div>
           <div className="clear-float"/>
@@ -113,7 +117,7 @@ export default class MobileQuestionActive extends Component {
             ))}
           </ListGroup>
           <div className="mobile-box-details">
-            <div className="mobile-box-category">{this.props.category}</div>
+            <div className="mobile-box-category">{removeEntertainment(this.props.category)}</div>
             <div className="mobile-box-difficulty">{renderDifficulty(this.props.question.difficulty)}</div>
           </div>
           <div className="clear-float"/>

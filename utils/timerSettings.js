@@ -12,12 +12,12 @@ const timerSettings={
 		// ping:4000 // sets ping comparing answers
 	},
 	testing:{
-		preGame:2, // sets initial timer for preGame phase
-		intermission:20, // sets timer for intermission phase
-		gameEnd:2, // sets timer for gameEnd phase
-		questionActive:20, // sets timer for questionActive phase
+		preGame:5, // sets initial timer for preGame phase
+		intermission:3, // sets timer for intermission phase
+		gameEnd:5, // sets timer for gameEnd phase
+		questionActive:3, // sets timer for questionActive phase
 		voting:5,
-		loading:3,
+		loading:5,
 		tickInterval:500, // sets the timer tick interval
 		// ping:750 // sets ping comparing answers
 	}
