@@ -157,3 +157,13 @@
 .mobile-form-text{
     padding-left: 3px;
 }
+
+.error-text{
+    color: red;
+    font-size: 1rem;
+    margin: 0px;
+}
+
+.smol-top-margin{
+    margin-top:5%;
+}
