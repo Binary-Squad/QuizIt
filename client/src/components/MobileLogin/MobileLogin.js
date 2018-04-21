@@ -111,10 +111,10 @@ class MobileLogin extends Component {
 
           <ul className="nav nav-tabs nav-item-no-border" id="myTab" role="tablist">
             <li className="nav-item nav-item-custom nav-item-no-border">
-              <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Login</a>
+              <a className="nav-link nav-link-background active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Login</a>
             </li>
             <li className="nav-item nav-item-custom nav-item-no-border">
-              <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Register</a>
+              <a className="nav-link nav-link-background" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Register</a>
             </li>
           </ul>
 

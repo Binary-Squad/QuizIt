@@ -149,6 +149,10 @@
     color: white !important;
 }
 
+.nav-link-background{
+    background-color: #B4B4B4 !important;
+}
+
 .nav-item-no-border{
     border: 0px !important;
 }

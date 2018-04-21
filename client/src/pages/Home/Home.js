@@ -28,6 +28,7 @@ import MobileLogin from "../../components/MobileLogin";
 import MobileRegister from "../../components/MobileRegister";
 import MobilePregame from "../../components/MobilePregame";
 import MobileVoting from "../../components/MobileVoting";
+import MobileProfile from "../../components/MobileProfile";
 import './Home.css';
 
 class Home extends Component {
@@ -300,22 +301,24 @@ class Home extends Component {
   }
 
   renderMobileChat = ()=>{
-    if(this.state.loggedIn){
-      return(<MobileChatroom user={this.state.user} socket={socket}/>)
-    }
+    return(<MobileChatroom user={this.state.user} socket={socket} />)
   }
 
-  handleSongLoading = ()=>{
-    console.log('loading');
+  renderMobileProfile = ()=>{
+    return(<MobileProfile user={this.state.user} />)
   }
 
-  handleSongPlaying = ()=>{
-    console.log('playing');
-  }
+  // handleSongLoading = ()=>{
+  //   console.log('loading');
+  // }
 
-  handleSongFinishedPlaying = ()=>{
-    console.log('finishedPlaying');
-  }
+  // handleSongPlaying = ()=>{
+  //   console.log('playing');
+  // }
+
+  // handleSongFinishedPlaying = ()=>{
+  //   console.log('finishedPlaying');
+  // }
 
   showProfileModal = () => {
     this.setState({
@@ -376,6 +379,9 @@ class Home extends Component {
           <MobileNavbar loggedIn={this.state.loggedIn}/>
           {this.state.loggedIn ?
             <ReactSwipe className="carousel" swipeOptions={{continuous: false}}>
+              <div className="mobile-container">
+                {this.renderMobileProfile()}
+              </div>
               <div className="mobile-container">
                 {this.renderMobileStuff()}
               </div>
