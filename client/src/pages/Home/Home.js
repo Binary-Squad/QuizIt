@@ -149,7 +149,7 @@ class Home extends Component {
       else{
         if(!this.state.loggedIn){
           return(
-            <Login loggedInTrue={this.loggedInTrue} />
+            <MobileLogin loggedInTrue={this.loggedInTrue} />
           )
         }
         else{
