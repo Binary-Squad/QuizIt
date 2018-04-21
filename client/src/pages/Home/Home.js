@@ -402,6 +402,7 @@ class Home extends Component {
 
 export default Home;
 
+
 // <div className="mobile-landscape-detector">Please play this game in portrait layout. AKA hold your phone UP</div>
 
 // <Sound
