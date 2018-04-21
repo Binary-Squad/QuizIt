@@ -7,10 +7,10 @@ const User = require('../models/user');
 
 // You can adjust your own testing timer settings in utils/timerSettings.js
 // Uncomment this one for production timerSettings. Make sure to comment out testing.
-// const timerSettings = require('../utils/timerSettings.js').production;
+const timerSettings = require('../utils/timerSettings.js').production;
 
 // Uncomment this one for testing timerSettings. Make sure to comment out production.
-const timerSettings = require('../utils/timerSettings.js').testing;
+// const timerSettings = require('../utils/timerSettings.js').testing;
 
 function Game (questions, users, settings, io, newGame){
 
