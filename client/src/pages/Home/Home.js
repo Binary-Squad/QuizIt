@@ -281,14 +281,6 @@ class Home extends Component {
     }
   }
 
-  renderMobileTimer = ()=>{
-    if(this.state.loggedIn){
-      if(this.state.gameState!='loading'){
-        return(<MobileTimer timer={this.state.timer}/>)
-      }
-    }
-  }
-
   // Renders left div. You can render a specific component and pass props like so.
   renderLeft = ()=>{
     if(this.state.loggedIn){

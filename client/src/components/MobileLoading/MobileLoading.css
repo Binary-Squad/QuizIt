@@ -40,17 +40,17 @@
   }
 }
 
-.loading-logo{
+.mobile-loading-logo{
   width: 100%;
   margin: auto;
 }
 
-.loading-container{
+.mobile-loading-container{
   width: 100%;
   height: 100%;
   padding: 10%;
 }
 
-.loading-text{
+.mobile-loading-text{
   font-size: 2rem;
 }
