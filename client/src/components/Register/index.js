@@ -9,13 +9,28 @@ export default class Login extends Component {
       <Form horizontal>
         <FormGroup controlId="formHorizontal">
           <Col componentClass={ControlLabel} sm={2}>
+            Name
+          </Col>
+          <Col sm={10}>
+            <FormControl type="string" placeholder="Username" />
+          </Col>
+        </FormGroup>
+        <FormGroup controlId="formHorizontal">
+          <Col componentClass={ControlLabel} sm={2}>
             Username
+          </Col>
+          <Col sm={10}>
+            <FormControl type="string" placeholder="Username" />
+          </Col>
+        </FormGroup>
+        <FormGroup controlId="formHorizontal">
+          <Col componentClass={ControlLabel} sm={2}>
+            Email
           </Col>
           <Col sm={10}>
             <FormControl type="email" placeholder="Username" />
           </Col>
         </FormGroup>
-
         <FormGroup controlId="formHorizontalPassword">
           <Col componentClass={ControlLabel} sm={2}>
             Password
@@ -24,13 +39,11 @@ export default class Login extends Component {
             <FormControl type="password" placeholder="Password" />
           </Col>
         </FormGroup>
-
         <FormGroup>
           <Col smOffset={2} sm={10}>
-            <Checkbox>Remember me</Checkbox>
+            <Button type="submit">Register</Button>
           </Col>
         </FormGroup>
-
       </Form>
     )
   }

@@ -17,6 +17,8 @@ import Chatroom from "../../components/Chatroom";
 import Navbar from "../../components/Navbar";
 import Voting from "../../components/Voting";
 import Profile from "../../components/Profile";
+import { Modal, Button } from "react-bootstrap";
+import classNames from "classnames";
 // Mobile components
 import MobileQuestionActive from '../../components/MobileQuestionActive';
 import MobileTimer from "../../components/MobileTimer";
@@ -45,7 +47,8 @@ class Home extends Component {
     totalQuestions:0,
     scores:[],
     category: "",
-    votingCategories:[]
+    votingCategories:[],
+    showProfile: false
   };
 
   componentWillMount() {
@@ -58,7 +61,7 @@ class Home extends Component {
               console.log('loggedIn is '+this.state.loggedIn);
             });
           },1000)
-          
+
           var socketParams = {
             user:res.data.user,
             room:'master'
@@ -171,7 +174,7 @@ class Home extends Component {
             return(
               <QuestionActive
                 question={this.state.question}
-                correctAnswer={this.state.correctAnswer} 
+                correctAnswer={this.state.correctAnswer}
                 questionNum={this.state.questionNum}
                 totalQuestions={this.state.totalQuestions}
                 currentAnswer={this.state.currentAnswer}
@@ -188,7 +191,7 @@ class Home extends Component {
           }
           else if(this.state.gameState === 'voting'){
             return(
-              <Voting 
+              <Voting
                 votingCategories={this.state.votingCategories}
                 userId={this.state.user.id}
               />
@@ -238,7 +241,7 @@ class Home extends Component {
             return(
               <MobileQuestionActive
                 question={this.state.question}
-                correctAnswer={this.state.correctAnswer} 
+                correctAnswer={this.state.correctAnswer}
                 questionNum={this.state.questionNum}
                 totalQuestions={this.state.totalQuestions}
                 currentAnswer={this.state.currentAnswer}
@@ -255,7 +258,7 @@ class Home extends Component {
           }
           else if(this.state.gameState === 'voting'){
             return(
-              <MobileVoting 
+              <MobileVoting
                 votingCategories={this.state.votingCategories}
                 userId={this.state.user.id}
                 timer={this.state.timer}
@@ -283,6 +286,7 @@ class Home extends Component {
 
   // Renders left div. You can render a specific component and pass props like so.
   renderLeft = ()=>{
+    return null
     if(this.state.loggedIn){
       return(<Profile user={this.state.user} />)
     }
@@ -313,11 +317,43 @@ class Home extends Component {
     console.log('finishedPlaying');
   }
 
+  showProfileModal = () => {
+    this.setState({
+      showProfile: true
+    })
+  }
+
+  hideProfileModal = () => {
+    this.setState({
+      showProfile: false
+    })
+  }
+
+
   render() {
+    const modalStyle = { display: this.state.showProfile ? 'block' : 'none' }
     return (
       <div>
         <BrowserView device={isBrowser}>
-          <Navbar loggedIn={this.state.loggedIn}/>
+          <Navbar loggedIn={this.state.loggedIn} showProfile={this.showProfileModal} user={this.state.user}/>
+          <div className={classNames(["modal", "fade"], { "show": this.state.showProfile })} role="dialog" style={modalStyle}>
+              <div className="modal-dialog" role="document">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Profile</h5>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true"></span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <Profile user={this.state.user}/>
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" onClick={this.hideProfileModal}>Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           <div className="container-fluid browser-container">
             <div className="row pushDown"></div>
             <div className="row">
