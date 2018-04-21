@@ -86,3 +86,22 @@ body, html {
 	background-color: #9649CB;
 	color: #D3FFF3;
 }
+
+.mobile-landscape-detector{
+	position: fixed;
+	height: 100vh;
+	width: 100vw;
+	background-color: black;
+	z-index: 999;
+	color: white;
+	font-size: 30px;
+	text-align: center;
+	padding: 10%;
+	display: none;
+}
+
+@media screen and (orientation:landscape) {
+	.mobile-landscape-detector{
+		display: block;
+	}
+}
