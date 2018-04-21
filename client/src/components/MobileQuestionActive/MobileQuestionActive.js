@@ -70,8 +70,8 @@ export default class MobileQuestionActive extends Component {
       return (
         <div className="mobileHeight">
           <div className="mobile-question-title">
-            <div className="centered mobile-questionNum-text">Question Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
-            <div className="centered mobile-question-text" dangerouslySetInnerHTML={createMarkup(question.question)}/>
+            <div className="centered mobile-top-banner-text">Question Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
+            <div className="centered mobile-question-text animated bounceIn" dangerouslySetInnerHTML={createMarkup(question.question)}/>
           </div>
           <ListGroup className="list-group-mobile">
             {answers.map((answer,index)=> (
@@ -100,7 +100,7 @@ export default class MobileQuestionActive extends Component {
       return (
         <div className="mobileHeight">
           <div className="mobile-question-title">
-            <div className="centered mobile-questionNum-text">Intermission Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
+            <div className="centered mobile-top-banner-text">Intermission Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
             <div className="centered mobile-question-text" dangerouslySetInnerHTML={createMarkup(question.question)}/>
           </div>
           <ListGroup className="list-group-mobile">

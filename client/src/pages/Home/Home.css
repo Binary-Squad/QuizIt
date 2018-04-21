@@ -75,3 +75,14 @@ body, html {
 	z-index: 1;
 	overflow-y: auto;
 }
+
+.mobile-top-banner-text{
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	font-size: 7vw;
+	height: 10vw;
+	font-weight: 700;
+	background-color: #9649CB;
+	color: #D3FFF3;
+}
