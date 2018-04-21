@@ -376,6 +376,7 @@ class Home extends Component {
           </div>
         </BrowserView>
         <MobileView device={isMobile}>
+          <div className="mobile-landscape-detector">Please play this game in portrait layout. AKA hold your phone UP</div>
           <MobileNavbar loggedIn={this.state.loggedIn}/>
           {this.state.loggedIn ?
             <ReactSwipe className="carousel" swipeOptions={{continuous: false}}>
@@ -401,9 +402,6 @@ class Home extends Component {
 }
 
 export default Home;
-
-
-// <div className="mobile-landscape-detector">Please play this game in portrait layout. AKA hold your phone UP</div>
 
 // <Sound
 //           url="/assets/sound/BlueSkies.mp3"

@@ -1,87 +1,60 @@
-# Styling Quizit Phase
+# Quizit First Deployment Phase
 
-### Preview of skeleton:
-![skeleton-grid-preview](./readme/skeleton-grid-preview.png "skeleton-grid-preview.png")
+![logo.png](./readme/logo.png "logo.png")
 
-Components begin rendering in Home.js line 182.
-```javascript
-  // Renders left div. You can render a specific component and pass props like so.
-  renderLeft = ()=>{
-    if(this.state.loggedIn){
-      return(<CurrentQuestions questions={this.state.questions} />)
-    }
-  }
+QuizIt is a trivia game that is always running! You can hop in and play anytime with anyone else currently connected. The game utilizes socket.io to communicate between the server and the client. It is built with a full MERN stack, Mongo, Express, React, and Node.
 
-  // Renders right div. You can render a specific component and pass props like so.
-  renderRight = ()=>{
-    if(this.state.loggedIn){
-      return(<Chatroom user={this.state.user} />)
-    }
-  }
+# Preview of desktop site:
+![site-preview.png](./readme/site-preview.png "site-preview.png")
 
-  render() {
-    return (
-      <div className="container-fluid">
-        <div className="row pushDown"></div>
-        <div className="row">
-          <div className="col col-sm-3 col-lg-2 quizitLeft">
-            {this.renderLeft()}
-          </div>
-          <div className="col col-sm-6 col-lg-8 quizitCenter">
-              <div className = "quizitPlayground vh-center">
-                <div className="quizitPlaygroundTop">{this.renderStuff()}</div>
-                <div className="quizitPlaygroundBottom">{this.renderTimer()}</div>
-              </div>
-          </div>
-          <div className="col col-sm-3 col-lg-2 quizitRight">
-            {this.renderRight()}
-          </div>
-        </div>
-      </div>
-    );
-  }
-```
+# Preview of mobile site:
+![mobile-preview-0](./readme/mobile-preview-0.png "mobile-preview-0.png")
+![mobile-preview-1](./readme/mobile-preview-1.png "mobile-preview-1.png")
+![mobile-preview-2](./readme/mobile-preview-2.png "mobile-preview-2.png")
+![mobile-preview-3](./readme/mobile-preview-3.png "mobile-preview-3.png")
 
-You can remove borders and start styling in Home.css and the appropriate .css file for each component.
+# How to use the site.
 
-In Home.css, you can remove borders by commenting out or removing this:
-```css
-.quizitLeft, .quizitRight, .quizitCenter, 
-.quizitPlayground, .quizitPlaygroundTop, .quizitPlaygroundBottom{
-	border: solid black 1px;
-}
-```
+1. First register or login.
+2. Select an answer.
+3. See if you got it right or wrong.
+4. Argue with people in chat.
+5. Win???
 
-Important to note in Home.css is the following:
-```css
-.pushDown{
-	height: 50px;
-}
+# To-do-list
 
-.quizitLeft, .quizitRight, .quizitCenter{
-	height: calc(100vh - 50px);
-}
-
-.quizitPlayground{
-	width: 80%;
-	margin: auto;
-	height: 90%;
-}
-
-.vh-center{
-    position: absolute;
-    top:50%;
-    left: 50%;
-    transform:translateX(-50%) translateY(-50%);
-    -webkit-transform:translateX(-50%) translateY(-50%);
-}
-```
-In order to get vertical and horizontal align to work with this method, the navbar is now fixed to the top of the screen. Class pushDown pushes everything down so the navbar doesn't cover content and calc will calculate the height of the columns to fill your screen and exactly your screen.
-
-### Troubleshooting
-If you run into issues with react compiling and importing after git pull origin master, it likely did not change a file name. Sometimes git fails to change a renamed file name. Here is an example error you might run into.
-![css-compile-error](./readme/css-compile-error.png "css-compile-error")
-
-Simply change the name of the file to match the name of the import in Home.js and restart yarn start.
-![css-compile-solution](./readme/css-compile-solution.png "css-compile-solution")
-![css-compile-solution-2](./readme/css-compile-solution-2.png "css-compile-solution-2")
+* Profile management (avatar, stat reset, etc)
+    * More game statistics
+    * How many connected users
+    * How many voted for what
+* Authentication system
+    * Password Reset
+    * Email confirmation
+    * Other login options (facebook, google, etc)
+* Chatroom
+    * Profanity filter
+    * Limited chat history
+    * Scroll to bottom button after scrolling up
+    * Time stamps
+* Mobile
+    * Speech bubble showing most recent chat
+    * Horizontal display compatibility
+    * Scrolling chat
+    * Media queries, media queries, media queries
+    * Leaderboard formatting
+    * Landscape detector
+* Question game phase
+    * Show how many people chose an answer
+    * Clearer indicators of right or wrong or unanswered (icons / animations)
+* Server
+    * Removing nested for loops
+    * Optimize game loop
+    * Better ways to handle disconnects / desyncing
+    * Remove idle/disconnected users from session
+* React
+    * Adding ads during pregame/loading phases
+    * More styling
+    * Splash/Home page for mobile explaining/previewing what the game is
+    * Move logout page to home.js
+* User submitted questions
+* Custom private/public game rooms
