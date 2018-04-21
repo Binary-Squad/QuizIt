@@ -13,3 +13,7 @@ nav{
 .text-right {
     text-align: right !important;
 }
+
+.nav-link {
+    background-color: transparent !important;
+}
