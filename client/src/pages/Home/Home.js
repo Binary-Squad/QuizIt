@@ -24,6 +24,8 @@ import MobileChatroom from "../../components/MobileChatroom";
 import MobileNavbar from "../../components/MobileNavbar";
 import MobileLogin from "../../components/MobileLogin";
 import MobileRegister from "../../components/MobileRegister";
+import MobilePregame from "../../components/MobilePregame";
+import MobileVoting from "../../components/MobileVoting";
 import './Home.css';
 
 class Home extends Component {
@@ -49,7 +51,7 @@ class Home extends Component {
   componentWillMount() {
     if(localStorage.jwt){
       API.getProfileInfo(localStorage.jwt).then(res=>{
-          console.log(res);
+          // console.log(res);
           res.data.user.id = res.data.user._id;
           setTimeout(()=>{
             this.setState({loggedIn:true,loading:false,user:res.data.user},()=>{
@@ -94,7 +96,7 @@ class Home extends Component {
           category:msg.category,
           votingCategories:msg.votingCategories
         },()=>{
-          console.log(this.state.votingCategories);
+          // console.log(this.state.votingCategories);
         });
       }
     });
@@ -214,8 +216,9 @@ class Home extends Component {
         }
         else{
           if(this.state.gameState === 'pregame'){
+            console.log('pregame');
             return(
-              <Pregame />
+              <MobilePregame timer={this.state.timer}/>
             )
           }
           else if(this.state.gameState === 'questionActive'){
@@ -252,9 +255,10 @@ class Home extends Component {
           }
           else if(this.state.gameState === 'voting'){
             return(
-              <Voting 
+              <MobileVoting 
                 votingCategories={this.state.votingCategories}
                 userId={this.state.user.id}
+                timer={this.state.timer}
               />
             )
           }
@@ -273,14 +277,6 @@ class Home extends Component {
     if(this.state.loggedIn){
       if(this.state.gameState!='loading'){
         return(<Timer timer={this.state.timer} gameState={this.state.gameState}/>)
-      }
-    }
-  }
-
-  renderMobileTimer = ()=>{
-    if(this.state.loggedIn){
-      if(this.state.gameState!='loading'){
-        return(<MobileTimer timer={this.state.timer}/>)
       }
     }
   }

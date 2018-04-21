@@ -28,7 +28,7 @@
 }
 
 .mobile-correct {
-	background-color: pink;
+	background-color: green;
 	color: #D3FFF3;
 	-webkit-box-shadow: inset 0px 0px 15px black;
 	-moz-box-shadow: inset 0px 0px 15px black;
@@ -91,4 +91,8 @@
 
 .mobileHeight{
 	height: 100%;
+}
+
+.mobile-question-active-h4{
+	margin: 10px 0px 0px 0px !important;
 }

@@ -27,13 +27,16 @@ router.post('/register', (req, res, next) => {
   });
 
   if(!ValidateEmail(newUser.email)){
-    errors.push("You must enter a valid email address (example@quizit.com)")
+    errors.push("You must enter a valid email address (example@quizit-game.com)")
   }
   if(newUser.username.length < 5 || newUser.username.length >20){
-    errors.push("Username must be 3 to 20 characters long")
+    errors.push("Username must 5 to 20 characters long")
   }
   if(newUser.password.length < 5 || newUser.password.length >20){
-    errors.push("Password must be 3 to 20 characters long")
+    errors.push("Password must be 5 to 20 characters long")
+  }
+  if(newUser.email.length > 200){
+    errors.push("Email must less than 200 characters long")
   }
   if (errors.length > 0){
     res.json({errors})

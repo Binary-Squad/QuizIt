@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import "./Loading.css";
+import "./MobileLoading.css";
 
-export default class Loading extends Component {
+export default class MobileLoading extends Component {
 
   state={
   }
@@ -12,9 +12,9 @@ export default class Loading extends Component {
   render() {
 
     return (
-      <div className="loading-container">
-        <img src="assets/img/quizit-logo.png" className="loading-logo" />
-        <h3 className="centered loading-text">Loading</h3>
+      <div className="mobile-loading-container">
+        <img src="assets/img/quizit-logo.png" className="mobile-loading-logo" />
+        <h3 className="centered mobile-loading-text">Loading</h3>
         <div className="spinner">
           <div className="bounce1"></div>
           <div className="bounce2"></div>

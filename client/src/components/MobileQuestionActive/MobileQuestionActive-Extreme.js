@@ -111,7 +111,7 @@ export default class MobileQuestionActive extends Component {
                 className={
                   this.props.currentAnswer === this.props.correctAnswer && answer === this.props.correctAnswer ? "mobile-correct mobile-answer-box animated tada" :
                   answer === this.props.correctAnswer ? "mobile-correctAnswer mobile-answer-box animated flash" : 
-                  answer === this.props.currentAnswer ? "mobile-incorrect mobile-answer-box" : "mobile-answer-box"
+                  answer === this.props.currentAnswer ? "mobile-incorrect mobile-answer-box animated hinge" : "mobile-answer-box animated hinge"
                 }
                 dangerouslySetInnerHTML={createMarkup(answer)}
               />

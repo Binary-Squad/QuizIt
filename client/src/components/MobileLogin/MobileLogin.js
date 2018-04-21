@@ -53,7 +53,7 @@ class MobileLogin extends Component {
         this.props.loggedInTrue(res.data.user);
       }
       else if(res.data.errors){
-        this.setState({errors:res.data.errors})
+        this.setState({loginErrors:res.data.errors})
       }
     })
   };
@@ -62,7 +62,7 @@ class MobileLogin extends Component {
     event.preventDefault();
     console.log(this.state);
     if(this.state.passwordRegister !== this.state.password2Register){
-      this.setState({errors:["Passwords do not match"]},()=>{
+      this.setState({registerErrors:["Passwords do not match"]},()=>{
         console.log('passwords do not match');
       })
     }
@@ -95,7 +95,8 @@ class MobileLogin extends Component {
               this.props.loggedInTrue(res.data.user);
             }
             else if(res.data.errors){
-              this.setState({errors:res.data.errors})
+              console.log(res.data.errors);
+              this.setState({registerErrors:res.data.errors})
             }
           })
         }
@@ -143,14 +144,15 @@ class MobileLogin extends Component {
                   name="passwordLogin"
                   value={this.state.passwordLogin}
                 />
-                <button 
-                  className="btn btn-lg btn-primary btn-block btn-signin" 
-                  type="submit" 
-                  onClick={this.handleLoginSubmit}
-                >
-                  Log in
-                </button>
               </form>
+                <button 
+                    className="btn btn-lg btn-primary btn-block btn-signin" 
+                    type="submit" 
+                    onClick={this.handleLoginSubmit}
+                  >
+                    Log in
+                  </button>
+                {this.state.loginErrors.length > 0 ? <div className="smol-top-margin text-center">{this.state.loginErrors.map((error,i)=>{return(<div className="error-text" key={i}>{error}</div>)})}</div>:""}
             </div>
             <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
               <form className="form-signin">
@@ -208,7 +210,7 @@ class MobileLogin extends Component {
                 >
                   Register
                 </button>
-                {this.state.registerErrors.length > 0 ? this.state.registerErrors.map((item,i)=>{return(<p key={i}>{item}</p>)}):""}
+                {this.state.registerErrors.length > 0 ? <div className="smol-top-margin text-center">{this.state.registerErrors.map((error,i)=>{return(<div className="error-text" key={i}>{error}</div>)})}</div>:""}
             </div>
           </div>
         </div>
