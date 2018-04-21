@@ -7,7 +7,8 @@ export default class Timer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: undefined
+      message: undefined,
+      timerLow: undefined
     }
   }
 
@@ -16,8 +17,14 @@ export default class Timer extends Component {
   		if (this.props.gameState === 'pregame'){
   			let message = <div className="timer">Next game in {this.props.timer} seconds</div>;
   			return message
+  		} else if (this.props.gameState === 'questionActive' && this.props.timer <= 3){
+  			let message = <div className="timer"><img className="dancing-eddy" alt="meaningful text ;-)" src={require("./tenor.gif")}/><span className="timerNumber fadeIn">{this.props.timer} seconds left</span><img className="dancing-eddy" alt="meaningful text ;-)" src={require("./tenor.gif")}/></div>;  		
+  			return message
   		} else if (this.props.gameState === 'questionActive'){
-  			let message = <div className="timer">{this.props.timer} seconds left</div>;
+  			let message = <div className="timer">{this.props.timer} seconds left</div>;  		
+  			return message 
+  		} else if (this.props.gameState === 'voting' && this.props.timer <= 3){
+  			let message = <div className="timer"><span className="timerNumber fadeIn">{this.props.timer} seconds to vote</span></div>;
   			return message
   		} else if (this.props.gameState === 'voting'){
   			let message = <div className="timer">{this.props.timer} seconds to vote</div>;
