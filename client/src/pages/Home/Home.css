@@ -27,9 +27,7 @@
 .quizitPlayground{
 	margin: auto;
 	background-color: #EEEEEE;
-	padding-top: 5vh;
-	padding-left: 5vh;
-	padding-right: 5vh;
+	padding:5vh;
 	width: 90vh;
 	border-radius: 30px;
 	filter: drop-shadow(-1px 0 2px #222222);
@@ -50,8 +48,9 @@
 }
 
 .quizitPlaygroundBottom{
-	height: 20vh;
+	/*height: 10vh;*/
 	margin-top: 2vh;
+	/*margin-bottom: 2vh;*/
 }
 
 body, html {

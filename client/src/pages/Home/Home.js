@@ -29,6 +29,7 @@ import MobileRegister from "../../components/MobileRegister";
 import MobilePregame from "../../components/MobilePregame";
 import MobileVoting from "../../components/MobileVoting";
 import MobileProfile from "../../components/MobileProfile";
+import MobileLeaderboard from "../../components/MobileLeaderboard";
 import './Home.css';
 
 class Home extends Component {
@@ -254,7 +255,7 @@ class Home extends Component {
           }
           else if(this.state.gameState === 'gameEnd'){
             return(
-              <GameEnd scores={this.state.scores} />
+              <MobileLeaderboard scores={this.state.scores} gameState={this.state.gameState} timer={this.state.timer} />
             )
           }
           else if(this.state.gameState === 'voting'){

@@ -58,8 +58,9 @@ export default class QuestionActive extends Component {
         <div className="">
             <div className="question-title">
               <div className="centered questionNum-text">Question Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
-              <div className="centered question-text" dangerouslySetInnerHTML={createMarkup(question.question)}/>
+              <div className="centered question-text no-margin" dangerouslySetInnerHTML={createMarkup(question.question)}/>
             </div>
+            <h2 className="centered custom-h2-margin animated pulse infinite">Choose an Answer</h2>
             <ListGroup>
               {answers.map((answer,index)=> (
                 <ListGroupItem 
@@ -72,7 +73,9 @@ export default class QuestionActive extends Component {
                 />
               ))}
             </ListGroup>
+            
             <QuestionTracker className="questionTracker" difficulty={this.props.question.difficulty} category={this.props.category}></QuestionTracker>
+
         </div>
       )
     }
@@ -80,17 +83,20 @@ export default class QuestionActive extends Component {
       return (
           <div className="">
             <div className="question-title">
-              <div className="centered questionNum-text">Question Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
-              <div className="centered question-text" dangerouslySetInnerHTML={createMarkup(question.question)}/>
+              <div className="centered questionNum-text">Intermission Number: {this.props.questionNum}/{this.state.totalQuestions}</div>
+              <div className="centered question-text no-margin" dangerouslySetInnerHTML={createMarkup(question.question)}/>
             </div>
+            <h2 className="centered custom-h2-margin animated flipInY">
+            {this.props.currentAnswer === this.props.correctAnswer ? "CORRECT" : "INCORRECT"}
+            </h2>
             <ListGroup>
               {answers.map(answer => (
                 <ListGroupItem
                   key={answer}
                   onClick={()=>{this.doNothing()}}
                   className={
-                    this.props.currentAnswer === this.props.correctAnswer && answer === this.props.correctAnswer ? "correct answerHeight" :
-                    answer === this.props.correctAnswer ? "correctAnswer answerHeight" : 
+                    this.props.currentAnswer === this.props.correctAnswer && answer === this.props.correctAnswer ? "correct answerHeight animated tada" :
+                    answer === this.props.correctAnswer ? "correctAnswer answerHeight animated flash" : 
                     answer === this.props.currentAnswer ? "incorrect answerHeight" : "answerHeight"
                   }
                   dangerouslySetInnerHTML={createMarkup(answer)}
@@ -98,6 +104,7 @@ export default class QuestionActive extends Component {
               ))}
             </ListGroup>
             <QuestionTracker className="questionTracker" difficulty={this.props.question.difficulty} category={this.props.category}></QuestionTracker>
+            
         </div>
       )
     }
