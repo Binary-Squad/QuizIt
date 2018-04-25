@@ -35,15 +35,8 @@ export default class MobileQuestionActive extends Component {
     gameState:this.props.gameState
   }
 
-  componentWillUnmount(){
-    // if(this.state.selectedAnswer){
-    //   this.props.setAnswer(this.state.selectedAnswer,this.state.questionNum);
-    // }
-  }
-
   componentWillUpdate(nextProps,nextState){
     if(this.props.gameState === "questionActive" && nextProps.gameState === "intermission"){
-      // console.log('if in componentWillUpdate');
       this.setState({activeIndex:-1});
     }
   }
