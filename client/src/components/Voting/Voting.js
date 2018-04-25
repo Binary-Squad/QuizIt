@@ -24,11 +24,13 @@ class Voting extends Component {
   render() {
     return (
       <div>
+        <h2>Vote for the next category</h2>
         {this.props.votingCategories.map((votingInfo,index)=>{return(
-          <div key={index}>
+          <div key={index} style={{marginBottom:'8px'}}>
             <button
               onClick={()=>{this.handleVote(votingInfo.categoryNum,this.props.userId)}}
               className="btn btn-primary btn-vote"
+              style={{width:'100%'}}
             >
               {votingInfo.category}
             </button>
