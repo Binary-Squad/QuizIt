@@ -1,5 +1,6 @@
 import React from "react";
 import Logout from "../Logout";
+import ProfileButton from "../ProfileButton";
 import Logo from "../Logo";
 import "./Navbar.css";
 
@@ -17,9 +18,7 @@ const Navbar = props => (
 
 			<div className="collapse navbar-collapse pull-right" id="navbarSupportedContent">
 				<ul className="navbar-nav mr-auto">
-					<li className='nav-item'>
-						<a className='nav-link' onClick={props.showProfile} href='#'>{props.user.username} Profile</a>
-					</li>
+					<ProfileButton loggedIn={props.loggedIn} showProfile={props.showProfile} username={props.user.username} />
 					<Logout loggedIn={props.loggedIn}> </Logout>
 				</ul>
 			</div>
